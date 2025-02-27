@@ -1,67 +1,132 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IvanMove : MonoBehaviour
 {
     [SerializeField]
-    float moveSpeed = 2f;
+    private InputField algorithmText; // Текстовое поле для отображения алгоритма
 
     [SerializeField]
-    private List<Transform> checkPoints; // Список всех чекпоинтов
+    private float moveSpeed = 2f; // Скорость движения персонажа
 
     [SerializeField]
     private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
 
+    private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
+    private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
+
+    private Transform player; // Ссылка на персонажа
     private Transform currentCheckPoint; // Текущий чекпоинт
-    private bool isMoving = false; // Флаг для проверки движения
-    private Vector3 targetPosition; // Позиция, к которой движется персонаж
+
+    [SerializeField]
+    private List<Transform> checkPoints; // Список всех чекпоинтов
+
 
     void Start()
     {
-        // Устанавливаем начальный чекпоинт (например, первый в списке)
+        player = GameObject.FindGameObjectWithTag("Player").transform; // Находим персонажа по тегу
         if (checkPoints.Count > 0)
         {
-            currentCheckPoint = checkPoints[0];
-            transform.position = currentCheckPoint.position;
+            currentCheckPoint = checkPoints[0]; // Начальный чекпоинт
+            player.position = currentCheckPoint.position;
         }
+        UpdateAlgorithmText();
     }
 
     void Update()
     {
-        if (isMoving)
+        if (isPlaying && algorithmSteps.Count > 0)
         {
-            MoveToTarget();
+            PlayAlgorithm();
         }
     }
 
-    void MoveToTarget()
+    // Добавляем шаг в алгоритм
+    public void AddStep(string step)
     {
-        // Двигаем персонажа к целевой позиции
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-        // Если персонаж достиг целевой позиции, останавливаем движение
-        if (transform.position == targetPosition)
+        if (!isPlaying)
         {
-            isMoving = false;
-            currentCheckPoint = FindCheckPointAtPosition(targetPosition); // Обновляем текущий чекпоинт
+            algorithmSteps.Add(step);
+            UpdateAlgorithmText();
         }
     }
 
-    // Находим чекпоинт по позиции
-    Transform FindCheckPointAtPosition(Vector3 position)
+    // Обновляем текстовое поле с алгоритмом
+    void UpdateAlgorithmText()
     {
-        foreach (var checkPoint in checkPoints)
+        algorithmText.text = "";
+
+        for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            if (checkPoint.position == position)
+            algorithmText.text += $"{i + 1}. {algorithmSteps[i]};\n";
+        }
+    }
+
+    // Проигрываем алгоритм
+    public void PlayAlgorithm()
+    {
+        if (!isPlaying && algorithmSteps.Count > 0)
+        {
+            isPlaying = true;
+            StartCoroutine(ExecuteAlgorithm());
+        }
+    }
+
+    // Пошагово выполняем алгоритм
+    IEnumerator ExecuteAlgorithm()
+    {
+        for (int i = 0; i < algorithmSteps.Count; i++)
+        {
+            string step = algorithmSteps[i];
+            Vector3 direction = GetDirectionFromStep(step);
+
+            if (direction != Vector3.zero)
             {
-                return checkPoint;
+                Transform nextCheckPoint = FindNextCheckPoint(direction);
+                if (nextCheckPoint != null)
+                {
+                    yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
+                    currentCheckPoint = nextCheckPoint;
+                }
             }
         }
-        return null;
+
+        isPlaying = false;
     }
 
-    // Находим ближайший чекпоинт в заданном направлении
+    // Двигаем персонажа к целевой позиции
+    IEnumerator MovePlayer(Vector3 targetPosition)
+    {
+        while (Vector3.Distance(player.position, targetPosition) > 0.01f)
+        {
+            player.position = Vector3.MoveTowards(player.position, targetPosition, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        player.position = targetPosition;
+    }
+
+    // Получаем направление из шага алгоритма
+    Vector3 GetDirectionFromStep(string step)
+    {
+        switch (step)
+        {
+            case "Вверх":
+                return Vector3.up;
+            case "Вниз":
+                return Vector3.down;
+            case "Влево":
+                return Vector3.left;
+            case "Вправо":
+                return Vector3.right;
+            default:
+                return Vector3.zero;
+        }
+    }
+
+    // Находим следующий чекпоинт в заданном направлении
     Transform FindNextCheckPoint(Vector3 direction)
     {
         Transform nearestCheckPoint = null;
@@ -108,56 +173,24 @@ public class IvanMove : MonoBehaviour
         return false;
     }
 
-    // Методы для кнопок (должны быть public, чтобы их можно было вызвать из UI)
-    public void MoveRight()
+    public void StopAlgorithm()
     {
-        if (!isMoving)
+        isPlaying = false;
+
+        algorithmSteps.Clear();
+
+        algorithmText.text = "";
+
+        if (checkPoints.Count > 0)
         {
-            Transform nextCheckPoint = FindNextCheckPoint(Vector3.right);
-            if (nextCheckPoint != null)
-            {
-                targetPosition = nextCheckPoint.position;
-                isMoving = true;
-            }
+            player.position = checkPoints[0].position;
+            currentCheckPoint = checkPoints[0];
         }
     }
 
-    public void MoveLeft()
-    {
-        if (!isMoving)
-        {
-            Transform nextCheckPoint = FindNextCheckPoint(Vector3.left);
-            if (nextCheckPoint != null)
-            {
-                targetPosition = nextCheckPoint.position;
-                isMoving = true;
-            }
-        }
-    }
-
-    public void MoveUp()
-    {
-        if (!isMoving)
-        {
-            Transform nextCheckPoint = FindNextCheckPoint(Vector3.up);
-            if (nextCheckPoint != null)
-            {
-                targetPosition = nextCheckPoint.position;
-                isMoving = true;
-            }
-        }
-    }
-
-    public void MoveDown()
-    {
-        if (!isMoving)
-        {
-            Transform nextCheckPoint = FindNextCheckPoint(Vector3.down);
-            if (nextCheckPoint != null)
-            {
-                targetPosition = nextCheckPoint.position;
-                isMoving = true;
-            }
-        }
-    }
+    // Методы для кнопок
+    public void AddUpStep() { AddStep("Вверх"); }
+    public void AddDownStep() { AddStep("Вниз"); }
+    public void AddLeftStep() { AddStep("Влево"); }
+    public void AddRightStep() { AddStep("Вправо"); }
 }
