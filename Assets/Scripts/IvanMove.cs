@@ -223,7 +223,7 @@ public class IvanMove : MonoBehaviour
     bool IsPathBlocked(Vector3 start, Vector3 end)
     {
         Vector3 direction = (end - start).normalized;
-        float distance = Vector3.Distance(start, end);
+        float distance = Vector3.Distance(start, end) * 1.5f;
 
         // Используем Raycast для проверки препятствий
         RaycastHit2D hit = Physics2D.Raycast(start, direction, distance, obstacleLayer);
