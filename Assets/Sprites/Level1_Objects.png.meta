@@ -105,7 +105,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -143,12 +143,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Level1_Object_Bed
+      name: Level1_Bed
       rect:
         serializedVersion: 2
         x: 17
         y: 260
-        width: 169
+        width: 180
         height: 317
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -165,13 +165,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Object_Table
+      name: Level1_Desk
       rect:
         serializedVersion: 2
-        x: 218
-        y: 368
-        width: 111
-        height: 206
+        x: 213
+        y: 367
+        width: 113
+        height: 207
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,11 +187,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Object_Chair
+      name: Level1_Chair
       rect:
         serializedVersion: 2
-        x: 364
-        y: 457
+        x: 363
+        y: 458
         width: 137
         height: 123
       alignment: 0
@@ -209,7 +209,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Object_Backpack
+      name: Level1_Backpack
       rect:
         serializedVersion: 2
         x: 393
@@ -231,13 +231,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Object_Book
+      name: Level1_Book
       rect:
         serializedVersion: 2
-        x: 260
+        x: 261
         y: 256
         width: 41
-        height: 48
+        height: 49
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -253,13 +253,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Object_ID_Card
+      name: Level1_ID_Card
       rect:
         serializedVersion: 2
-        x: 349
-        y: 274
-        width: 25
-        height: 20
+        x: 348
+        y: 271
+        width: 27
+        height: 22
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -275,7 +275,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Object_Wardrobe
+      name: Level1_Wardrobe
       rect:
         serializedVersion: 2
         x: 24
@@ -297,13 +297,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Object_Key
+      name: Level1_Key
       rect:
         serializedVersion: 2
-        x: 353
-        y: 196
-        width: 35
-        height: 39
+        x: 352
+        y: 195
+        width: 37
+        height: 41
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -319,13 +319,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Object_Laptop
+      name: Level1_Laptop
       rect:
         serializedVersion: 2
         x: 257
-        y: 142
+        y: 139
         width: 63
-        height: 76
+        height: 79
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -344,7 +344,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: cb8457764a0b2264d9520092aeaa4654
+    spriteID: bcd039b5921e6fb45905839c5909191d
     internalID: 0
     vertices: []
     indices: 
@@ -354,18 +354,17 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Level1_Object_Backpack: -8712576077851642502
-      Level1_Object_Bed: -5409532008389789036
-      Level1_Object_Book: -4252456064822387422
-      Level1_Object_Chair: -8495925136435319824
-      Level1_Object_ID_Card: -2738389046811315419
-      Level1_Object_Key: 7372606147712325342
-      Level1_Object_Laptop: -497580124324138857
-      Level1_Object_Table: 8573486342704327052
-      Level1_Object_Wardrobe: 271505139793689108
+      Level1_Backpack: -8712576077851642502
+      Level1_Bed: -5409532008389789036
+      Level1_Book: -4252456064822387422
+      Level1_Chair: -8495925136435319824
+      Level1_Desk: 8573486342704327052
+      Level1_ID_Card: -2738389046811315419
+      Level1_Key: 7372606147712325342
+      Level1_Laptop: -497580124324138857
       Level1_Objects_3: 5997191660630345627
       Level1_Objects_7: 8885094331535546253
-      Objects_2: -8495925136435319824
+      Level1_Wardrobe: 271505139793689108
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
