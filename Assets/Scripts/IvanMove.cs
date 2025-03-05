@@ -23,6 +23,10 @@ public class IvanMove : MonoBehaviour
     [SerializeField]
     private List<Transform> checkPoints; // Список всех чекпоинтов
 
+    private ScrollRect scrollRect;
+    private RectTransform scrollRectTransform;
+    private RectTransform textRectTransform;
+
 
     void Start()
     {
@@ -32,6 +36,18 @@ public class IvanMove : MonoBehaviour
             currentCheckPoint = checkPoints[0]; // Начальный чекпоинт
             player.position = currentCheckPoint.position;
         }
+
+        scrollRect = algorithmText.GetComponentInParent<ScrollRect>(); // Ищем ScrollRect на InputField или выше
+        if (scrollRect == null)
+        {
+            Debug.LogError("ScrollRect не найден на InputField или его родителе!");
+        }
+        
+        scrollRectTransform = scrollRect.GetComponent<RectTransform>();
+
+        // Получаем RectTransform текста внутри InputField
+        textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
+
         UpdateAlgorithmText();
     }
 
@@ -60,7 +76,38 @@ public class IvanMove : MonoBehaviour
 
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            algorithmText.text += $"{i + 1}. {algorithmSteps[i]};\n";
+            if (i < 9)
+            {
+                algorithmText.text += $"{i + 1}   {algorithmSteps[i]};\n";
+            }
+            else if (i > 9)
+            {
+               algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n"; 
+            }
+            
+        }
+
+        StartCoroutine(ScrollIfOverflow());
+    }
+
+    private IEnumerator ScrollIfOverflow()
+    {
+        // Ждем конца кадра, чтобы UI обновился
+        yield return null;
+
+        // Принудительно обновляем Canvas
+        Canvas.ForceUpdateCanvases();
+
+        // Получаем высоту текста
+        float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
+
+        // Получаем высоту видимой области ScrollRect
+        float scrollRectHeight = scrollRectTransform.rect.height;
+
+        // Прокручиваем только если высота текста больше высоты видимой области
+        if (textHeight > scrollRectHeight)
+        {
+            scrollRect.verticalNormalizedPosition = 0f;
         }
     }
 
