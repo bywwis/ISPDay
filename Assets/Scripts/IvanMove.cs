@@ -126,6 +126,11 @@ public class IvanMove : MonoBehaviour
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
+            if (!isPlaying) 
+            {
+                yield break;
+            }
+            
             string step = algorithmSteps[i];
             Vector3 direction = GetDirectionFromStep(step);
 
@@ -148,6 +153,11 @@ public class IvanMove : MonoBehaviour
     {
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
         {
+            if (!isPlaying) 
+            {
+                yield break;
+            }
+
             player.position = Vector3.MoveTowards(player.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
@@ -222,12 +232,19 @@ public class IvanMove : MonoBehaviour
 
     public void StopAlgorithm()
     {
-        isPlaying = false;
+        isPlaying = false; // Останавливаем выполнение алгоритма
 
-        algorithmSteps.Clear();
+        algorithmSteps.Clear(); // Очищаем список шагов
 
-        algorithmText.text = "";
+        algorithmText.text = ""; // Очищаем текстовое поле
 
+        // Сбрасываем прокрутку в начальное положение
+        if (scrollRect != null)
+        {
+            scrollRect.verticalNormalizedPosition = 1f; 
+        }
+
+        // Возвращаем персонажа на начальный чекпоинт
         if (checkPoints.Count > 0)
         {
             player.position = checkPoints[0].position;
@@ -240,4 +257,5 @@ public class IvanMove : MonoBehaviour
     public void AddDownStep() { AddStep("Вниз"); }
     public void AddLeftStep() { AddStep("Влево"); }
     public void AddRightStep() { AddStep("Вправо"); }
+    public void AddGet() { AddStep("Взять"); }
 }
