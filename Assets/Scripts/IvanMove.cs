@@ -31,6 +31,8 @@ public class IvanMove : MonoBehaviour
     [SerializeField]
     private GameObject DialogeWindow; // Диалоговое окно
 
+    private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
+
     void Start()
     {
         if (DialogeWindow != null)
@@ -38,14 +40,14 @@ public class IvanMove : MonoBehaviour
             DialogeWindow.SetActive(false);
         }
 
-        player = GameObject.FindGameObjectWithTag("Player").transform; // Находим персонажа по тегу
+        player = GameObject.FindGameObjectWithTag("Player").transform; 
         if (checkPoints.Count > 0)
         {
             currentCheckPoint = checkPoints[0]; // Начальный чекпоинт
             player.position = currentCheckPoint.position;
         }
 
-        scrollRect = algorithmText.GetComponentInParent<ScrollRect>(); // Ищем ScrollRect на InputField или выше
+        scrollRect = algorithmText.GetComponentInParent<ScrollRect>(); 
         if (scrollRect == null)
         {
             Debug.LogError("ScrollRect не найден на InputField или его родитель!");
@@ -53,7 +55,6 @@ public class IvanMove : MonoBehaviour
 
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
 
-        // Получаем RectTransform текста внутри InputField
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         UpdateAlgorithmText();
@@ -92,7 +93,6 @@ public class IvanMove : MonoBehaviour
             {
                 algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n";
             }
-
         }
 
         StartCoroutine(ScrollIfOverflow());
@@ -100,19 +100,14 @@ public class IvanMove : MonoBehaviour
 
     private IEnumerator ScrollIfOverflow()
     {
-        // Ждем конца кадра, чтобы UI обновился
         yield return null;
 
-        // Принудительно обновляем Canvas
         Canvas.ForceUpdateCanvases();
 
-        // Получаем высоту текста
         float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
 
-        // Получаем высоту видимой области ScrollRect
         float scrollRectHeight = scrollRectTransform.rect.height;
 
-        // Прокручиваем только если высота текста больше высоты видимой области
         if (textHeight > scrollRectHeight)
         {
             scrollRect.verticalNormalizedPosition = 0f;
@@ -134,7 +129,7 @@ public class IvanMove : MonoBehaviour
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            if (!isPlaying)
+            if (!isPlaying || isPathBlocked)
             {
                 yield break;
             }
@@ -161,7 +156,7 @@ public class IvanMove : MonoBehaviour
     {
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
         {
-            if (!isPlaying)
+            if (!isPlaying || isPathBlocked)
             {
                 yield break;
             }
@@ -199,19 +194,14 @@ public class IvanMove : MonoBehaviour
 
         foreach (var checkPoint in checkPoints)
         {
-            // Проверяем, что чекпоинт находится в нужном направлении
             Vector3 delta = checkPoint.position - currentCheckPoint.position;
-            if (Vector3.Dot(delta.normalized, direction.normalized) > 0.9f) // Угол между направлениями близок к 0
+            if (Vector3.Dot(delta.normalized, direction.normalized) > 0.9f)
             {
                 float distance = Vector3.Distance(currentCheckPoint.position, checkPoint.position);
                 if (distance < nearestDistance)
                 {
-                    // Проверяем, есть ли препятствие на пути
-                    if (!IsPathBlocked(currentCheckPoint.position, checkPoint.position))
-                    {
-                        nearestDistance = distance;
-                        nearestCheckPoint = checkPoint;
-                    }
+                    nearestDistance = distance;
+                    nearestCheckPoint = checkPoint;
                 }
             }
         }
@@ -219,19 +209,13 @@ public class IvanMove : MonoBehaviour
         return nearestCheckPoint;
     }
 
-    // Проверяем, есть ли препятствие на пути
-    bool IsPathBlocked(Vector3 start, Vector3 end)
+    // Обработчик события входа в триггер
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Vector3 direction = (end - start).normalized;
-        float distance = Vector3.Distance(start, end) * 1.5f;
-
-        // Используем Raycast для проверки препятствий
-        RaycastHit2D hit = Physics2D.Raycast(start, direction, distance, obstacleLayer);
-
-        // Если луч столкнулся с объектом, путь заблокирован
-        if (hit.collider != null)
+        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
         {
-            Debug.Log("Путь заблокирован: " + hit.collider.name);
+            isPathBlocked = true;
+            Debug.Log("Путь заблокирован: " + collision.gameObject.name);
 
             // Останавливаем выполнение алгоритма
             StopAlgorithm();
@@ -241,10 +225,16 @@ public class IvanMove : MonoBehaviour
             {
                 DialogeWindow.SetActive(true);
             }
-
         }
+    }
 
-        return false;
+    // Обработчик события выхода из триггера
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
+        {
+            isPathBlocked = false;
+        }
     }
 
     // Перезапускаем уровень
@@ -255,19 +245,16 @@ public class IvanMove : MonoBehaviour
 
     public void StopAlgorithm()
     {
-        isPlaying = false; // Останавливаем выполнение алгоритма
+        isPlaying = false; 
 
-        algorithmSteps.Clear(); // Очищаем список шагов
+        algorithmSteps.Clear(); 
 
-        algorithmText.text = ""; // Очищаем текстовое поле
-
-        // Сбрасываем прокрутку в начальное положение
+        algorithmText.text = ""; 
         if (scrollRect != null)
         {
-            scrollRect.verticalNormalizedPosition = 1f; 
+            scrollRect.verticalNormalizedPosition = 1f;
         }
 
-        // Возвращаем персонажа на начальный чекпоинт
         if (checkPoints.Count > 0)
         {
             player.position = checkPoints[0].position;
