@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class IvanMove : MonoBehaviour
 {
@@ -27,9 +28,16 @@ public class IvanMove : MonoBehaviour
     private RectTransform scrollRectTransform;
     private RectTransform textRectTransform;
 
+    [SerializeField]
+    private GameObject DialogeWindow; // Диалоговое окно
 
     void Start()
     {
+        if (DialogeWindow != null)
+        {
+            DialogeWindow.SetActive(false);
+        }
+
         player = GameObject.FindGameObjectWithTag("Player").transform; // Находим персонажа по тегу
         if (checkPoints.Count > 0)
         {
@@ -40,9 +48,9 @@ public class IvanMove : MonoBehaviour
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>(); // Ищем ScrollRect на InputField или выше
         if (scrollRect == null)
         {
-            Debug.LogError("ScrollRect не найден на InputField или его родителе!");
+            Debug.LogError("ScrollRect не найден на InputField или его родитель!");
         }
-        
+
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
 
         // Получаем RectTransform текста внутри InputField
@@ -80,11 +88,11 @@ public class IvanMove : MonoBehaviour
             {
                 algorithmText.text += $"{i + 1}   {algorithmSteps[i]};\n";
             }
-            else if (i > 9)
+            else if (i >= 9)
             {
-               algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n"; 
+                algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n";
             }
-            
+
         }
 
         StartCoroutine(ScrollIfOverflow());
@@ -126,11 +134,11 @@ public class IvanMove : MonoBehaviour
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            if (!isPlaying) 
+            if (!isPlaying)
             {
                 yield break;
             }
-            
+
             string step = algorithmSteps[i];
             Vector3 direction = GetDirectionFromStep(step);
 
@@ -153,7 +161,7 @@ public class IvanMove : MonoBehaviour
     {
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
         {
-            if (!isPlaying) 
+            if (!isPlaying)
             {
                 yield break;
             }
@@ -224,10 +232,25 @@ public class IvanMove : MonoBehaviour
         if (hit.collider != null)
         {
             Debug.Log("Путь заблокирован: " + hit.collider.name);
-            return true;
+
+            // Останавливаем выполнение алгоритма
+            StopAlgorithm();
+
+            // Показываем диалоговое окно
+            if (DialogeWindow != null)
+            {
+                DialogeWindow.SetActive(true);
+            }
+
         }
 
         return false;
+    }
+
+    // Перезапускаем уровень
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void StopAlgorithm()
