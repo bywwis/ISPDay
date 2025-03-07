@@ -8,55 +8,77 @@ public class IvanMove : MonoBehaviour
 {
     [SerializeField]
     private InputField algorithmText; // Текстовое поле для отображения алгоритма
-
+    
     [SerializeField]
     private float moveSpeed = 2f; // Скорость движения персонажа
-
+    
     [SerializeField]
     private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
-
+    
     private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
 
     private Transform player; // Ссылка на персонажа
     private Transform currentCheckPoint; // Текущий чекпоинт
-
+    
     [SerializeField]
     private List<Transform> checkPoints; // Список всех чекпоинтов
-
+    
     private ScrollRect scrollRect;
     private RectTransform scrollRectTransform;
     private RectTransform textRectTransform;
+    
+    [SerializeField]
+    private GameObject DialogeWindow1; // Диалоговое окно для истории
 
     [SerializeField]
-    private GameObject DialogeWindow; // Диалоговое окно
+    private GameObject DialogeWindow2; // Диалоговое окно для прохождения
+
+    [SerializeField]
+    private GameObject DialogeWindow3; // Диалоговое окно для проигрыша
 
     private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
 
+    [SerializeField]
+    private List<GameObject> itemsToCollect; // Список предметов для сбора
+    private int collectedItemsCount = 0; // Счетчик собранных предметов
+
     void Start()
     {
-        if (DialogeWindow != null)
+        if (DialogeWindow2 != null)
         {
-            DialogeWindow.SetActive(false);
+            DialogeWindow2.SetActive(false);
         }
-
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+    
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         if (checkPoints.Count > 0)
         {
             currentCheckPoint = checkPoints[4]; // Начальный чекпоинт
             player.position = currentCheckPoint.position;
         }
 
-        scrollRect = algorithmText.GetComponentInParent<ScrollRect>(); 
+        // Находим все объекты с тегом "Item"
+        GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
+        if (itemObjects.Length > 0)
+        {
+            itemsToCollect = new List<GameObject>(itemObjects);
+        }
+        else
+        {
+            Debug.LogWarning("Не найдены объекты с тегом 'Item'.");
+            itemsToCollect = new List<GameObject>(); // Инициализируем пустой список
+        }
+
+        scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
         if (scrollRect == null)
         {
             Debug.LogError("ScrollRect не найден на InputField или его родитель!");
         }
-
+        
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-
+        
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
-
+        
         UpdateAlgorithmText();
     }
 
@@ -82,7 +104,7 @@ public class IvanMove : MonoBehaviour
     void UpdateAlgorithmText()
     {
         algorithmText.text = "";
-
+        
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
             if (i < 9)
@@ -94,20 +116,20 @@ public class IvanMove : MonoBehaviour
                 algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n";
             }
         }
-
+        
         StartCoroutine(ScrollIfOverflow());
     }
 
     private IEnumerator ScrollIfOverflow()
     {
         yield return null;
-
+        
         Canvas.ForceUpdateCanvases();
-
+        
         float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
-
+        
         float scrollRectHeight = scrollRectTransform.rect.height;
-
+        
         if (textHeight > scrollRectHeight)
         {
             scrollRect.verticalNormalizedPosition = 0f;
@@ -125,7 +147,7 @@ public class IvanMove : MonoBehaviour
     }
 
     // Пошагово выполняем алгоритм
-    IEnumerator ExecuteAlgorithm()
+    private IEnumerator ExecuteAlgorithm()
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
@@ -133,10 +155,10 @@ public class IvanMove : MonoBehaviour
             {
                 yield break;
             }
-
+        
             string step = algorithmSteps[i];
             Vector3 direction = GetDirectionFromStep(step);
-
+            
             if (direction != Vector3.zero)
             {
                 Transform nextCheckPoint = FindNextCheckPoint(direction);
@@ -146,13 +168,16 @@ public class IvanMove : MonoBehaviour
                     currentCheckPoint = nextCheckPoint;
                 }
             }
+            else if (step == "Взять")
+            {
+                ExecuteGetCommand();
+            }
         }
-
         isPlaying = false;
     }
 
     // Двигаем персонажа к целевой позиции
-    IEnumerator MovePlayer(Vector3 targetPosition)
+    private IEnumerator MovePlayer(Vector3 targetPosition)
     {
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
         {
@@ -160,16 +185,16 @@ public class IvanMove : MonoBehaviour
             {
                 yield break;
             }
-
+            
             player.position = Vector3.MoveTowards(player.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
-
+        
         player.position = targetPosition;
     }
 
     // Получаем направление из шага алгоритма
-    Vector3 GetDirectionFromStep(string step)
+    private Vector3 GetDirectionFromStep(string step)
     {
         switch (step)
         {
@@ -187,11 +212,11 @@ public class IvanMove : MonoBehaviour
     }
 
     // Находим следующий чекпоинт в заданном направлении
-    Transform FindNextCheckPoint(Vector3 direction)
+    private Transform FindNextCheckPoint(Vector3 direction)
     {
         Transform nearestCheckPoint = null;
         float nearestDistance = Mathf.Infinity;
-
+        
         foreach (var checkPoint in checkPoints)
         {
             Vector3 delta = checkPoint.position - currentCheckPoint.position;
@@ -205,7 +230,7 @@ public class IvanMove : MonoBehaviour
                 }
             }
         }
-
+        
         return nearestCheckPoint;
     }
 
@@ -216,14 +241,14 @@ public class IvanMove : MonoBehaviour
         {
             isPathBlocked = true;
             Debug.Log("Путь заблокирован: " + collision.gameObject.name);
-
+        
             // Останавливаем выполнение алгоритма
             StopAlgorithm();
-
+            
             // Показываем диалоговое окно
-            if (DialogeWindow != null)
+            if (DialogeWindow3 != null)
             {
-                DialogeWindow.SetActive(true);
+                DialogeWindow3.SetActive(true);
             }
         }
     }
@@ -245,20 +270,55 @@ public class IvanMove : MonoBehaviour
 
     public void StopAlgorithm()
     {
-        isPlaying = false; 
-
-        algorithmSteps.Clear(); 
-
-        algorithmText.text = ""; 
+        isPlaying = false;
+        
+        algorithmSteps.Clear();
+        
+        algorithmText.text = "";
         if (scrollRect != null)
         {
             scrollRect.verticalNormalizedPosition = 1f;
         }
-
+        
         if (checkPoints.Count > 0)
         {
             player.position = checkPoints[4].position;
             currentCheckPoint = checkPoints[4];
+        }
+    }
+
+    private void ExecuteGetCommand()
+    {
+        // Проверяем, находится ли персонаж рядом с предметом
+        foreach (var item in itemsToCollect)
+        {
+            if (item != null)
+            {
+                float distance = Vector3.Distance(player.position, item.transform.position);
+
+                if (distance < 200f)
+                {
+         
+                    Destroy(item);
+                    collectedItemsCount++;
+
+                    // Проверяем, собраны ли все предметы
+                    if (collectedItemsCount >= 4)
+                    {
+                        ShowCompletionDialog();
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    // Метод для показа диалогового окна о завершении сбора всех предметов
+    private void ShowCompletionDialog()
+    {
+        if (DialogeWindow2 != null)
+        {
+            DialogeWindow2.SetActive(true);
         }
     }
 

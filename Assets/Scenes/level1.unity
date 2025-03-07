@@ -626,18 +626,8 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: "\u041E \u043D\u0435\u0442, \u0442\u0435\u0431\u0435 \u043D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C
-    \u043F\u043E\u043C\u043E\u0447\u044C \u0418\u0432\u0430\u043D\u0443 \u0431\u044B\u0441\u0442\u0440\u043E
-    \u0441\u043E\u0431\u0440\u0430\u0442\u044C\u0441\u044F. \u0422\u0435\u043F\u0435\u0440\u044C
-    \u0435\u043C\u0443 \u043F\u0440\u0438\u0434\u0451\u0442\u0441\u044F \u043F\u0440\u043E\u043F\u0443\u0441\u0442\u0438\u0442\u044C
-    \u043B\u0435\u043A\u0446\u0438\u044E, \u0430 \u0432\u0435\u0434\u044C \u0443
-    \u043D\u0435\u0433\u043E \u0431\u044B\u043B\u0430 \u0442\u0430\u043A\u0430\u044F
-    \u0442\u044F\u0433\u0430 \u043A \u043D\u043E\u0432\u044B\u043C \u0437\u043D\u0430\u043D\u0438\u044F\u043C.
-    \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439 \u0435\u0449\u0451 \u0440\u0430\u0437! 
-    \u0418\u043C\u0435\u0439 \u0432 \u0432\u0438\u0434\u0443, \u0447\u0442\u043E
-    \u0435\u043C\u0443 \u043D\u0443\u0436\u043D\u044B \u0441\u0442\u0443\u0434\u0435\u043D\u0447\u0435\u0441\u043A\u0438\u0439
-    \u0431\u0438\u043B\u0435\u0442, \u043A\u043E\u043D\u0441\u043F\u0435\u043A\u0442\u044B
-    \u0438 \u043D\u043E\u0443\u0442\u0431\u0443\u043A."
+  m_Text: "\u041F\u043E\u0437\u0434\u0440\u0430\u0432\u043B\u044F\u0435\u043C! \u0412\u044B
+    \u0441\u043E\u0431\u0440\u0430\u043B\u0438 \u0432\u0441\u0435 \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u044B!"
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 1
@@ -1323,9 +1313,10 @@ GameObject:
   - component: {fileID: 310386385}
   - component: {fileID: 310386387}
   - component: {fileID: 310386386}
+  - component: {fileID: 310386388}
   m_Layer: 5
   m_Name: Laptop
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1387,6 +1378,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 310386384}
   m_CullTransparentMesh: 1
+--- !u!61 &310386388
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310386384}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &361411662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2855,9 +2892,10 @@ GameObject:
   - component: {fileID: 656796738}
   - component: {fileID: 656796740}
   - component: {fileID: 656796739}
+  - component: {fileID: 656796741}
   m_Layer: 5
   m_Name: Key
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2919,6 +2957,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 656796737}
   m_CullTransparentMesh: 1
+--- !u!61 &656796741
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656796737}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &690019228
 GameObject:
   m_ObjectHideFlags: 0
@@ -4149,7 +4233,25 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
+  m_Text: "\u0421\u0435\u0433\u043E\u0434\u043D\u044F\u0448\u043D\u0438\u0439 \u0434\u0435\u043D\u044C
+    \u043D\u0430\u0447\u0438\u043D\u0430\u0435\u0442\u0441\u044F, \u0138\u0430\u0138
+    \u0438 \u043C\u043D\u043E\u0433\u0438\u0435 \u0434\u0440\u0443\u0433\u0438\u0435,
+    \u2013 \u0441 \u043F\u0440\u043E\u043F\u0443\u0449\u0435\u043D\u043D\u043E\u0433\u043E
+    \u0431\u0443\u0434\u0438\u043B\u044C\u043D\u0438\u043A\u0430. \u041A\u043E\u043C\u043D\u0430\u0442\u0430
+    \u043F\u0440\u0435\u0432\u0440\u0430\u0442\u0438\u043B\u0430\u0441\u044C \u0432
+    \u0445\u0430\u043E\u0442\u0438\u0447\u043D\u044B\u0439 \u043B\u0430\u0431\u0438\u0440\u0438\u043D\u0442
+    \u0438\u0437 \u0440\u0430\u0437\u0431\u0440\u043E\u0441\u0430\u043D\u043D\u044B\u0445
+    \u0432\u0435\u0449\u0435\u0439. \u041D\u0443\u0436\u043D\u043E \u0431\u044B\u0441\u0442\u0440\u043E
+    \u043D\u0430\u0439\u0442\u0438 \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u044B\u0435
+    \u0432\u0435\u0449\u0438 \u0438 \u0441\u043A\u043E\u0440\u0435\u0435 \u0441\u043F\u0435\u0448\u0438\u0442\u044C
+    \u043D\u0430 \u043B\u0435\u043A\u0446\u0438\u044E! \r\n\u0414\u043B\u044F \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u044F
+    \u0418\u0432\u0430\u043D\u043E\u043C \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u043E
+    \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u043A\u043E\u043C\u0430\u043D\u0434\u044B
+    \u0438 \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0430\u0442\u044C\u0441\u044F
+    \u043F\u043E \u043A\u043E\u043C\u043D\u0430\u0442\u0435 \u0441 \u043F\u043E\u043C\u043E\u0449\u044C\u044E
+    \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u043D\u043E\u0433\u043E
+    \u0430\u043B\u0433\u043E\u0440\u0438\u0442\u043C\u0430 \u0438\u0437 \u043D\u0430\u0431\u043E\u0440\u0430
+    \u043A\u043E\u043C\u0430\u043D\u0434.\r\n"
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 1
@@ -4602,7 +4704,25 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: "\u0421\u0435\u0433\u043E\u0434\u043D\u044F\u0448\u043D\u0438\u0439 \u0434\u0435\u043D\u044C
+    \u043D\u0430\u0447\u0438\u043D\u0430\u0435\u0442\u0441\u044F, \u0138\u0430\u0138
+    \u0438 \u043C\u043D\u043E\u0433\u0438\u0435 \u0434\u0440\u0443\u0433\u0438\u0435,
+    \u2013 \u0441 \u043F\u0440\u043E\u043F\u0443\u0449\u0435\u043D\u043D\u043E\u0433\u043E
+    \u0431\u0443\u0434\u0438\u043B\u044C\u043D\u0438\u043A\u0430. \u041A\u043E\u043C\u043D\u0430\u0442\u0430
+    \u043F\u0440\u0435\u0432\u0440\u0430\u0442\u0438\u043B\u0430\u0441\u044C \u0432
+    \u0445\u0430\u043E\u0442\u0438\u0447\u043D\u044B\u0439 \u043B\u0430\u0431\u0438\u0440\u0438\u043D\u0442
+    \u0438\u0437 \u0440\u0430\u0437\u0431\u0440\u043E\u0441\u0430\u043D\u043D\u044B\u0445
+    \u0432\u0435\u0449\u0435\u0439. \u041D\u0443\u0436\u043D\u043E \u0431\u044B\u0441\u0442\u0440\u043E
+    \u043D\u0430\u0439\u0442\u0438 \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u044B\u0435
+    \u0432\u0435\u0449\u0438 \u0438 \u0441\u043A\u043E\u0440\u0435\u0435 \u0441\u043F\u0435\u0448\u0438\u0442\u044C
+    \u043D\u0430 \u043B\u0435\u043A\u0446\u0438\u044E! \r\n\u0414\u043B\u044F \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u044F
+    \u0418\u0432\u0430\u043D\u043E\u043C \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u043E
+    \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u043A\u043E\u043C\u0430\u043D\u0434\u044B
+    \u0438 \u043F\u0435\u0440\u0435\u043C\u0435\u0449\u0430\u0442\u044C\u0441\u044F
+    \u043F\u043E \u043A\u043E\u043C\u043D\u0430\u0442\u0435 \u0441 \u043F\u043E\u043C\u043E\u0449\u044C\u044E
+    \u0441\u043E\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u043D\u043E\u0433\u043E
+    \u0430\u043B\u0433\u043E\u0440\u0438\u0442\u043C\u0430 \u0438\u0437 \u043D\u0430\u0431\u043E\u0440\u0430
+    \u043A\u043E\u043C\u0430\u043D\u0434.\r\n"
 --- !u!222 &1284823342
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6138,9 +6258,10 @@ GameObject:
   - component: {fileID: 1684069447}
   - component: {fileID: 1684069449}
   - component: {fileID: 1684069448}
+  - component: {fileID: 1684069450}
   m_Layer: 3
   m_Name: IDCard
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6202,6 +6323,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1684069446}
   m_CullTransparentMesh: 1
+--- !u!61 &1684069450
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684069446}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1708640618
 GameObject:
   m_ObjectHideFlags: 0
@@ -6458,29 +6625,19 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 8bf157281e0277141a2cfd61e624dc50, type: 3}
-    m_FontSize: 32
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u041E \u043D\u0435\u0442, \u0442\u0435\u0431\u0435 \u043D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C
-    \u043F\u043E\u043C\u043E\u0447\u044C \u0418\u0432\u0430\u043D\u0443 \u0431\u044B\u0441\u0442\u0440\u043E
-    \u0441\u043E\u0431\u0440\u0430\u0442\u044C\u0441\u044F. \u0422\u0435\u043F\u0435\u0440\u044C
-    \u0435\u043C\u0443 \u043F\u0440\u0438\u0434\u0451\u0442\u0441\u044F \u043F\u0440\u043E\u043F\u0443\u0441\u0442\u0438\u0442\u044C
-    \u043B\u0435\u043A\u0446\u0438\u044E, \u0430 \u0432\u0435\u0434\u044C \u0443
-    \u043D\u0435\u0433\u043E \u0431\u044B\u043B\u0430 \u0442\u0430\u043A\u0430\u044F
-    \u0442\u044F\u0433\u0430 \u043A \u043D\u043E\u0432\u044B\u043C \u0437\u043D\u0430\u043D\u0438\u044F\u043C.
-    \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439 \u0435\u0449\u0451 \u0440\u0430\u0437! 
-    \u0418\u043C\u0435\u0439 \u0432 \u0432\u0438\u0434\u0443, \u0447\u0442\u043E
-    \u0435\u043C\u0443 \u043D\u0443\u0436\u043D\u044B \u0441\u0442\u0443\u0434\u0435\u043D\u0447\u0435\u0441\u043A\u0438\u0439
-    \u0431\u0438\u043B\u0435\u0442, \u043A\u043E\u043D\u0441\u043F\u0435\u043A\u0442\u044B
-    \u0438 \u043D\u043E\u0443\u0442\u0431\u0443\u043A."
+  m_Text: "\u041F\u043E\u0437\u0434\u0440\u0430\u0432\u043B\u044F\u0435\u043C! \u0412\u044B
+    \u0441\u043E\u0431\u0440\u0430\u043B\u0438 \u0432\u0441\u0435 \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u044B!"
 --- !u!222 &1773858586
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8334,7 +8491,14 @@ MonoBehaviour:
   - {fileID: 419526155}
   - {fileID: 599695993}
   - {fileID: 1708640619}
-  DialogeWindow: {fileID: 397093824}
+  DialogeWindow1: {fileID: 233690993}
+  DialogeWindow2: {fileID: 363868289}
+  DialogeWindow3: {fileID: 397093824}
+  itemsToCollect:
+  - {fileID: 2054708795}
+  - {fileID: 1684069446}
+  - {fileID: 310386384}
+  - {fileID: 656796737}
 --- !u!61 &2044351033
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8474,9 +8638,10 @@ GameObject:
   - component: {fileID: 2054708796}
   - component: {fileID: 2054708798}
   - component: {fileID: 2054708797}
+  - component: {fileID: 2054708800}
   m_Layer: 5
   m_Name: Book
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8538,6 +8703,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054708795}
   m_CullTransparentMesh: 1
+--- !u!61 &2054708800
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054708795}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &2065847365
 GameObject:
   m_ObjectHideFlags: 0
