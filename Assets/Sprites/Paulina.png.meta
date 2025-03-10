@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5c777134dc9325645b57e162253b9672
+guid: 8fc7a5f089bf00b42b210bbcbb11979c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4719021335930524953
-    second: "\u0424\u043E\u043D \u043E\u043A\u043D\u0430_0"
+      213: -272999928509670403
+    second: Paulina_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\u0424\u043E\u043D \u043E\u043A\u043D\u0430_0"
+      name: Paulina_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 879
-        height: 934
+        x: 6
+        y: 6
+        width: 60
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7ea2f50f81ba28eb0800000000000000
-      internalID: -4719021335930524953
+      spriteID: dfb597de20c163cf0800000000000000
+      internalID: -272999928509670403
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\u0424\u043E\u043D \u043E\u043A\u043D\u0430_0": -4719021335930524953
+      Paulina_0: -272999928509670403
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

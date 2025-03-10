@@ -1,40 +1,40 @@
 fileFormatVersion: 2
-guid: 7932eedb4e52b514785a86e6bf042cdb
+guid: 44f57138774e44041af93b8776c24880
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5409532008389789036
-    second: Level1_Objects_0
+      213: -4954218625351313683
+    second: Level2_Objects_0
   - first:
-      213: 8573486342704327052
-    second: Level1_Objects_1
+      213: 1581927613478399191
+    second: Level2_Objects_1
   - first:
-      213: -8495925136435319824
-    second: Level1_Objects_2
+      213: 4134203838106123060
+    second: Level2_Objects_2
   - first:
-      213: 5997191660630345627
-    second: Level1_Objects_3
+      213: -8331437797739586680
+    second: Level2_Objects_3
   - first:
-      213: -8712576077851642502
-    second: Level1_Objects_4
+      213: -1038409238054480231
+    second: Level2_Objects_4
   - first:
-      213: -4252456064822387422
-    second: Level1_Objects_5
+      213: -5460438835414374879
+    second: Level2_Objects_5
   - first:
-      213: -2738389046811315419
-    second: Level1_Objects_6
+      213: -7260116012441525503
+    second: Level2_Objects_6
   - first:
-      213: 8885094331535546253
-    second: Level1_Objects_7
+      213: -8445759338239065582
+    second: Level2_Objects_7
   - first:
-      213: 271505139793689108
-    second: Level1_Objects_8
+      213: -3827696379770573618
+    second: Level2_Objects_8
   - first:
-      213: 7372606147712325342
-    second: Level1_Objects_9
+      213: -7989749117342792861
+    second: Level2_Objects_9
   - first:
-      213: -497580124324138857
-    second: Level1_Objects_10
+      213: -884151621509303687
+    second: Level2_Objects_10
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -143,79 +143,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Level1_Bed
+      name: Level2_NPC_1
       rect:
         serializedVersion: 2
-        x: 17
-        y: 260
-        width: 180
-        height: 317
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 49a32de9c4b7de4b0800000000000000
-      internalID: -5409532008389789036
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level1_Desk
-      rect:
-        serializedVersion: 2
-        x: 213
-        y: 367
-        width: 113
-        height: 207
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c89ed8787642bf670800000000000000
-      internalID: 8573486342704327052
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level1_Chair
-      rect:
-        serializedVersion: 2
-        x: 363
-        y: 458
-        width: 137
-        height: 123
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0fbe57c0a19681a80800000000000000
-      internalID: -8495925136435319824
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level1_Backpack
-      rect:
-        serializedVersion: 2
-        x: 393
+        x: 20
         y: 340
-        width: 79
-        height: 76
+        width: 56
+        height: 83
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a753619e736b61780800000000000000
-      internalID: -8712576077851642502
+      spriteID: de69f48a8641f3bb0800000000000000
+      internalID: -4954218625351313683
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Book
+      name: Level2_Main_Desktop
       rect:
         serializedVersion: 2
-        x: 261
-        y: 256
-        width: 41
-        height: 49
+        x: 26
+        y: 240
+        width: 269
+        height: 83
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,20 +180,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 22d5e415dbd3cf4c0800000000000000
-      internalID: -4252456064822387422
+      spriteID: 7dce2c578c224f510800000000000000
+      internalID: 1581927613478399191
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_ID_Card
+      name: Level2_NPC_2
       rect:
         serializedVersion: 2
-        x: 348
-        y: 271
-        width: 27
-        height: 22
+        x: 89
+        y: 340
+        width: 56
+        height: 82
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,20 +202,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 523bdf7aba94ff9d0800000000000000
-      internalID: -2738389046811315419
+      spriteID: 43b3f5f9c74af5930800000000000000
+      internalID: 4134203838106123060
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Wardrobe
+      name: Level2_NPC_3
       rect:
         serializedVersion: 2
-        x: 24
-        y: 13
-        width: 180
-        height: 222
+        x: 154
+        y: 340
+        width: 54
+        height: 83
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -290,20 +224,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 41a78147c7494c300800000000000000
-      internalID: 271505139793689108
+      spriteID: 88b187df679c06c80800000000000000
+      internalID: -8331437797739586680
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Key
+      name: Level2_NPC_4
       rect:
         serializedVersion: 2
-        x: 352
-        y: 195
-        width: 37
-        height: 41
+        x: 217
+        y: 341
+        width: 57
+        height: 82
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -312,20 +246,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ed61147ca32c05660800000000000000
-      internalID: 7372606147712325342
+      spriteID: 996574abc44d691f0800000000000000
+      internalID: -1038409238054480231
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level1_Laptop
+      name: Level2_NPC_5
       rect:
         serializedVersion: 2
-        x: 257
-        y: 139
-        width: 63
-        height: 79
+        x: 283
+        y: 341
+        width: 62
+        height: 82
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -334,8 +268,118 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7907d52638d3819f0800000000000000
-      internalID: -497580124324138857
+      spriteID: 126e0615fcf9834b0800000000000000
+      internalID: -5460438835414374879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_Desktop_1
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 164
+        width: 135
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1032c42d3f2ee3b90800000000000000
+      internalID: -7260116012441525503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_Desktop_2
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 165
+        width: 134
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21282d121a2aaca80800000000000000
+      internalID: -8445759338239065582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_Desktop_3
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 88
+        width: 135
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecce9bf2c6a41eac0800000000000000
+      internalID: -3827696379770573618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_Desktop_5
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 14
+        width: 134
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 363ca406285be1190800000000000000
+      internalID: -7989749117342792861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_Desktop_4
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 89
+        width: 135
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9723a50e8ccdab3f0800000000000000
+      internalID: -884151621509303687
       vertices: []
       indices: 
       edges: []
@@ -344,7 +388,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bcd039b5921e6fb45905839c5909191d
+    spriteID: 83d1834936443e1428be95972fe3862a
     internalID: 0
     vertices: []
     indices: 
@@ -354,17 +398,17 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Level1_Backpack: -8712576077851642502
-      Level1_Bed: -5409532008389789036
-      Level1_Book: -4252456064822387422
-      Level1_Chair: -8495925136435319824
-      Level1_Desk: 8573486342704327052
-      Level1_ID_Card: -2738389046811315419
-      Level1_Key: 7372606147712325342
-      Level1_Laptop: -497580124324138857
-      Level1_Objects_3: 5997191660630345627
-      Level1_Objects_7: 8885094331535546253
-      Level1_Wardrobe: 271505139793689108
+      Desktop: 1581927613478399191
+      Level2_Desktop_1: -7260116012441525503
+      Level2_Desktop_2: -8445759338239065582
+      Level2_Desktop_3: -3827696379770573618
+      Level2_Desktop_4: -884151621509303687
+      Level2_Desktop_5: -7989749117342792861
+      Level2_NPC_1: -4954218625351313683
+      Level2_NPC_2: 4134203838106123060
+      Level2_NPC_3: -8331437797739586680
+      Level2_NPC_4: -1038409238054480231
+      Level2_NPC_5: -5460438835414374879
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
