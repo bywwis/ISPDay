@@ -6,6 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class IvanMove : MonoBehaviour
 {
+    [SerializeField] 
+    private GameObject ifButton; // Кнопка условия
+    
+    [SerializeField] 
+    private GameObject movementButtons; // Кнопки для движения
+
+    [SerializeField] 
+    private GameObject nameButtons; // Кнопки для выбора имени
+
+    [SerializeField]
+    private GameObject nextButton; // Кнопка Далее Условие
+
+    [SerializeField]
+    private GameObject endButton; // Кнопка Закончить Условие
+
     [SerializeField]
     private InputField algorithmText; // Текстовое поле для отображения алгоритма
     
@@ -103,21 +118,32 @@ public class IvanMove : MonoBehaviour
     // Обновляем текстовое поле с алгоритмом
     void UpdateAlgorithmText()
     {
-        algorithmText.text = "";
+        algorithmText.text = ""; // Очищаем текстовое поле
         
+        int stepNumber = 1; // Счётчик для нумерации строк
+
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            if (i < 9)
+            // Если это условие (начинается с "Если"), добавляем номер строки
+            if (algorithmSteps[i].StartsWith("Если"))
             {
-                algorithmText.text += $"{i + 1}   {algorithmSteps[i]};\n";
+                algorithmText.text += $"{stepNumber}. {algorithmSteps[i]}";
+                stepNumber++; // Увеличиваем счётчик
             }
-            else if (i >= 9)
+            // Если это имя (начинается с "Иван" или "Паулина"), добавляем без номера
+            else if (algorithmSteps[i].StartsWith("Иван") || algorithmSteps[i].StartsWith("Паулина"))
             {
-                algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n";
+                algorithmText.text += $"{algorithmSteps[i]}";
+            }
+            // Если это движение (например, "Вверх"), добавляем с новой строки и номером
+            else
+            {
+                algorithmText.text += $"\n{stepNumber}. {algorithmSteps[i]};";
+                stepNumber++; // Увеличиваем счётчик
             }
         }
         
-        StartCoroutine(ScrollIfOverflow());
+        StartCoroutine(ScrollIfOverflow()); // Прокрутка, если текст выходит за пределы поля
     }
 
     private IEnumerator ScrollIfOverflow()
@@ -298,7 +324,6 @@ public class IvanMove : MonoBehaviour
 
                 if (distance < 200f)
                 {
-         
                     Destroy(item);
                     collectedItemsCount++;
 
@@ -327,5 +352,65 @@ public class IvanMove : MonoBehaviour
     public void AddDownStep() { AddStep("Вниз"); }
     public void AddLeftStep() { AddStep("Влево"); }
     public void AddRightStep() { AddStep("Вправо"); }
-    public void AddGet() { AddStep("Взять"); }
+    public void AddSit() { AddStep("Сесть"); }
+
+    // Метод для обработки нажатия на кнопку "Условие"
+    public void OnConditionButtonClick()
+    {
+        // Показываем кнопки для выбора имени и кнопку "Далее"
+        movementButtons.SetActive(false);
+        nameButtons.SetActive(true);
+        endButton.SetActive(false);
+        nextButton.SetActive(true);
+        ifButton.SetActive(false);
+
+        // Добавляем текст "Если " в поле алгоритма
+        AddStep("Если ");
+    }
+
+    // Метод для обработки нажатия на кнопку "Иван"
+    public void OnIvanButtonClick()
+    {
+        // Добавляем текст "Иван, то ( " в поле алгоритма
+        AddStep("Иван, то ( ");
+
+        // Скрываем кнопки для выбора имени
+        nameButtons.SetActive(false);
+    }
+
+    // Метод для обработки нажатия на кнопку "Паулина"
+    public void OnPaulinaButtonClick()
+    {
+        // Добавляем текст "Паулина, то ( " в поле алгоритма
+        AddStep("Паулина, то ( ");
+
+        // Скрываем кнопки для выбора имени
+        nameButtons.SetActive(false);
+    }
+
+    // Метод для обработки нажатия на кнопку "Далее"
+    public void OnNextButtonClick()
+    {
+        // Показываем кнопки для движения (они же для описания алгоритма) и кнопку "Закончить"
+        movementButtons.SetActive(true);
+        nameButtons.SetActive(false);
+        endButton.SetActive(true);
+        nextButton.SetActive(false);
+        ifButton.SetActive(false);
+
+    }
+
+    // Метод для обработки нажатия на кнопку "Закончить"
+    public void OnEndButtonClick()
+    {
+        // Возвращаем всё в изначальное положение
+        movementButtons.SetActive(true);
+        nameButtons.SetActive(false);
+        endButton.SetActive(false);
+        nextButton.SetActive(false);
+        ifButton.SetActive(true);
+
+        // Добавляем закрывающую скобку и знак ";" в поле алгоритма
+        AddStep(")");
+    }
 }
