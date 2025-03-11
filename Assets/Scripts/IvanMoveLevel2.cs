@@ -64,12 +64,23 @@ public class IvanMoveLevel2 : MonoBehaviour
         {
             DialogeWindow2.SetActive(false);
         }
-    
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        if (checkPoints.Count > 0)
+
+        GameObject[] playerObjects = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObjects.Length >= 2)
         {
-            currentCheckPoint = checkPoints[4]; // Начальный чекпоинт
-            player.position = currentCheckPoint.position;
+            if (checkPoints.Count > 0)
+            {
+                playerObjects[0].transform.position = checkPoints[32].position; // Первый чекпоинт для первого персонажа
+            }
+            if (checkPoints.Count > 1)
+            {
+                playerObjects[1].transform.position = checkPoints[44].position; // Второй чекпоинт для второго персонажа
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Не найдено два персонажа с тегом 'Player'.");
         }
 
         // Находим все объекты с тегом "Item"

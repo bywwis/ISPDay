@@ -53,7 +53,7 @@ public class IvanMoveLevel1 : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         if (checkPoints.Count > 0)
         {
-            currentCheckPoint = checkPoints[4]; // Начальный чекпоинт
+            currentCheckPoint = checkPoints[32]; // Начальный чекпоинт
             player.position = currentCheckPoint.position;
         }
 
