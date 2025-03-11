@@ -93,6 +93,10 @@ public class IvanMove : MonoBehaviour
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
         
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
+
+        endButton.SetActive(false);
+        nextButton.SetActive(false);
+        nameButtons.SetActive(false);
         
         UpdateAlgorithmText();
     }
