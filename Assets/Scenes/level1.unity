@@ -201,8 +201,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
         m_MethodName: AddDownStep
         m_Mode: 1
         m_Arguments:
@@ -1095,8 +1095,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
@@ -2831,8 +2831,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
         m_MethodName: StopAlgorithm
         m_Mode: 1
         m_Arguments:
@@ -3614,7 +3614,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
@@ -5969,8 +5969,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
         m_MethodName: AddLeftStep
         m_Mode: 1
         m_Arguments:
@@ -6993,8 +6993,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
         m_MethodName: AddUpStep
         m_Mode: 1
         m_Arguments:
@@ -7854,8 +7854,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
         m_MethodName: PlayAlgorithm
         m_Mode: 1
         m_Arguments:
@@ -8301,8 +8301,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
         m_MethodName: AddRightStep
         m_Mode: 1
         m_Arguments:
@@ -8362,10 +8362,10 @@ GameObject:
   - component: {fileID: 2044351029}
   - component: {fileID: 2044351031}
   - component: {fileID: 2044351030}
-  - component: {fileID: 2044351032}
   - component: {fileID: 2044351034}
   - component: {fileID: 2044351033}
   - component: {fileID: 2044351035}
+  - component: {fileID: 2044351036}
   m_Layer: 5
   m_Name: Ivan
   m_TagString: Player
@@ -8430,75 +8430,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2044351028}
   m_CullTransparentMesh: 1
---- !u!114 &2044351032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2044351028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed193a761c7c19b4a87a57a535a0389f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  algorithmText: {fileID: 1787148077}
-  moveSpeed: 100
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  checkPoints:
-  - {fileID: 1214379645}
-  - {fileID: 478800839}
-  - {fileID: 1373704904}
-  - {fileID: 406218192}
-  - {fileID: 1379120782}
-  - {fileID: 1217961605}
-  - {fileID: 1578651142}
-  - {fileID: 1074655358}
-  - {fileID: 485767375}
-  - {fileID: 2131212329}
-  - {fileID: 1322103565}
-  - {fileID: 1231845851}
-  - {fileID: 503559880}
-  - {fileID: 386331669}
-  - {fileID: 731251443}
-  - {fileID: 935599519}
-  - {fileID: 1502981580}
-  - {fileID: 1128439172}
-  - {fileID: 361411663}
-  - {fileID: 1411253858}
-  - {fileID: 1774098995}
-  - {fileID: 1197161152}
-  - {fileID: 1553044364}
-  - {fileID: 1945003055}
-  - {fileID: 1638181189}
-  - {fileID: 1948012463}
-  - {fileID: 1066138252}
-  - {fileID: 1462253518}
-  - {fileID: 2007944057}
-  - {fileID: 1348793793}
-  - {fileID: 690019229}
-  - {fileID: 132213485}
-  - {fileID: 751365852}
-  - {fileID: 1574051580}
-  - {fileID: 624661538}
-  - {fileID: 453963396}
-  - {fileID: 1345008896}
-  - {fileID: 515845048}
-  - {fileID: 1657750314}
-  - {fileID: 1328783175}
-  - {fileID: 419526155}
-  - {fileID: 599695993}
-  - {fileID: 1708640619}
-  DialogeWindow1: {fileID: 233690993}
-  DialogeWindow2: {fileID: 363868289}
-  DialogeWindow3: {fileID: 397093824}
-  itemsToCollect:
-  - {fileID: 2054708795}
-  - {fileID: 1684069446}
-  - {fileID: 310386384}
-  - {fileID: 656796737}
 --- !u!61 &2044351033
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8627,6 +8558,71 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2044351036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044351028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8add36e1575a78d4ca40aefbbe3d117f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  algorithmText: {fileID: 1787148077}
+  moveSpeed: 100
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  checkPoints:
+  - {fileID: 1214379645}
+  - {fileID: 478800839}
+  - {fileID: 1373704904}
+  - {fileID: 406218192}
+  - {fileID: 1379120782}
+  - {fileID: 1217961605}
+  - {fileID: 1578651142}
+  - {fileID: 1074655358}
+  - {fileID: 485767375}
+  - {fileID: 2131212329}
+  - {fileID: 1322103565}
+  - {fileID: 1231845851}
+  - {fileID: 503559880}
+  - {fileID: 386331669}
+  - {fileID: 731251443}
+  - {fileID: 935599519}
+  - {fileID: 1502981580}
+  - {fileID: 1128439172}
+  - {fileID: 361411663}
+  - {fileID: 1411253858}
+  - {fileID: 1774098995}
+  - {fileID: 1197161152}
+  - {fileID: 1553044364}
+  - {fileID: 1945003055}
+  - {fileID: 1638181189}
+  - {fileID: 1948012463}
+  - {fileID: 1066138252}
+  - {fileID: 1462253518}
+  - {fileID: 2007944057}
+  - {fileID: 1348793793}
+  - {fileID: 690019229}
+  - {fileID: 132213485}
+  - {fileID: 751365852}
+  - {fileID: 1574051580}
+  - {fileID: 624661538}
+  - {fileID: 453963396}
+  - {fileID: 1345008896}
+  - {fileID: 515845048}
+  - {fileID: 1657750314}
+  - {fileID: 1328783175}
+  - {fileID: 419526155}
+  - {fileID: 599695993}
+  - {fileID: 1708640619}
+  DialogeWindow1: {fileID: 233690993}
+  DialogeWindow2: {fileID: 363868289}
+  DialogeWindow3: {fileID: 397093824}
+  itemsToCollect: []
 --- !u!1 &2054708795
 GameObject:
   m_ObjectHideFlags: 0
@@ -8831,8 +8827,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
         m_MethodName: AddGet
         m_Mode: 1
         m_Arguments:
