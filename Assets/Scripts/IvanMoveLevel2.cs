@@ -29,7 +29,7 @@ public class IvanMoveLevel2 : MonoBehaviour
     
     [SerializeField]
     private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
-    
+
     private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
 
@@ -65,22 +65,11 @@ public class IvanMoveLevel2 : MonoBehaviour
             DialogeWindow2.SetActive(false);
         }
 
-        GameObject[] playerObjects = GameObject.FindGameObjectWithTag("Player");
-
-        if (playerObjects.Length >= 2)
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (checkPoints.Count > 0)
         {
-            if (checkPoints.Count > 0)
-            {
-                playerObjects[0].transform.position = checkPoints[32].position; // Первый чекпоинт для первого персонажа
-            }
-            if (checkPoints.Count > 1)
-            {
-                playerObjects[1].transform.position = checkPoints[44].position; // Второй чекпоинт для второго персонажа
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Не найдено два персонажа с тегом 'Player'.");
+            currentCheckPoint = checkPoints[32]; // Начальный чекпоинт
+            player.position = currentCheckPoint.position;
         }
 
         // Находим все объекты с тегом "Item"
