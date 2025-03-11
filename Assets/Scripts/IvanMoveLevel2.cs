@@ -50,7 +50,7 @@ public class IvanMoveLevel2 : MonoBehaviour
     private GameObject DialogeWindow2; // Диалоговое окно для прохождения
 
     [SerializeField]
-    private GameObject DialogeWindow3; // Диалоговое окно для проигрыша
+    private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
 
     private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
 
@@ -287,9 +287,9 @@ public class IvanMoveLevel2 : MonoBehaviour
             StopAlgorithm();
             
             // Показываем диалоговое окно
-            if (DialogeWindow3 != null)
+            if (DialogeWindowBadEnd != null)
             {
-                DialogeWindow3.SetActive(true);
+                DialogeWindowBadEnd.SetActive(true);
             }
         }
     }
