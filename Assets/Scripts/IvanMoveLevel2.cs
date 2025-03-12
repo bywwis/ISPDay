@@ -38,7 +38,7 @@ public class IvanMoveLevel2 : MonoBehaviour
     
     [SerializeField]
     private List<Transform> checkPoints; // Список всех чекпоинтов
-    
+
     private ScrollRect scrollRect;
     private RectTransform scrollRectTransform;
     private RectTransform textRectTransform;
@@ -65,11 +65,27 @@ public class IvanMoveLevel2 : MonoBehaviour
             DialogeWindow2.SetActive(false);
         }
 
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        if (checkPoints.Count > 0)
+        // Находим всех персонажей с тегом "Player"
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (var p in players)
         {
-            currentCheckPoint = checkPoints[32]; // Начальный чекпоинт
-            player.position = currentCheckPoint.position;
+            if (p.name == "Ivan") // Если это Иван
+            {
+                player = p.transform;
+                currentCheckPoint = checkPoints[32]; // Чекпоинт для Ивана
+            }
+            else if (p.name == "Paulina") // Если это Паулина
+            {
+                player = p.transform;
+                currentCheckPoint = checkPoints[44]; // Чекпоинт для Паулины
+            }
+
+            // Перемещаем персонажа в его начальный чекпоинт
+            if (player != null && currentCheckPoint != null)
+            {
+                player.position = currentCheckPoint.position;
+            }
         }
 
         // Находим все объекты с тегом "Item"
@@ -320,11 +336,23 @@ public class IvanMoveLevel2 : MonoBehaviour
         {
             scrollRect.verticalNormalizedPosition = 1f;
         }
-        
-        if (checkPoints.Count > 0)
+
+        if (player != null)
         {
-            player.position = checkPoints[4].position;
-            currentCheckPoint = checkPoints[4];
+            if (player.name == "Ivan" && checkPoints.Count > 32)
+            {
+                currentCheckPoint = checkPoints[32]; // Назначаем чекпоинт
+            }
+            else if (player.name == "Paulina" && checkPoints.Count > 44)
+            {
+                currentCheckPoint = checkPoints[44]; // Назначаем чекпоинт
+            }
+
+            // Перемещаем персонажа в соответствующий чекпоинт
+            if (currentCheckPoint != null)
+            {
+                player.position = currentCheckPoint.position;
+            }
         }
     }
 
