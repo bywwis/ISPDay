@@ -57,11 +57,11 @@ public class IvanMoveLevel2 : MonoBehaviour
     [SerializeField]
     private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
 
+    [SerializeField]
+    private GameObject DialogeWindowGoodEnd; // Диалоговое окно для проигрыша
+
     private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
 
-    [SerializeField]
-    private List<GameObject> itemsToCollect; // Список предметов для сбора
-    private int collectedItemsCount = 0; // Счетчик собранных предметов
 
     void Start()
     {
@@ -95,18 +95,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         if (paulina != null && currentPaulinaCheckPoint != null)
         {
             paulina.position = currentPaulinaCheckPoint.position;
-        }
-
-        // Находим все объекты с тегом "Item"
-        GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
-        if (itemObjects.Length > 0)
-        {
-            itemsToCollect = new List<GameObject>(itemObjects);
-        }
-        else
-        {
-            Debug.LogWarning("Не найдены объекты с тегом 'Item'.");
-            itemsToCollect = new List<GameObject>(); // Инициализируем пустой список
         }
 
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
@@ -321,6 +309,7 @@ public class IvanMoveLevel2 : MonoBehaviour
                         currentIvanCheckPoint = nextIvanCheckPoint;
                         currentPaulinaCheckPoint = nextPaulinaCheckPoint;
                     }
+                    CheckCheckpoints();
                 }
                 //else if (step == "Взять")
                 //{
@@ -472,12 +461,24 @@ public class IvanMoveLevel2 : MonoBehaviour
     //    }
     //}
 
-    // Метод для показа диалогового окна о завершении сбора всех предметов
+    // Метод для показа диалогового окна о завершении уровня
     private void ShowCompletionDialog()
     {
         if (DialogeWindow2 != null)
         {
             DialogeWindow2.SetActive(true);
+        }
+    }
+
+    private void CheckCheckpoints()
+    {
+        // Проверяем, достигли ли персонажи нужных чекпоинтов
+        if (currentIvanCheckPoint == checkPoints[110] &&
+            currentPaulinaCheckPoint == checkPoints[57])
+        {
+            // Показываем диалоговое окно
+            Debug.Log("Чекпоинты достигнуты! Показываем диалоговое окно.");
+            ShowCompletionDialog();
         }
     }
 
@@ -521,6 +522,7 @@ public class IvanMoveLevel2 : MonoBehaviour
         // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
     }
+
 
     // Метод для обработки нажатия на кнопку "Далее"
     public void OnNextButtonClick()
