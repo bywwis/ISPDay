@@ -47,12 +47,15 @@ public class IvanMoveLevel2 : MonoBehaviour
     private ScrollRect scrollRect;
     private RectTransform scrollRectTransform;
     private RectTransform textRectTransform;
-    
-    [SerializeField]
-    private GameObject DialogeWindow1; // Диалоговое окно для истории
 
     [SerializeField]
-    private GameObject DialogeWindow2; // Диалоговое окно для прохождения
+    private GameObject DialogeWindowStory; // Диалоговое окно для истории
+
+    [SerializeField]
+    private GameObject DialogeWindowStory2; // Второе диалоговое окно для истории
+
+    [SerializeField]
+    private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
 
     [SerializeField]
     private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
@@ -62,9 +65,14 @@ public class IvanMoveLevel2 : MonoBehaviour
 
     void Start()
     {
-        if (DialogeWindow2 != null)
+        if (DialogeWindowStory != null)
         {
-            DialogeWindow2.SetActive(false);
+            DialogeWindowStory.SetActive(true);
+        }
+
+        if (DialogeWindowStory2 != null)
+        {
+            DialogeWindowStory2.SetActive(false);
         }
 
         // Находим всех персонажей с тегом "Player"
@@ -310,9 +318,9 @@ public class IvanMoveLevel2 : MonoBehaviour
         if (currentIvanCheckPoint == checkPoints[110] && currentPaulinaCheckPoint == checkPoints[57])
         {
             // Показываем диалоговое окно для успешного прохождения уровня
-            if (DialogeWindow2 != null)
+            if (DialogeWindowGoodEnd != null)
             {
-                DialogeWindow2.SetActive(true);
+                DialogeWindowGoodEnd.SetActive(true);
             }
         }
         else
@@ -471,9 +479,9 @@ public class IvanMoveLevel2 : MonoBehaviour
     // Метод для показа диалогового окна о завершении уровня
     private void ShowCompletionDialog()
     {
-        if (DialogeWindow2 != null)
+        if (DialogeWindowGoodEnd != null)
         {
-            DialogeWindow2.SetActive(true);
+            DialogeWindowGoodEnd.SetActive(true);
         }
     }
 
