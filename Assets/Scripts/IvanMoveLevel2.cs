@@ -229,10 +229,16 @@ public class IvanMoveLevel2 : MonoBehaviour
 
                 if (nextIvanCheckPoint != null && nextPaulinaCheckPoint != null)
                 {
-                    yield return StartCoroutine(MovePlayer(ivan, nextIvanCheckPoint.position));
-                    currentIvanCheckPoint = nextIvanCheckPoint;
+                    // Для перемещения обоих персонажей одновременно
+                    Coroutine ivanCoroutine = StartCoroutine(MovePlayer(ivan, nextIvanCheckPoint.position));
+                    Coroutine paulinaCoroutine = StartCoroutine(MovePlayer(paulina, nextPaulinaCheckPoint.position));
 
-                    yield return StartCoroutine(MovePlayer(paulina, nextPaulinaCheckPoint.position));
+                    // Ожидание завершения обеих корутин
+                    yield return ivanCoroutine;
+                    yield return paulinaCoroutine;
+
+                    // Обновление текущих чекпоинтов
+                    currentIvanCheckPoint = nextIvanCheckPoint;
                     currentPaulinaCheckPoint = nextPaulinaCheckPoint;
                 }
             }
