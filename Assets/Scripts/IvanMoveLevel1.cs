@@ -8,34 +8,40 @@ public class IvanMoveLevel1 : MonoBehaviour
 {
     [SerializeField]
     private InputField algorithmText; // Текстовое поле для отображения алгоритма
-    
+
     [SerializeField]
     private float moveSpeed = 2f; // Скорость движения персонажа
-    
+
     [SerializeField]
     private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
-    
+
     private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
 
     private Transform player; // Ссылка на персонажа
     private Transform currentCheckPoint; // Текущий чекпоинт
-    
+
     [SerializeField]
     private List<Transform> checkPoints; // Список всех чекпоинтов
-    
+
     private ScrollRect scrollRect;
     private RectTransform scrollRectTransform;
     private RectTransform textRectTransform;
-    
-    [SerializeField]
-    private GameObject DialogeWindow1; // Диалоговое окно для истории
 
     [SerializeField]
-    private GameObject DialogeWindow2; // Диалоговое окно для прохождения
+    private GameObject DialogeWindowStory; // Диалоговое окно для истории
 
     [SerializeField]
-    private GameObject DialogeWindow3; // Диалоговое окно для проигрыша
+    private GameObject DialogeWindowStory2; // Второе диалоговое окно для истории
+
+    [SerializeField]
+    private Button NextPageButton; // Кнопка для перехода на следующую страницу
+
+    [SerializeField]
+    private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
+
+    [SerializeField]
+    private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
 
     private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
 
@@ -43,17 +49,25 @@ public class IvanMoveLevel1 : MonoBehaviour
     private List<GameObject> itemsToCollect; // Список предметов для сбора
     private int collectedItemsCount = 0; // Счетчик собранных предметов
 
+    private bool allItemsCollected = false; // Флаг, что все предметы собраны
+    private Transform targetCheckPoint; // Чекпоинт (3, 1)
+
     void Start()
     {
-        if (DialogeWindow2 != null)
+        if (DialogeWindowStory != null)
         {
-            DialogeWindow2.SetActive(false);
+            DialogeWindowStory.SetActive(true);
         }
-    
+
+        if (DialogeWindowStory2 != null)
+        {
+            DialogeWindowStory2.SetActive(false);
+        }
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
         if (checkPoints.Count > 0)
         {
-            currentCheckPoint = checkPoints[32]; // Начальный чекпоинт
+            currentCheckPoint = checkPoints[4]; // Начальный чекпоинт
             player.position = currentCheckPoint.position;
         }
 
@@ -69,16 +83,25 @@ public class IvanMoveLevel1 : MonoBehaviour
             itemsToCollect = new List<GameObject>(); // Инициализируем пустой список
         }
 
+        // Ищем чекпоинт с координатами (1372.00, 329.79, 0.00)
+        Vector3 targetPosition = new Vector3(1372.00f, 329.79f, 0.00f);
+        targetCheckPoint = FindCheckPointByCoordinates(targetPosition);
+
+        if (targetCheckPoint == null)
+        {
+            Debug.LogError("Чекпоинт с координатами (1372.00, 329.79, 0.00) не найден.");
+        }
+
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
         if (scrollRect == null)
         {
             Debug.LogError("ScrollRect не найден на InputField или его родитель!");
         }
-        
+
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-        
+       
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
-        
+
         UpdateAlgorithmText();
     }
 
@@ -88,6 +111,29 @@ public class IvanMoveLevel1 : MonoBehaviour
         {
             PlayAlgorithm();
         }
+
+        // Проверяем, достиг ли игрок целевого чекпоинта после сбора всех предметов
+        if (allItemsCollected && targetCheckPoint != null)
+        {
+            if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.01f)
+            {
+                ShowCompletionDialog();
+            }
+        }
+    }
+
+    // Находим чекпоинт по координатам (x, y)
+    private Transform FindCheckPointByCoordinates(Vector3 targetPosition)
+    {
+        foreach (var checkPoint in checkPoints)
+        {
+            if (Vector3.Distance(checkPoint.position, targetPosition) < 0.01f)
+            {
+                return checkPoint;
+            }
+        }
+        Debug.Log("Чекпоинт с указанными координатами не найден.");
+        return null;
     }
 
     // Добавляем шаг в алгоритм
@@ -104,7 +150,7 @@ public class IvanMoveLevel1 : MonoBehaviour
     void UpdateAlgorithmText()
     {
         algorithmText.text = "";
-        
+
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
             if (i < 9)
@@ -116,20 +162,20 @@ public class IvanMoveLevel1 : MonoBehaviour
                 algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n";
             }
         }
-        
+
         StartCoroutine(ScrollIfOverflow());
     }
 
     private IEnumerator ScrollIfOverflow()
     {
         yield return null;
-        
+
         Canvas.ForceUpdateCanvases();
-        
+
         float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
-        
+
         float scrollRectHeight = scrollRectTransform.rect.height;
-        
+
         if (textHeight > scrollRectHeight)
         {
             scrollRect.verticalNormalizedPosition = 0f;
@@ -155,10 +201,10 @@ public class IvanMoveLevel1 : MonoBehaviour
             {
                 yield break;
             }
-        
+
             string step = algorithmSteps[i];
             Vector3 direction = GetDirectionFromStep(step);
-            
+
             if (direction != Vector3.zero)
             {
                 Transform nextCheckPoint = FindNextCheckPoint(direction);
@@ -185,11 +231,11 @@ public class IvanMoveLevel1 : MonoBehaviour
             {
                 yield break;
             }
-            
+
             player.position = Vector3.MoveTowards(player.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        
+
         player.position = targetPosition;
     }
 
@@ -216,7 +262,7 @@ public class IvanMoveLevel1 : MonoBehaviour
     {
         Transform nearestCheckPoint = null;
         float nearestDistance = Mathf.Infinity;
-        
+
         foreach (var checkPoint in checkPoints)
         {
             Vector3 delta = checkPoint.position - currentCheckPoint.position;
@@ -230,7 +276,7 @@ public class IvanMoveLevel1 : MonoBehaviour
                 }
             }
         }
-        
+
         return nearestCheckPoint;
     }
 
@@ -241,14 +287,14 @@ public class IvanMoveLevel1 : MonoBehaviour
         {
             isPathBlocked = true;
             Debug.Log("Путь заблокирован: " + collision.gameObject.name);
-        
+
             // Останавливаем выполнение алгоритма
             StopAlgorithm();
-            
+
             // Показываем диалоговое окно
-            if (DialogeWindow3 != null)
+            if (DialogeWindowBadEnd != null)
             {
-                DialogeWindow3.SetActive(true);
+                DialogeWindowBadEnd.SetActive(true);
             }
         }
     }
@@ -271,15 +317,15 @@ public class IvanMoveLevel1 : MonoBehaviour
     public void StopAlgorithm()
     {
         isPlaying = false;
-        
+
         algorithmSteps.Clear();
-        
+
         algorithmText.text = "";
         if (scrollRect != null)
         {
             scrollRect.verticalNormalizedPosition = 1f;
         }
-        
+
         if (checkPoints.Count > 0)
         {
             player.position = checkPoints[4].position;
@@ -298,14 +344,15 @@ public class IvanMoveLevel1 : MonoBehaviour
 
                 if (distance < 200f)
                 {
-         
+          
                     Destroy(item);
                     collectedItemsCount++;
 
                     // Проверяем, собраны ли все предметы
                     if (collectedItemsCount >= 4)
                     {
-                        ShowCompletionDialog();
+                        allItemsCollected = true; // Все предметы собраны
+                        Debug.Log("Все предметы собраны! Идите к чекпоинту (3, 1).");
                     }
                     break;
                 }
@@ -316,16 +363,16 @@ public class IvanMoveLevel1 : MonoBehaviour
     // Метод для показа диалогового окна о завершении сбора всех предметов
     private void ShowCompletionDialog()
     {
-        if (DialogeWindow2 != null)
+        if (DialogeWindowGoodEnd != null)
         {
-            DialogeWindow2.SetActive(true);
+            DialogeWindowGoodEnd.SetActive(true);
         }
     }
 
     // Переход на 2 уровень 
     public void LoadNextScene()
     {
-        SceneManager.LoadScene("level2"); 
+        SceneManager.LoadScene("level2");
     }
 
     // Методы для кнопок
