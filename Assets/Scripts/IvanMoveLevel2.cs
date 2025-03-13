@@ -57,9 +57,6 @@ public class IvanMoveLevel2 : MonoBehaviour
     [SerializeField]
     private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
 
-    [SerializeField]
-    private GameObject DialogeWindowGoodEnd; // Диалоговое окно для проигрыша
-
     private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
 
 
@@ -310,12 +307,12 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
 
         // Проверка чекпоинтов после завершения всего алгоритма
-        if (currentIvanCheckPoint == checkPoints[110] && currentPaulinaCheckPoint == checkPoints[58])
+        if (currentIvanCheckPoint == checkPoints[110] && currentPaulinaCheckPoint == checkPoints[57])
         {
             // Показываем диалоговое окно для успешного прохождения уровня
-            if (DialogeWindowGoodEnd != null)
+            if (DialogeWindow2 != null)
             {
-                DialogeWindowGoodEnd.SetActive(true);
+                DialogeWindow2.SetActive(true);
             }
         }
         else
@@ -477,18 +474,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         if (DialogeWindow2 != null)
         {
             DialogeWindow2.SetActive(true);
-        }
-    }
-
-    private void CheckCheckpoints()
-    {
-        // Проверяем, достигли ли персонажи нужных чекпоинтов
-        if (currentIvanCheckPoint == checkPoints[110] &&
-            currentPaulinaCheckPoint == checkPoints[57])
-        {
-            // Показываем диалоговое окно
-            Debug.Log("Чекпоинты достигнуты! Показываем диалоговое окно.");
-            ShowCompletionDialog();
         }
     }
 
