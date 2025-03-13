@@ -99,7 +99,7 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
 
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-       
+     
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         UpdateAlgorithmText();
@@ -122,12 +122,13 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Находим чекпоинт по координатам (x, y)
+    // Находим чекпоинт по координатам (x, y, z)
     private Transform FindCheckPointByCoordinates(Vector3 targetPosition)
     {
         foreach (var checkPoint in checkPoints)
         {
-            if (Vector3.Distance(checkPoint.position, targetPosition) < 0.01f)
+            Debug.Log($"Чекпоинт: {checkPoint.name}, Позиция: {checkPoint.position}");
+            if (Vector3.Distance(checkPoint.position, targetPosition) < 0.1f)
             {
                 return checkPoint;
             }
@@ -344,7 +345,7 @@ public class IvanMoveLevel1 : MonoBehaviour
 
                 if (distance < 200f)
                 {
-          
+   
                     Destroy(item);
                     collectedItemsCount++;
 
