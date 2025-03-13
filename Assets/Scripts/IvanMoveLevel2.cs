@@ -33,9 +33,11 @@ public class IvanMoveLevel2 : MonoBehaviour
     private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
 
-    private Transform player; // Ссылка на персонажа
-    private Transform currentCheckPoint; // Текущий чекпоинт
-    
+    private Transform ivan; // Ссылка на Ивана
+    private Transform paulina; // Ссылка на Паулину
+    private Transform currentIvanCheckPoint; // Текущий чекпоинт Ивана
+    private Transform currentPaulinaCheckPoint; // Текущий чекпоинт Паулины
+
     [SerializeField]
     private List<Transform> checkPoints; // Список всех чекпоинтов
 
@@ -72,20 +74,24 @@ public class IvanMoveLevel2 : MonoBehaviour
         {
             if (p.name == "Ivan") // Если это Иван
             {
-                player = p.transform;
-                currentCheckPoint = checkPoints[32]; // Чекпоинт для Ивана
+                ivan = p.transform;
+                currentIvanCheckPoint = checkPoints[32]; // Чекпоинт для Ивана
             }
             else if (p.name == "Paulina") // Если это Паулина
             {
-                player = p.transform;
-                currentCheckPoint = checkPoints[44]; // Чекпоинт для Паулины
+                paulina = p.transform;
+                currentPaulinaCheckPoint = checkPoints[44]; // Чекпоинт для Паулины
             }
+        }
 
-            // Перемещаем персонажа в его начальный чекпоинт
-            if (player != null && currentCheckPoint != null)
-            {
-                player.position = currentCheckPoint.position;
-            }
+        // Перемещаем персонажей в их начальные чекпоинты
+        if (ivan != null && currentIvanCheckPoint != null)
+        {
+            ivan.position = currentIvanCheckPoint.position;
+        }
+        if (paulina != null && currentPaulinaCheckPoint != null)
+        {
+            paulina.position = currentPaulinaCheckPoint.position;
         }
 
         // Находим все объекты с тегом "Item"
@@ -212,29 +218,34 @@ public class IvanMoveLevel2 : MonoBehaviour
             {
                 yield break;
             }
-        
+
             string step = algorithmSteps[i];
             Vector3 direction = GetDirectionFromStep(step);
-            
+
             if (direction != Vector3.zero)
             {
-                Transform nextCheckPoint = FindNextCheckPoint(direction);
-                if (nextCheckPoint != null)
+                Transform nextIvanCheckPoint = FindNextCheckPoint(direction, currentIvanCheckPoint);
+                Transform nextPaulinaCheckPoint = FindNextCheckPoint(direction, currentPaulinaCheckPoint);
+
+                if (nextIvanCheckPoint != null && nextPaulinaCheckPoint != null)
                 {
-                    yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
-                    currentCheckPoint = nextCheckPoint;
+                    yield return StartCoroutine(MovePlayer(ivan, nextIvanCheckPoint.position));
+                    currentIvanCheckPoint = nextIvanCheckPoint;
+
+                    yield return StartCoroutine(MovePlayer(paulina, nextPaulinaCheckPoint.position));
+                    currentPaulinaCheckPoint = nextPaulinaCheckPoint;
                 }
             }
-            else if (step == "Взять")
-            {
-                ExecuteGetCommand();
-            }
+            //else if (step == "Взять")
+            //{
+            //    ExecuteGetCommand();
+            //}
         }
         isPlaying = false;
     }
 
     // Двигаем персонажа к целевой позиции
-    private IEnumerator MovePlayer(Vector3 targetPosition)
+    private IEnumerator MovePlayer(Transform player, Vector3 targetPosition)
     {
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
         {
@@ -242,11 +253,11 @@ public class IvanMoveLevel2 : MonoBehaviour
             {
                 yield break;
             }
-            
+
             player.position = Vector3.MoveTowards(player.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        
+
         player.position = targetPosition;
     }
 
@@ -269,11 +280,11 @@ public class IvanMoveLevel2 : MonoBehaviour
     }
 
     // Находим следующий чекпоинт в заданном направлении
-    private Transform FindNextCheckPoint(Vector3 direction)
+    private Transform FindNextCheckPoint(Vector3 direction, Transform currentCheckPoint)
     {
         Transform nearestCheckPoint = null;
         float nearestDistance = Mathf.Infinity;
-        
+
         foreach (var checkPoint in checkPoints)
         {
             Vector3 delta = checkPoint.position - currentCheckPoint.position;
@@ -287,7 +298,7 @@ public class IvanMoveLevel2 : MonoBehaviour
                 }
             }
         }
-        
+
         return nearestCheckPoint;
     }
 
@@ -328,58 +339,51 @@ public class IvanMoveLevel2 : MonoBehaviour
     public void StopAlgorithm()
     {
         isPlaying = false;
-        
+
         algorithmSteps.Clear();
-        
+
         algorithmText.text = "";
         if (scrollRect != null)
         {
             scrollRect.verticalNormalizedPosition = 1f;
         }
 
-        if (player != null)
+        if (ivan != null && checkPoints.Count > 32)
         {
-            if (player.name == "Ivan" && checkPoints.Count > 32)
-            {
-                currentCheckPoint = checkPoints[32]; // Назначаем чекпоинт
-            }
-            else if (player.name == "Paulina" && checkPoints.Count > 44)
-            {
-                currentCheckPoint = checkPoints[44]; // Назначаем чекпоинт
-            }
-
-            // Перемещаем персонажа в соответствующий чекпоинт
-            if (currentCheckPoint != null)
-            {
-                player.position = currentCheckPoint.position;
-            }
+            currentIvanCheckPoint = checkPoints[32]; // Назначаем чекпоинт
+            ivan.position = currentIvanCheckPoint.position;
+        }
+        if (paulina != null && checkPoints.Count > 44)
+        {
+            currentPaulinaCheckPoint = checkPoints[44]; // Назначаем чекпоинт
+            paulina.position = currentPaulinaCheckPoint.position;
         }
     }
 
-    private void ExecuteGetCommand()
-    {
-        // Проверяем, находится ли персонаж рядом с предметом
-        foreach (var item in itemsToCollect)
-        {
-            if (item != null)
-            {
-                float distance = Vector3.Distance(player.position, item.transform.position);
+    //private void ExecuteGetCommand()
+    //{
+    //    // Проверяем, находится ли персонаж рядом с предметом
+    //    foreach (var item in itemsToCollect)
+    //    {
+    //        if (item != null)
+    //        {
+    //            float distance = Vector3.Distance(player.position, item.transform.position);
 
-                if (distance < 200f)
-                {
-                    Destroy(item);
-                    collectedItemsCount++;
+    //            if (distance < 200f)
+    //            {
+    //                Destroy(item);
+    //                collectedItemsCount++;
 
-                    // Проверяем, собраны ли все предметы
-                    if (collectedItemsCount >= 4)
-                    {
-                        ShowCompletionDialog();
-                    }
-                    break;
-                }
-            }
-        }
-    }
+    //                // Проверяем, собраны ли все предметы
+    //                if (collectedItemsCount >= 4)
+    //                {
+    //                    ShowCompletionDialog();
+    //                }
+    //                break;
+    //            }
+    //        }
+    //    }
+    //}
 
     // Метод для показа диалогового окна о завершении сбора всех предметов
     private void ShowCompletionDialog()
@@ -440,7 +444,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         endButton.SetActive(true);
         nextButton.SetActive(false);
         ifButton.SetActive(false);
-
     }
 
     // Метод для обработки нажатия на кнопку "Закончить"

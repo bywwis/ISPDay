@@ -11757,7 +11757,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 164.74, y: -258}
-  m_SizeDelta: {x: 71.4822, y: 107.0473}
+  m_SizeDelta: {x: 72, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &1282307474
 SpriteRenderer:
@@ -12077,7 +12077,7 @@ MonoBehaviour:
   - {fileID: 895498944}
   DialogeWindow1: {fileID: 233690993}
   DialogeWindow2: {fileID: 363868289}
-  DialogeWindowBadEnd: {fileID: 0}
+  DialogeWindowBadEnd: {fileID: 397093824}
   itemsToCollect:
   - {fileID: 0}
   - {fileID: 0}
@@ -17012,11 +17012,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -347.66492, y: -352.29242}
-      - {x: 351.43445, y: -357.1677}
-      - {x: 360.12463, y: 38.048096}
-      - {x: 356.14563, y: 260.06226}
-      - {x: 356.76697, y: 341.4745}
+    - - {x: -355.45197, y: -355.8864}
+      - {x: 352.52344, y: -355.3526}
+      - {x: 352.9624, y: 33.124023}
+      - {x: 354.6908, y: 253.15143}
+      - {x: 353.41968, y: 354.49207}
       - {x: 387.11218, y: 374.06998}
       - {x: 390.94202, y: 306.51678}
       - {x: 388.47498, y: 138.93292}
@@ -17025,8 +17025,9 @@ PolygonCollider2D:
       - {x: -388.129, y: 375.40735}
       - {x: 383.5547, y: 374.7791}
       - {x: 348.85803, y: 354.61847}
-      - {x: 250.77686, y: 351.93036}
-      - {x: -345.7467, y: 352.4234}
+      - {x: 249.7428, y: 355.0326}
+      - {x: 3.730957, y: 355.89545}
+      - {x: -354.62207, y: 356.0542}
   m_UseDelaunayMesh: 0
 --- !u!1 &1851821698
 GameObject:
@@ -19081,7 +19082,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 94, y: -255}
-  m_SizeDelta: {x: 69.9929, y: 107.05}
+  m_SizeDelta: {x: 72, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2044351030
 MonoBehaviour:
@@ -19309,7 +19310,7 @@ MonoBehaviour:
   - {fileID: 895498944}
   DialogeWindow1: {fileID: 233690993}
   DialogeWindow2: {fileID: 363868289}
-  DialogeWindowBadEnd: {fileID: 0}
+  DialogeWindowBadEnd: {fileID: 397093824}
   itemsToCollect:
   - {fileID: 0}
   - {fileID: 0}
