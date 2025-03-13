@@ -281,10 +281,6 @@ public class IvanMoveLevel2 : MonoBehaviour
                             }
                         }
                     }
-                    //else if (step == "Взять")
-                    //{
-                    //    ExecuteGetCommand(conditionCharacter);
-                    //}
                 }
             }
             else
@@ -309,14 +305,28 @@ public class IvanMoveLevel2 : MonoBehaviour
                         currentIvanCheckPoint = nextIvanCheckPoint;
                         currentPaulinaCheckPoint = nextPaulinaCheckPoint;
                     }
-                    CheckCheckpoints();
                 }
-                //else if (step == "Взять")
-                //{
-                //    ExecuteGetCommand("Оба"); // Выполняем команду для обоих персонажей
-                //}
             }
         }
+
+        // Проверка чекпоинтов после завершения всего алгоритма
+        if (currentIvanCheckPoint == checkPoints[110] && currentPaulinaCheckPoint == checkPoints[58])
+        {
+            // Показываем диалоговое окно для успешного прохождения уровня
+            if (DialogeWindowGoodEnd != null)
+            {
+                DialogeWindowGoodEnd.SetActive(true);
+            }
+        }
+        else
+        {
+            // Показываем диалоговое окно для проигрыша
+            if (DialogeWindowBadEnd != null)
+            {
+                DialogeWindowBadEnd.SetActive(true);
+            }
+        }
+
         isPlaying = false;
     }
 
