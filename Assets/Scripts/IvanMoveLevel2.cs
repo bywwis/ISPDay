@@ -38,6 +38,9 @@ public class IvanMoveLevel2 : MonoBehaviour
     private Transform currentIvanCheckPoint; // Текущий чекпоинт Ивана
     private Transform currentPaulinaCheckPoint; // Текущий чекпоинт Паулины
 
+    private bool isInsideCondition = false; // Флаг для проверки, находится ли текущий шаг внутри условия
+    private string conditionCharacter = ""; // Персонаж, для которого выполняется условие
+
     [SerializeField]
     private List<Transform> checkPoints; // Список всех чекпоинтов
 
@@ -209,7 +212,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
     }
 
-    // Пошагово выполняем алгоритм
     private IEnumerator ExecuteAlgorithm()
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
@@ -222,30 +224,109 @@ public class IvanMoveLevel2 : MonoBehaviour
             string step = algorithmSteps[i];
             Vector3 direction = GetDirectionFromStep(step);
 
-            if (direction != Vector3.zero)
+            // Проверяем, начинается ли шаг с условия
+            if (step.StartsWith("Если"))
             {
-                Transform nextIvanCheckPoint = FindNextCheckPoint(direction, currentIvanCheckPoint);
-                Transform nextPaulinaCheckPoint = FindNextCheckPoint(direction, currentPaulinaCheckPoint);
+                isInsideCondition = true;
+                continue; // Пропускаем этот шаг, так как это начало условия
+            }
 
-                if (nextIvanCheckPoint != null && nextPaulinaCheckPoint != null)
+            // Проверяем, заканчивается ли шаг условием
+            if (step.EndsWith(")"))
+            {
+                isInsideCondition = false;
+                conditionCharacter = ""; // Сбрасываем персонажа условия
+                continue; // Пропускаем этот шаг, так как это конец условия
+            }
+
+            // Если шаг находится внутри условия
+            if (isInsideCondition)
+            {
+                // Определяем, для какого персонажа выполняется условие
+                if (step.StartsWith("Иван, то (") || step.StartsWith("Иван"))
                 {
-                    // Для перемещения обоих персонажей одновременно
-                    Coroutine ivanCoroutine = StartCoroutine(MovePlayer(ivan, nextIvanCheckPoint.position));
-                    Coroutine paulinaCoroutine = StartCoroutine(MovePlayer(paulina, nextPaulinaCheckPoint.position));
+                    conditionCharacter = "Иван";
+                }
+                else if (step.StartsWith("Паулина, то (") || step.StartsWith("Паулина"))
+                {
+                    conditionCharacter = "Паулина";
+                }
 
-                    // Ожидание завершения обеих корутин
-                    yield return ivanCoroutine;
-                    yield return paulinaCoroutine;
+                // Если условие уже определено, выполняем действия только для выбранного персонажа
+                if (!string.IsNullOrEmpty(conditionCharacter))
+                {
+                    if (direction != Vector3.zero)
+                    {
+                        Transform nextCheckPoint = null;
 
-                    // Обновление текущих чекпоинтов
-                    currentIvanCheckPoint = nextIvanCheckPoint;
-                    currentPaulinaCheckPoint = nextPaulinaCheckPoint;
+                        if (conditionCharacter == "Иван")
+                        {
+                            nextCheckPoint = FindNextCheckPoint(direction, currentIvanCheckPoint);
+                        }
+                        else if (conditionCharacter == "Паулина")
+                        {
+                            nextCheckPoint = FindNextCheckPoint(direction, currentPaulinaCheckPoint);
+                        }
+
+                        if (nextCheckPoint != null)
+                        {
+                            Transform player;
+
+                            if (conditionCharacter == "Иван")
+                            {
+                                player = ivan;
+                            }
+                            else
+                            {
+                                player = paulina;
+                            }
+                            yield return StartCoroutine(MovePlayer(player, nextCheckPoint.position));
+
+                            // Обновляем текущий чекпоинт для выбранного персонажа
+                            if (conditionCharacter == "Иван")
+                            {
+                                currentIvanCheckPoint = nextCheckPoint;
+                            }
+                            else
+                            {
+                                currentPaulinaCheckPoint = nextCheckPoint;
+                            }
+                        }
+                    }
+                    //else if (step == "Взять")
+                    //{
+                    //    ExecuteGetCommand(conditionCharacter);
+                    //}
                 }
             }
-            //else if (step == "Взять")
-            //{
-            //    ExecuteGetCommand();
-            //}
+            else
+            {
+                // Если шаг не находится внутри условия, выполняем действия для обоих персонажей
+                if (direction != Vector3.zero)
+                {
+                    Transform nextIvanCheckPoint = FindNextCheckPoint(direction, currentIvanCheckPoint);
+                    Transform nextPaulinaCheckPoint = FindNextCheckPoint(direction, currentPaulinaCheckPoint);
+
+                    if (nextIvanCheckPoint != null && nextPaulinaCheckPoint != null)
+                    {
+                        // Запускаем корутины для перемещения обоих персонажей одновременно
+                        Coroutine ivanCoroutine = StartCoroutine(MovePlayer(ivan, nextIvanCheckPoint.position));
+                        Coroutine paulinaCoroutine = StartCoroutine(MovePlayer(paulina, nextPaulinaCheckPoint.position));
+
+                        // Ждем завершения обеих корутин
+                        yield return ivanCoroutine;
+                        yield return paulinaCoroutine;
+
+                        // Обновляем текущие чекпоинты
+                        currentIvanCheckPoint = nextIvanCheckPoint;
+                        currentPaulinaCheckPoint = nextPaulinaCheckPoint;
+                    }
+                }
+                //else if (step == "Взять")
+                //{
+                //    ExecuteGetCommand("Оба"); // Выполняем команду для обоих персонажей
+                //}
+            }
         }
         isPlaying = false;
     }
