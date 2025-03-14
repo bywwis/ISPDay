@@ -65,14 +65,14 @@ public class IvanMoveLevel2 : MonoBehaviour
 
     void Start()
     {
-        if (DialogeWindowStory != null)
-        {
-            DialogeWindowStory.SetActive(true);
-        }
-
         if (DialogeWindowStory2 != null)
         {
-            DialogeWindowStory2.SetActive(false);
+            DialogeWindowStory2.SetActive(true);
+        }
+
+        if (DialogeWindowStory != null)
+        {
+            DialogeWindowStory.SetActive(false);
         }
 
         // Находим всех персонажей с тегом "Player"
