@@ -9342,8 +9342,8 @@ MonoBehaviour:
   DialogeWindowStory: {fileID: 0}
   DialogeWindowStory2: {fileID: 0}
   NextPageButton: {fileID: 0}
-  DialogeWindowGoodEnd: {fileID: 0}
-  DialogeWindowBadEnd: {fileID: 0}
+  DialogeWindowGoodEnd: {fileID: 363868289}
+  DialogeWindowBadEnd: {fileID: 397093824}
   itemsToCollect: []
 --- !u!1 &2054708795
 GameObject:
