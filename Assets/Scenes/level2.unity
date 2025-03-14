@@ -20029,7 +20029,7 @@ MonoBehaviour:
   - {fileID: 895498944}
   DialogeWindowStory: {fileID: 0}
   DialogeWindowStory2: {fileID: 0}
-  DialogeWindowGoodEnd: {fileID: 0}
+  DialogeWindowGoodEnd: {fileID: 363868289}
   DialogeWindowBadEnd: {fileID: 397093824}
 --- !u!61 &2044351033
 BoxCollider2D:
