@@ -140,43 +140,90 @@ public class IvanMoveLevel2 : MonoBehaviour
     // Обновляем текстовое поле с алгоритмом
     void UpdateAlgorithmText()
     {
-        algorithmText.text = ""; 
-        
-        int stepNumber = 1; 
-        bool hasCondition = false; 
-
+        algorithmText.text = ""; // Очищаем текстовое поле
+        int stepNumber = 1; // Нумерация шагов начинается с 1
+        bool hasCondition = false; // Флаг для проверки, находится ли текущий шаг внутри условия
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            if (algorithmSteps[i].StartsWith("Если") && stepNumber < 10)
+            // Если шаг начинается с "Если", добавляем его с новой строки
+            if (algorithmSteps[i].StartsWith("Если"))
             {
-                if (hasCondition)
-                {
-                    algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]}";
-                }
-                else
+                if (stepNumber == 1)
                 {
                     algorithmText.text += $"{stepNumber}   {algorithmSteps[i]}";
                 }
-                stepNumber++; 
-                hasCondition = true; 
+                else if (stepNumber >= 10)
+                {
+                    algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]}";
+                }
+                else
+                {
+                    algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]}";
+                }
+                stepNumber++; // Увеличиваем номер шага
+                hasCondition = true; // Устанавливаем флаг условия
+
             }
+            // Если шаг начинается с "Иван" или "Паулина", добавляем как часть условия
             else if (algorithmSteps[i].StartsWith("Иван") || algorithmSteps[i].StartsWith("Паулина"))
             {
                 algorithmText.text += $"{algorithmSteps[i]}";
             }
-            else if (stepNumber < 10)
+            // Если шаг — закрывающая скобка ")", добавляем её с новой строки
+            else if (algorithmSteps[i] == ")")
             {
-                algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]};";
-                stepNumber++; 
+                if (stepNumber < 10)
+                {
+                    algorithmText.text += $"\n{stepNumber}   );";
+
+                }
+                else
+                {
+                    algorithmText.text += $"\n{stepNumber}  );";
+                }
+                stepNumber++;
+                hasCondition = false; // Сбрасываем флаг условия
             }
+            // Обработка обычных шагов (не условий)
             else
             {
-                algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]};";
-                stepNumber++;
+                // Если шаг находится внутри условия, добавляем отступ
+                if (hasCondition)
+                {
+                    // Отступ для вложенных шагов
+                    if (stepNumber < 10)
+                    {
+                        algorithmText.text += $"\n{stepNumber}     {algorithmSteps[i]};";
+
+                    }
+                    else
+                    {
+                        algorithmText.text += $"\n{stepNumber}    {algorithmSteps[i]};";
+                    }
+
+                }
+                else
+                {
+                    // Без отступа
+                    if (stepNumber == 1)
+                    {
+                        algorithmText.text += $"{stepNumber}   {algorithmSteps[i]};";
+                    }
+                    else if (stepNumber >= 10)
+                    {
+                        algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]};";
+                    }
+                    else
+                    {
+                        algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]};";
+                    }
+                }
+                stepNumber++; // Увеличиваем номер шага
             }
         }
-        
-        StartCoroutine(ScrollIfOverflow()); // Прокрутка
+
+        // Прокрутка текстового поля, если текст не помещается
+        StartCoroutine(ScrollIfOverflow());
     }
 
     private IEnumerator ScrollIfOverflow()
