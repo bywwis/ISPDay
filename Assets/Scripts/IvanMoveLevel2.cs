@@ -532,6 +532,12 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
     }
 
+    // Переход на 3 уровень 
+    public void LoadNextScene()
+    {
+        SceneManager.LoadScene("level3");
+    }
+
     // Методы для кнопок
     public void AddUpStep() { AddStep("Вверх"); }
     public void AddDownStep() { AddStep("Вниз"); }

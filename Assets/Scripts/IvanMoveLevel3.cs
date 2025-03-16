@@ -67,7 +67,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         if (checkPoints.Count > 0)
         {
-            currentCheckPoint = checkPoints[4]; // Начальный чекпоинт
+            currentCheckPoint = checkPoints[9]; // Начальный чекпоинт
             player.position = currentCheckPoint.position;
         }
 
@@ -81,15 +81,6 @@ public class IvanMoveLevel3 : MonoBehaviour
         {
             Debug.LogWarning("Не найдены объекты с тегом 'Item'.");
             itemsToCollect = new List<GameObject>(); // Инициализируем пустой список
-        }
-
-        // Ищем чекпоинт с координатами (1372.00, 329.79, 0.00)
-        Vector3 targetPosition = new Vector3(1372.00f, 329.79f, 0.00f);
-        targetCheckPoint = FindCheckPointByCoordinates(targetPosition);
-
-        if (targetCheckPoint == null)
-        {
-            Debug.LogError("Чекпоинт с координатами (1372.00, 329.79, 0.00) не найден.");
         }
 
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
@@ -329,8 +320,8 @@ public class IvanMoveLevel3 : MonoBehaviour
 
         if (checkPoints.Count > 0)
         {
-            player.position = checkPoints[4].position;
-            currentCheckPoint = checkPoints[4];
+            player.position = checkPoints[9].position;
+            currentCheckPoint = checkPoints[9];
         }
     }
 
@@ -370,11 +361,6 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
     }
 
-    // Переход на 2 уровень 
-    public void LoadNextScene()
-    {
-        SceneManager.LoadScene("level2");
-    }
 
     // Методы для кнопок
     public void AddUpStep() { AddStep("Вверх"); }
