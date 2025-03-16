@@ -8038,7 +8038,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1298658402
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12778,6 +12778,7 @@ GameObject:
   - component: {fileID: 2044351034}
   - component: {fileID: 2044351033}
   - component: {fileID: 2044351035}
+  - component: {fileID: 2044351036}
   m_Layer: 5
   m_Name: Ivan
   m_TagString: Player
@@ -12802,7 +12803,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 1111, y: 321.8}
-  m_SizeDelta: {x: 78, y: 124}
+  m_SizeDelta: {x: 103, y: 157}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2044351030
 MonoBehaviour:
@@ -12876,7 +12877,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5227356, y: -2.8123627}
+  m_Offset: {x: 2.567749, y: -26.329346}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -12886,7 +12887,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 61.70331, y: 110.06888}
+  m_Size: {x: 51.478516, y: 34.40558}
   m_EdgeRadius: 0
 --- !u!50 &2044351034
 Rigidbody2D:
@@ -12970,6 +12971,109 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2044351036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044351028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31e02a4536420f04194fe5d4ec7f0e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  algorithmText: {fileID: 1787148077}
+  moveSpeed: 100
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  checkPoints:
+  - {fileID: 23639671}
+  - {fileID: 1590611032}
+  - {fileID: 2027681655}
+  - {fileID: 1175840868}
+  - {fileID: 373078712}
+  - {fileID: 272262917}
+  - {fileID: 1052670544}
+  - {fileID: 625198463}
+  - {fileID: 533407655}
+  - {fileID: 1214379645}
+  - {fileID: 1265952567}
+  - {fileID: 2081951091}
+  - {fileID: 686678595}
+  - {fileID: 820046281}
+  - {fileID: 985337931}
+  - {fileID: 1896292689}
+  - {fileID: 1992272031}
+  - {fileID: 1396800453}
+  - {fileID: 1104847332}
+  - {fileID: 1794972563}
+  - {fileID: 1861381722}
+  - {fileID: 530801957}
+  - {fileID: 1655875911}
+  - {fileID: 1610164991}
+  - {fileID: 108699560}
+  - {fileID: 528499131}
+  - {fileID: 1472622530}
+  - {fileID: 963934368}
+  - {fileID: 187164266}
+  - {fileID: 50760218}
+  - {fileID: 1153766163}
+  - {fileID: 1996113702}
+  - {fileID: 1464024168}
+  - {fileID: 164582407}
+  - {fileID: 1587749431}
+  - {fileID: 2143989865}
+  - {fileID: 1932783933}
+  - {fileID: 1678297562}
+  - {fileID: 589507119}
+  - {fileID: 1960692081}
+  - {fileID: 768023811}
+  - {fileID: 269654710}
+  - {fileID: 932913590}
+  - {fileID: 604000077}
+  - {fileID: 544295747}
+  - {fileID: 501891997}
+  - {fileID: 319296764}
+  - {fileID: 2058022179}
+  - {fileID: 1333934528}
+  - {fileID: 5072502}
+  - {fileID: 1495242647}
+  - {fileID: 1107569538}
+  - {fileID: 1140970113}
+  - {fileID: 1732318952}
+  - {fileID: 1131410001}
+  - {fileID: 649665025}
+  - {fileID: 695272755}
+  - {fileID: 2139270063}
+  - {fileID: 855574816}
+  - {fileID: 118346745}
+  - {fileID: 1872277692}
+  - {fileID: 2110950467}
+  - {fileID: 1939393427}
+  - {fileID: 94007135}
+  - {fileID: 230336371}
+  - {fileID: 768191616}
+  - {fileID: 1482658267}
+  - {fileID: 1728533708}
+  - {fileID: 1893792148}
+  - {fileID: 543764569}
+  - {fileID: 1153718612}
+  - {fileID: 1696637715}
+  - {fileID: 1473205672}
+  - {fileID: 1986075068}
+  - {fileID: 1226140412}
+  - {fileID: 993750043}
+  DialogeWindowStory: {fileID: 233690993}
+  DialogeWindowStory2: {fileID: 290329649}
+  NextPageButton: {fileID: 1028176188}
+  DialogeWindowGoodEnd: {fileID: 363868289}
+  DialogeWindowBadEnd: {fileID: 397093824}
+  itemsToCollect:
+  - {fileID: 1608319029}
+  - {fileID: 356748034}
+  - {fileID: 1106678179}
 --- !u!1 &2058022178
 GameObject:
   m_ObjectHideFlags: 0
