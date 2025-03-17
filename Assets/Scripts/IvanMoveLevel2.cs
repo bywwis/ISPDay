@@ -480,6 +480,12 @@ public class IvanMoveLevel2 : MonoBehaviour
 
         algorithmSteps.Clear();
 
+        movementButtons.SetActive(true);
+        nameButtons.SetActive(false);
+        endButton.SetActive(false);
+        nextButton.SetActive(false);
+        ifButton.SetActive(true);
+
         algorithmText.text = "";
         if (scrollRect != null)
         {

@@ -71,6 +71,7 @@ public class IvanMoveLevel3 : MonoBehaviour
     private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
     private int cycleStartIndex = -1; // Индекс начала цикла
     private int cycleEndIndex = -1;   // Индекс конца цикла
+    private bool isCycleComplete = false; // Флаг для проверки завершения цикла
 
     void Start()
     {
@@ -203,7 +204,7 @@ public class IvanMoveLevel3 : MonoBehaviour
                 }
                 stepNumber++; // Увеличиваем номер шага
                 isCycleActive = true; // Устанавливаем флаг цикла
-
+                isCycleComplete = false; // Цикл начался, но еще не завершен
             }
             // Если шаг начинается с "до", добавляем как часть условия
             else if (algorithmSteps[i].StartsWith("до"))
@@ -216,7 +217,6 @@ public class IvanMoveLevel3 : MonoBehaviour
                 if (stepNumber < 10)
                 {
                     algorithmText.text += $"\n{stepNumber}   );";
-
                 }
                 else
                 {
@@ -224,6 +224,7 @@ public class IvanMoveLevel3 : MonoBehaviour
                 }
                 stepNumber++;
                 isCycleActive = false; // Сбрасываем флаг условия
+                isCycleComplete = true; // Цикл завершен
             }
             // Обработка обычных шагов (не условий)
             else
@@ -235,13 +236,11 @@ public class IvanMoveLevel3 : MonoBehaviour
                     if (stepNumber < 10)
                     {
                         algorithmText.text += $"\n{stepNumber}     {algorithmSteps[i]};";
-
                     }
                     else
                     {
                         algorithmText.text += $"\n{stepNumber}    {algorithmSteps[i]};";
                     }
-
                 }
                 else
                 {
@@ -286,10 +285,14 @@ public class IvanMoveLevel3 : MonoBehaviour
     // Проигрываем алгоритм
     public void PlayAlgorithm()
     {
-        if (!isPlaying && algorithmSteps.Count > 0)
+        if (!isPlaying && algorithmSteps.Count > 0 && isCycleComplete)
         {
             isPlaying = true;
             StartCoroutine(ExecuteAlgorithm());
+        }
+        else
+        {
+            Debug.Log("Алгоритм не может быть запущен, пока цикл не завершен.");
         }
     }
 
@@ -450,6 +453,11 @@ public class IvanMoveLevel3 : MonoBehaviour
 
         algorithmSteps.Clear();
 
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(false);
+        CycleButton.gameObject.SetActive(true);
+
         algorithmText.text = "";
         if (scrollRect != null)
         {
@@ -546,11 +554,13 @@ public class IvanMoveLevel3 : MonoBehaviour
         CycleButton.gameObject.SetActive(true);
 
         AddStep(")");
+        isCycleComplete = true; // Цикл завершен
     }
 
     public void SetIterations(int iterations)
     {
         selectedIterations = iterations;
         AddStep($"до {iterations} повторять (");
+        NumberButtons.SetActive(false);
     }
 }
