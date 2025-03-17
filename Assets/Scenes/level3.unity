@@ -1663,9 +1663,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnConditionButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: AddGet
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2613,15 +2613,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356748034}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 970658696}
+  m_Father: {fileID: 1848672193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -383, y: 7}
+  m_AnchoredPosition: {x: -281, y: -33}
   m_SizeDelta: {x: 45, y: 27}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &356748036
@@ -3149,9 +3149,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations8
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3301,15 +3301,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 525930292}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 970658696}
+  m_Father: {fileID: 1848672193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -492.7, y: 47.999023}
+  m_AnchoredPosition: {x: -390.7, y: 7.9990234}
   m_SizeDelta: {x: 298, y: 510}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &525930294
@@ -5228,9 +5228,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations9
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5435,9 +5435,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5699,9 +5699,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations4
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5851,15 +5851,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 948834244}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 970658696}
+  m_Father: {fileID: 1848672193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -383, y: -74}
+  m_AnchoredPosition: {x: -281, y: -114}
   m_SizeDelta: {x: 53, y: 51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &948834246
@@ -6122,15 +6122,8 @@ RectTransform:
   - {fileID: 1032228533}
   - {fileID: 697716763}
   - {fileID: 1848672193}
-  - {fileID: 1942427455}
   - {fileID: 647576355}
-  - {fileID: 1300435854}
-  - {fileID: 525930293}
-  - {fileID: 1106678180}
-  - {fileID: 356748035}
-  - {fileID: 1644248188}
-  - {fileID: 948834245}
-  - {fileID: 1608319030}
+  - {fileID: 1942427455}
   - {fileID: 2044351029}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6862,15 +6855,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106678179}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 970658696}
+  m_Father: {fileID: 1848672193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 362.6, y: 375.9}
+  m_AnchoredPosition: {x: -50.399994, y: 207.39996}
   m_SizeDelta: {x: 46, y: 27}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &1106678181
@@ -7899,9 +7892,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8101,15 +8094,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300435853}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 970658696}
+  m_Father: {fileID: 1848672193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 467.3, y: -255}
+  m_AnchoredPosition: {x: 54.299988, y: -166.5}
   m_SizeDelta: {x: 78, y: 124}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1300435855
@@ -8935,9 +8928,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations6
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9067,9 +9060,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations7
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9372,15 +9365,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608319029}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 970658696}
+  m_Father: {fileID: 1848672193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 467.30005, y: 179.00002}
+  m_AnchoredPosition: {x: 54.30005, y: 139.00002}
   m_SizeDelta: {x: 59, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &1608319031
@@ -9624,9 +9617,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations5
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9911,15 +9904,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1644248187}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 970658696}
+  m_Father: {fileID: 1848672193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 369.1, y: -361}
+  m_AnchoredPosition: {x: -43.899994, y: -272.5}
   m_SizeDelta: {x: 59, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &1644248189
@@ -10463,9 +10456,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: OnPaulinaButtonClick
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: SetIterations2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11297,6 +11290,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 525930293}
+  - {fileID: 1300435854}
+  - {fileID: 1106678180}
+  - {fileID: 356748035}
+  - {fileID: 1644248188}
+  - {fileID: 948834245}
+  - {fileID: 1608319030}
   - {fileID: 106165378}
   m_Father: {fileID: 970658696}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12063,7 +12063,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942427454}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -13068,12 +13068,17 @@ MonoBehaviour:
   DialogeWindowStory: {fileID: 233690993}
   DialogeWindowStory2: {fileID: 290329649}
   NextPageButton: {fileID: 1028176188}
-  DialogeWindowGoodEnd: {fileID: 0}
-  DialogeWindowBadEnd: {fileID: 0}
+  DialogeWindowGoodEnd: {fileID: 363868289}
+  DialogeWindowBadEnd: {fileID: 397093824}
   itemsToCollect:
   - {fileID: 1608319029}
   - {fileID: 356748034}
   - {fileID: 1106678179}
+  CycleButton: {fileID: 2065847367}
+  NumberButtons: {fileID: 1298658401}
+  NextButton: {fileID: 1032228534}
+  ButtonsAlgoritm: {fileID: 136200568}
+  EndButton: {fileID: 697716764}
 --- !u!1 &2058022178
 GameObject:
   m_ObjectHideFlags: 0

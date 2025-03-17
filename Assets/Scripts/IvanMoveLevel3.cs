@@ -52,6 +52,24 @@ public class IvanMoveLevel3 : MonoBehaviour
     private bool allItemsCollected = false; // Флаг, что все предметы собраны
     private Transform targetCheckPoint; // Чекпоинт (3, 1)
 
+    [SerializeField]
+    private Button CycleButton; // Кнопка для начала цикла
+
+    [SerializeField]
+    private GameObject NumberButtons; // Группа кнопок для выбора количества итераций
+
+    [SerializeField]
+    private Button NextButton; // Кнопка для перехода к описанию алгоритма
+
+    [SerializeField]
+    private GameObject ButtonsAlgoritm; // Группа кнопок для описания алгоритма
+
+    [SerializeField]
+    private Button EndButton; // Кнопка для завершения цикла
+
+    private int selectedIterations = 1; // Выбранное количество итераций
+    private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
+
     void Start()
     {
         if (DialogeWindowStory != null)
@@ -92,6 +110,16 @@ public class IvanMoveLevel3 : MonoBehaviour
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
      
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
+
+        CycleButton.onClick.AddListener(OnCycleButtonClicked);
+        NextButton.onClick.AddListener(OnNextButtonClicked);
+        EndButton.onClick.AddListener(OnEndButtonClicked);
+
+        // Скрываем группы кнопок при старте
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(false);
+        NextButton.gameObject.SetActive(false);
 
         UpdateAlgorithmText();
     }
@@ -141,20 +169,88 @@ public class IvanMoveLevel3 : MonoBehaviour
     // Обновляем текстовое поле с алгоритмом
     void UpdateAlgorithmText()
     {
-        algorithmText.text = "";
-
+        algorithmText.text = ""; // Очищаем текстовое поле
+        int stepNumber = 1; // Нумерация шагов начинается с 1
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            if (i < 9)
+            // Если шаг начинается с "Для", добавляем его с новой строки
+            if (algorithmSteps[i].StartsWith("Для"))
             {
-                algorithmText.text += $"{i + 1}   {algorithmSteps[i]};\n";
+                if (stepNumber == 1)
+                {
+                    algorithmText.text += $"{stepNumber}   {algorithmSteps[i]}";
+                }
+                else if (stepNumber >= 10)
+                {
+                    algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]}";
+                }
+                else
+                {
+                    algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]}";
+                }
+                stepNumber++; // Увеличиваем номер шага
+                isCycleActive = true; // Устанавливаем флаг цикла
+
             }
-            else if (i >= 9)
+            // Если шаг начинается с "до", добавляем как часть условия
+            else if (algorithmSteps[i].StartsWith("до"))
             {
-                algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n";
+                algorithmText.text += $"{algorithmSteps[i]}";
+            }
+            // Если шаг — закрывающая скобка ")", добавляем её с новой строки
+            else if (algorithmSteps[i] == ")")
+            {
+                if (stepNumber < 10)
+                {
+                    algorithmText.text += $"\n{stepNumber}   );";
+
+                }
+                else
+                {
+                    algorithmText.text += $"\n{stepNumber}  );";
+                }
+                stepNumber++;
+                isCycleActive = false; // Сбрасываем флаг условия
+            }
+            // Обработка обычных шагов (не условий)
+            else
+            {
+                // Если шаг находится внутри условия, добавляем отступ
+                if (isCycleActive)
+                {
+                    // Отступ для вложенных шагов
+                    if (stepNumber < 10)
+                    {
+                        algorithmText.text += $"\n{stepNumber}     {algorithmSteps[i]};";
+
+                    }
+                    else
+                    {
+                        algorithmText.text += $"\n{stepNumber}    {algorithmSteps[i]};";
+                    }
+
+                }
+                else
+                {
+                    // Без отступа
+                    if (stepNumber == 1)
+                    {
+                        algorithmText.text += $"{stepNumber}   {algorithmSteps[i]};";
+                    }
+                    else if (stepNumber >= 10)
+                    {
+                        algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]};";
+                    }
+                    else
+                    {
+                        algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]};";
+                    }
+                }
+                stepNumber++; // Увеличиваем номер шага
             }
         }
 
+        // Прокрутка текстового поля, если текст не помещается
         StartCoroutine(ScrollIfOverflow());
     }
 
@@ -368,4 +464,51 @@ public class IvanMoveLevel3 : MonoBehaviour
     public void AddLeftStep() { AddStep("Влево"); }
     public void AddRightStep() { AddStep("Вправо"); }
     public void AddGet() { AddStep("Взять"); }
+    public void SetIterations1() { SetIterations(1); }
+    public void SetIterations2() { SetIterations(2); }
+    public void SetIterations3() { SetIterations(3); }
+    public void SetIterations4() { SetIterations(4); }
+    public void SetIterations5() { SetIterations(5); }
+    public void SetIterations6() { SetIterations(6); }
+    public void SetIterations7() { SetIterations(7); }
+    public void SetIterations8() { SetIterations(8); }
+    public void SetIterations9() { SetIterations(9); }
+
+    void OnCycleButtonClicked()
+    {
+        // Показываем кнопки для выбора количества итераций
+        NumberButtons.SetActive(true);
+        ButtonsAlgoritm.SetActive(false);
+        EndButton.gameObject.SetActive(false);
+        NextButton.gameObject.SetActive(true);
+        CycleButton.gameObject.SetActive(false);
+
+        AddStep("Для Ивана от 1 ");
+    }
+
+    void OnNextButtonClicked()
+    {
+        // Показываем кнопки для описания алгоритма
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(true);
+        NextButton.gameObject.SetActive(false);
+
+    }
+
+    void OnEndButtonClicked()
+    {
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(false);
+        CycleButton.gameObject.SetActive(true);
+
+        AddStep(")");
+    }
+
+    public void SetIterations(int iterations)
+    {
+        selectedIterations = iterations;
+        AddStep($"до {iterations} повторять (");
+    }
 }
