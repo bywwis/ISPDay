@@ -69,6 +69,8 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     private int selectedIterations = 1; // Выбранное количество итераций
     private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
+    private int cycleStartIndex = -1; // Индекс начала цикла
+    private int cycleEndIndex = -1;   // Индекс конца цикла
 
     void Start()
     {
@@ -163,6 +165,17 @@ public class IvanMoveLevel3 : MonoBehaviour
         {
             algorithmSteps.Add(step);
             UpdateAlgorithmText();
+
+            // Если шаг начинается с "Для", запоминаем индекс начала цикла
+            if (step.StartsWith("Для"))
+            {
+                cycleStartIndex = algorithmSteps.Count - 1;
+            }
+            // Если шаг — закрывающая скобка ")", запоминаем индекс конца цикла
+            else if (step == ")")
+            {
+                cycleEndIndex = algorithmSteps.Count - 1;
+            }
         }
     }
 
@@ -291,23 +304,52 @@ public class IvanMoveLevel3 : MonoBehaviour
             }
 
             string step = algorithmSteps[i];
-            Vector3 direction = GetDirectionFromStep(step);
 
-            if (direction != Vector3.zero)
+            // Если шаг начинается с "Для", начинаем цикл
+            if (step.StartsWith("Для"))
             {
-                Transform nextCheckPoint = FindNextCheckPoint(direction);
-                if (nextCheckPoint != null)
+                // Получаем количество итераций из шага
+                int iterations = selectedIterations;
+
+                // Выполняем шаги внутри цикла
+                for (int j = 0; j < iterations; j++)
                 {
-                    yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
-                    currentCheckPoint = nextCheckPoint;
+                    // Переходим к шагам внутри цикла
+                    for (int k = cycleStartIndex + 1; k < cycleEndIndex; k++)
+                    {
+                        string innerStep = algorithmSteps[k];
+                        yield return StartCoroutine(ExecuteStep(innerStep));
+                    }
                 }
+
+                // Пропускаем шаги внутри цикла, чтобы не выполнять их повторно
+                i = cycleEndIndex;
             }
-            else if (step == "Взять")
+            else
             {
-                ExecuteGetCommand();
+                yield return StartCoroutine(ExecuteStep(step));
             }
         }
         isPlaying = false;
+    }
+
+    private IEnumerator ExecuteStep(string step)
+    {
+        Vector3 direction = GetDirectionFromStep(step);
+
+        if (direction != Vector3.zero)
+        {
+            Transform nextCheckPoint = FindNextCheckPoint(direction);
+            if (nextCheckPoint != null)
+            {
+                yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
+                currentCheckPoint = nextCheckPoint;
+            }
+        }
+        else if (step == "Взять")
+        {
+            ExecuteGetCommand();
+        }
     }
 
     // Двигаем персонажа к целевой позиции
