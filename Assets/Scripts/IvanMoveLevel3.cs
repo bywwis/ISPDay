@@ -75,14 +75,14 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     void Start()
     {
+        if (DialogeWindowStory2 != null)
+        {
+            DialogeWindowStory2.SetActive(true);
+        }
+
         if (DialogeWindowStory != null)
         {
             DialogeWindowStory.SetActive(true);
-        }
-
-        if (DialogeWindowStory2 != null)
-        {
-            DialogeWindowStory2.SetActive(false);
         }
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -93,15 +93,17 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
 
         // Находим все объекты с тегом "Item"
+        // Находим все объекты с тегом "Item" и "Fish"
         GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
-        if (itemObjects.Length > 0)
+        GameObject[] fishObjects = GameObject.FindGameObjectsWithTag("fish");
+
+        itemsToCollect = new List<GameObject>();
+        itemsToCollect.AddRange(itemObjects);
+        itemsToCollect.AddRange(fishObjects);
+
+        if (itemsToCollect.Count == 0)
         {
-            itemsToCollect = new List<GameObject>(itemObjects);
-        }
-        else
-        {
-            Debug.LogWarning("Не найдены объекты с тегом 'Item'.");
-            itemsToCollect = new List<GameObject>(); // Инициализируем пустой список
+            Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
         }
 
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
@@ -333,6 +335,12 @@ public class IvanMoveLevel3 : MonoBehaviour
                 yield return StartCoroutine(ExecuteStep(step));
             }
         }
+
+        // После завершения всех шагов проверяем, нужно ли показать диалоговое окно
+        if (collectedItemsCount >= itemsToCollect.Count)
+        {
+            ShowCompletionDialog();
+        }
         isPlaying = false;
     }
 
@@ -474,28 +482,74 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     private void ExecuteGetCommand()
     {
-        // Проверяем, находится ли персонаж рядом с предметом
+        // Флаг для проверки, был ли найден объект с тегом "fish"
+        bool hasFish = false;
+
+        // Создаем временный список для объектов, которые нужно уничтожить
+        List<GameObject> itemsToDestroy = new List<GameObject>();
+
+        // Проверяем все объекты в списке
         foreach (var item in itemsToCollect)
         {
             if (item != null)
             {
+                // Рассчитываем расстояние между игроком и объектом
                 float distance = Vector3.Distance(player.position, item.transform.position);
 
-                if (distance < 200f)
+                // Если объект находится достаточно близко
+                if (distance < 125f) // Используем ваше значение расстояния
                 {
-   
-                    Destroy(item);
-                    collectedItemsCount++;
-
-                    // Проверяем, собраны ли все предметы
-                    if (collectedItemsCount >= 4)
+                    // Если объект — рыба, запоминаем это
+                    if (item.CompareTag("fish"))
                     {
-                        allItemsCollected = true; // Все предметы собраны
-                        Debug.Log("Все предметы собраны! Идите к чекпоинту (3, 1).");
+                        hasFish = true; // Устанавливаем флаг, что найден объект "fish"
                     }
-                    break;
+
+                    // Добавляем объект в список для уничтожения
+                    itemsToDestroy.Add(item);
+                    collectedItemsCount++;
                 }
             }
+        }
+
+        // Уничтожаем объекты и удаляем их из списка после завершения цикла
+        foreach (var item in itemsToDestroy)
+        {
+            if (item != null)
+            {
+                Destroy(item); // Уничтожаем объект
+                itemsToCollect.Remove(item); // Удаляем объект из списка
+            }
+        }
+
+        // Проверяем, собраны ли все предметы
+        if (collectedItemsCount >= itemsToCollect.Count)
+        {
+            // Если был найден объект "fish", показываем диалоговое окно ошибки
+            if (hasFish)
+            {
+                if (DialogeWindowBadEnd != null)
+                {
+                    DialogeWindowBadEnd.SetActive(true);
+                }
+            }
+            else
+            {
+                // Если рыбы нет, показываем диалоговое окно успеха
+                allItemsCollected = true;
+                if (DialogeWindowGoodEnd != null)
+                {
+                    DialogeWindowGoodEnd.SetActive(true);
+                }
+            
+            }
+        }
+
+        // Уничтожаем объекты после завершения цикла
+        foreach (var item in itemsToDestroy)
+        {
+            Destroy(item);
+            itemsToCollect.Remove(item); // Удаляем объект из списка
         }
     }
 
