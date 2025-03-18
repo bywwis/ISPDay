@@ -457,6 +457,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         ButtonsAlgoritm.SetActive(true);
         EndButton.gameObject.SetActive(false);
         CycleButton.gameObject.SetActive(true);
+        NextButton.gameObject.SetActive(false);
 
         algorithmText.text = "";
         if (scrollRect != null)
