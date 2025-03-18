@@ -32,7 +32,13 @@ public class IvanMoveLevel1 : MonoBehaviour
     private GameObject DialogeWindowStory; // Диалоговое окно для истории
 
     [SerializeField]
-    private GameObject DialogeWindowStory2; // Второе диалоговое окно для истории
+    private GameObject DialogeWindowStory2; 
+
+    [SerializeField]
+    private GameObject DialogeWindowStory3; 
+    
+    [SerializeField]
+    private GameObject DialogeWindowStory4; 
 
     [SerializeField]
     private Button NextPageButton; // Кнопка для перехода на следующую страницу
@@ -62,6 +68,16 @@ public class IvanMoveLevel1 : MonoBehaviour
         if (DialogeWindowStory2 != null)
         {
             DialogeWindowStory2.SetActive(false);
+        }
+
+        if (DialogeWindowStory3 != null)
+        {
+            DialogeWindowStory3.SetActive(false);
+        }
+
+        if (DialogeWindowStory4 != null)
+        {
+            DialogeWindowStory4.SetActive(false);
         }
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -115,6 +131,8 @@ public class IvanMoveLevel1 : MonoBehaviour
         // Проверяем, достиг ли игрок целевого чекпоинта после сбора всех предметов
         if (allItemsCollected && targetCheckPoint != null)
         {
+            float distance = Vector3.Distance(player.position, targetCheckPoint.position);
+
             if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.01f)
             {
                 ShowCompletionDialog();
@@ -127,7 +145,7 @@ public class IvanMoveLevel1 : MonoBehaviour
     {
         foreach (var checkPoint in checkPoints)
         {
-            Debug.Log($"Чекпоинт: {checkPoint.name}, Позиция: {checkPoint.position}");
+
             if (Vector3.Distance(checkPoint.position, targetPosition) < 0.1f)
             {
                 return checkPoint;
@@ -353,7 +371,7 @@ public class IvanMoveLevel1 : MonoBehaviour
                     if (collectedItemsCount >= 4)
                     {
                         allItemsCollected = true; // Все предметы собраны
-                        Debug.Log("Все предметы собраны! Идите к чекпоинту (3, 1).");
+
                     }
                     break;
                 }
