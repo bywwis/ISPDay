@@ -74,6 +74,13 @@ public class IvanMoveLevel3 : MonoBehaviour
     private int cycleEndIndex = -1;   // Индекс конца цикла
     private bool isCycleComplete = false; // Флаг для проверки завершения цикла
 
+    private const int MaxStepsWithoutCycle = 10; // Максимальное количество строк без цикла
+    private const int MaxStepsWithCycle = 17;   // Максимальное количество строк с циклом
+    private bool hasCycle = false;
+
+    [SerializeField]
+    private GameObject DialogeWindowError; 
+
     void Start()
     {
         if (DialogeWindowStory2 != null)
@@ -197,6 +204,7 @@ public class IvanMoveLevel3 : MonoBehaviour
     {
         algorithmText.text = ""; // Очищаем текстовое поле
         int stepNumber = 1; // Нумерация шагов начинается с 1
+
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
             // Если шаг начинается с "Для", добавляем его с новой строки
@@ -217,6 +225,7 @@ public class IvanMoveLevel3 : MonoBehaviour
                 stepNumber++; // Увеличиваем номер шага
                 isCycleActive = true; // Устанавливаем флаг цикла
                 isCycleComplete = false; // Цикл начался, но еще не завершен
+                hasCycle = true;
             }
             // Если шаг начинается с "до", добавляем как часть условия
             else if (algorithmSteps[i].StartsWith("до"))
@@ -294,17 +303,48 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
     }
 
+    private void ShowErrorDialog(string message)
+    {
+        if (DialogeWindowError != null)
+        {
+            DialogeWindowError.SetActive(true);
+            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
+            if (errorText != null)
+            {
+                errorText.text = message;
+            }
+        }
+    }
+
     // Проигрываем алгоритм
     public void PlayAlgorithm()
     {
-        if (!isPlaying && algorithmSteps.Count > 0 && isCycleComplete)
+        if (!isPlaying && algorithmSteps.Count > 0)
         {
+            // Определяем текущее ограничение в зависимости от наличия цикла
+            int maxSteps;
+            if (hasCycle)
+            {
+                maxSteps = MaxStepsWithCycle;
+            }
+            else
+            {
+                maxSteps = MaxStepsWithoutCycle;
+            }
+
+            // Проверяем, что количество строк не превышено
+            if (algorithmSteps.Count > maxSteps)
+            {
+                ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
+                return;
+            }
+
             isPlaying = true;
             StartCoroutine(ExecuteAlgorithm());
         }
-        else
+        else if (isCycleActive && !isCycleComplete)
         {
-            Debug.Log("Алгоритм не может быть запущен, пока цикл не завершен.");
+            ShowErrorDialog("Алгоритм не может быть запущен, пока цикл не завершен.");
         }
     }
 
