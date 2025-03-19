@@ -1,10 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class IvanMoveLevel3 : MonoBehaviour
+public class IvanMoveLevel4 : MonoBehaviour
 {
     [SerializeField]
     private InputField algorithmText; // Текстовое поле для отображения алгоритма
@@ -79,7 +79,7 @@ public class IvanMoveLevel3 : MonoBehaviour
     private bool hasCycle = false;
 
     [SerializeField]
-    private GameObject DialogeWindowError; 
+    private GameObject DialogeWindowError;
 
     void Start()
     {
@@ -96,7 +96,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         if (checkPoints.Count > 0)
         {
-            currentCheckPoint = checkPoints[9]; // Начальный чекпоинт
+            currentCheckPoint = checkPoints[78]; // Начальный чекпоинт
             player.position = currentCheckPoint.position;
         }
 
@@ -130,7 +130,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
 
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-     
+
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         CycleButton.onClick.AddListener(OnCycleButtonClicked);
@@ -535,15 +535,15 @@ public class IvanMoveLevel3 : MonoBehaviour
 
         if (checkPoints.Count > 0)
         {
-            player.position = checkPoints[9].position;
-            currentCheckPoint = checkPoints[9];
+            player.position = checkPoints[78].position;
+            currentCheckPoint = checkPoints[78];
         }
     }
 
     private void ExecuteGetCommand()
     {
 
-      // Создаем временный список для объектов, которые нужно уничтожить
+        // Создаем временный список для объектов, которые нужно уничтожить
         List<GameObject> itemsToDestroy = new List<GameObject>();
 
         // Проверяем все объекты в списке
@@ -591,7 +591,7 @@ public class IvanMoveLevel3 : MonoBehaviour
             {
                 DialogeWindowGoodEnd.SetActive(true);
             }
-  
+
         }
         else
         {
