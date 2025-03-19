@@ -325,7 +325,7 @@ public class IvanMoveLevel3 : MonoBehaviour
             int maxSteps;
             if (hasCycle)
             {
-                maxSteps = MaxStepsWithCycle;
+                maxSteps = MaxStepsWithCycle + 1;
             }
             else
             {
@@ -333,7 +333,9 @@ public class IvanMoveLevel3 : MonoBehaviour
             }
 
             // Проверяем, что количество строк не превышено
-            if (algorithmSteps.Count > maxSteps)
+            int lineCount = algorithmText.text.Split('\n').Length;
+
+            if (lineCount > maxSteps)
             {
                 ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
                 return;
@@ -351,6 +353,8 @@ public class IvanMoveLevel3 : MonoBehaviour
     // Пошагово выполняем алгоритм
     private IEnumerator ExecuteAlgorithm()
     {
+        Stack<int> cycleStack = new Stack<int>(); // Стек для хранения индексов начала и конца циклов
+
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
             if (!isPlaying || isPathBlocked)
@@ -360,25 +364,32 @@ public class IvanMoveLevel3 : MonoBehaviour
 
             string step = algorithmSteps[i];
 
-            // Если шаг начинается с "Для", начинаем цикл
             if (step.StartsWith("Для"))
             {
                 // Получаем количество итераций из шага
                 int iterations = selectedIterations;
 
-                // Выполняем шаги внутри цикла
-                for (int j = 0; j < iterations; j++)
+                // Запоминаем индекс начала цикла
+                cycleStack.Push(i);
+
+                // Переходим к шагам внутри цикла
+                for (int j = 1; j < iterations; j++)
                 {
-                    // Переходим к шагам внутри цикла
-                    for (int k = cycleStartIndex + 1; k < cycleEndIndex; k++)
+                    for (int k = i + 1; k < algorithmSteps.Count; k++)
                     {
                         string innerStep = algorithmSteps[k];
+
+                        if (innerStep == ")")
+                        {
+                            break; // Завершаем выполнение цикла
+                        }
+
                         yield return StartCoroutine(ExecuteStep(innerStep));
                     }
                 }
 
                 // Пропускаем шаги внутри цикла, чтобы не выполнять их повторно
-                i = cycleEndIndex;
+                i = cycleStack.Pop(); // Возвращаемся к началу цикла
             }
             else
             {
@@ -393,7 +404,6 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
         isPlaying = false;
     }
-
     private IEnumerator ExecuteStep(string step)
     {
         Vector3 direction = GetDirectionFromStep(step);
@@ -545,7 +555,7 @@ public class IvanMoveLevel3 : MonoBehaviour
                 float distance = Vector3.Distance(player.position, item.transform.position);
 
                 // Если объект находится достаточно близко
-                if (distance < 125f) // Используем ваше значение расстояния
+                if (distance < 100f) // Используем ваше значение расстояния
                 {
                     // Если объект — рыба, устанавливаем флаг
                     if (item.CompareTag("fish"))
