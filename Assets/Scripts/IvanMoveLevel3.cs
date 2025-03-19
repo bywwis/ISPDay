@@ -18,6 +18,8 @@ public class IvanMoveLevel3 : MonoBehaviour
     private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
 
+    private bool hasFish = false; // Флаг для проверки, был ли найден объект с тегом "fish"
+
     private Transform player; // Ссылка на персонажа
     private Transform currentCheckPoint; // Текущий чекпоинт
 
@@ -49,8 +51,7 @@ public class IvanMoveLevel3 : MonoBehaviour
     private List<GameObject> itemsToCollect; // Список предметов для сбора
     private int collectedItemsCount = 0; // Счетчик собранных предметов
 
-    private bool allItemsCollected = false; // Флаг, что все предметы собраны
-    private Transform targetCheckPoint; // Чекпоинт (3, 1)
+    private Transform targetCheckPoint; // Чекпоинт (2, 7)
 
     [SerializeField]
     private Button CycleButton; // Кнопка для начала цикла
@@ -106,6 +107,15 @@ public class IvanMoveLevel3 : MonoBehaviour
             Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
         }
 
+        // Ищем чекпоинт с координатами (1217.60, 913.00, -0.33)
+        Vector3 targetPosition = new Vector3(1217.60f, 913.00f, -0.33f);
+        targetCheckPoint = FindCheckPointByCoordinates(targetPosition);
+
+        if (targetCheckPoint == null)
+        {
+            Debug.LogError("Чекпоинт с координатами (1217.60, 913.00, -0.33) не найден.");
+        }
+
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
         if (scrollRect == null)
         {
@@ -136,8 +146,8 @@ public class IvanMoveLevel3 : MonoBehaviour
             PlayAlgorithm();
         }
 
-        // Проверяем, достиг ли игрок целевого чекпоинта после сбора всех предметов
-        if (allItemsCollected && targetCheckPoint != null)
+        // Проверяем, собраны ли 3 блюда и достигнут ли целевой чекпоинт
+        if (collectedItemsCount >= 3 && targetCheckPoint != null)
         {
             if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.01f)
             {
@@ -151,7 +161,7 @@ public class IvanMoveLevel3 : MonoBehaviour
     {
         foreach (var checkPoint in checkPoints)
         {
-            Debug.Log($"Чекпоинт: {checkPoint.name}, Позиция: {checkPoint.position}");
+
             if (Vector3.Distance(checkPoint.position, targetPosition) < 0.1f)
             {
                 return checkPoint;
@@ -482,10 +492,8 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     private void ExecuteGetCommand()
     {
-        // Флаг для проверки, был ли найден объект с тегом "fish"
-        bool hasFish = false;
 
-        // Создаем временный список для объектов, которые нужно уничтожить
+      // Создаем временный список для объектов, которые нужно уничтожить
         List<GameObject> itemsToDestroy = new List<GameObject>();
 
         // Проверяем все объекты в списке
@@ -499,7 +507,7 @@ public class IvanMoveLevel3 : MonoBehaviour
                 // Если объект находится достаточно близко
                 if (distance < 125f) // Используем ваше значение расстояния
                 {
-                    // Если объект — рыба, запоминаем это
+                    // Если объект — рыба, устанавливаем флаг
                     if (item.CompareTag("fish"))
                     {
                         hasFish = true; // Устанавливаем флаг, что найден объект "fish"
@@ -521,44 +529,27 @@ public class IvanMoveLevel3 : MonoBehaviour
                 itemsToCollect.Remove(item); // Удаляем объект из списка
             }
         }
-
-        // Проверяем, собраны ли все предметы
-        if (collectedItemsCount >= itemsToCollect.Count)
-        {
-            // Если был найден объект "fish", показываем диалоговое окно ошибки
-            if (hasFish)
-            {
-                if (DialogeWindowBadEnd != null)
-                {
-                    DialogeWindowBadEnd.SetActive(true);
-                }
-            }
-            else
-            {
-                // Если рыбы нет, показываем диалоговое окно успеха
-                allItemsCollected = true;
-                if (DialogeWindowGoodEnd != null)
-                {
-                    DialogeWindowGoodEnd.SetActive(true);
-                }
-            
-            }
-        }
-
-        // Уничтожаем объекты после завершения цикла
-        foreach (var item in itemsToDestroy)
-        {
-            Destroy(item);
-            itemsToCollect.Remove(item); // Удаляем объект из списка
-        }
     }
 
-    // Метод для показа диалогового окна о завершении сбора всех предметов
     private void ShowCompletionDialog()
     {
-        if (DialogeWindowGoodEnd != null)
+        // Проверяем, были ли собраны правильные предметы
+        if (!hasFish)
         {
-            DialogeWindowGoodEnd.SetActive(true);
+            // Если рыба не была найдена, показываем диалоговое окно успеха
+            if (DialogeWindowGoodEnd != null)
+            {
+                DialogeWindowGoodEnd.SetActive(true);
+            }
+  
+        }
+        else
+        {
+            // Если была найдена рыба, показываем диалоговое окно ошибки
+            if (DialogeWindowBadEnd != null)
+            {
+                DialogeWindowBadEnd.SetActive(true);
+            }
         }
     }
 
