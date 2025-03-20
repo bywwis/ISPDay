@@ -68,7 +68,7 @@ public class IvanMoveLevel3 : MonoBehaviour
     [SerializeField]
     private Button EndButton; // Кнопка для завершения цикла
 
-    private int selectedIterations = 1; // Выбранное количество итераций
+    private List<int> cycleIterations = new List<int>(); // Список для хранения количества итераций для каждого цикла
     private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
     private int cycleStartIndex = -1; // Индекс начала цикла
     private int cycleEndIndex = -1;   // Индекс конца цикла
@@ -356,6 +356,7 @@ public class IvanMoveLevel3 : MonoBehaviour
     private IEnumerator ExecuteAlgorithm()
     {
         Stack<int> cycleStack = new Stack<int>(); // Стек для хранения индексов начала и конца циклов
+        int cycleIndex = 0; // Индекс для отслеживания текущего цикла
 
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
@@ -368,8 +369,16 @@ public class IvanMoveLevel3 : MonoBehaviour
 
             if (step.StartsWith("Для"))
             {
-                // Получаем количество итераций из шага
-                int iterations = selectedIterations;
+                // Проверяем, что список cycleIterations не пуст и индекс в пределах диапазона
+                if (cycleIterations.Count == 0 || cycleIndex >= cycleIterations.Count)
+                {
+                    Debug.LogError("Ошибка: список cycleIterations пуст или индекс выходит за пределы.");
+                    yield break;
+                }
+
+                // Получаем количество итераций из списка
+                int iterations = cycleIterations[cycleIndex];
+                cycleIndex++;
 
                 // Запоминаем индекс начала цикла
                 cycleStack.Push(i);
@@ -523,6 +532,11 @@ public class IvanMoveLevel3 : MonoBehaviour
         isPlaying = false;
 
         algorithmSteps.Clear();
+        
+        if (cycleIterations.Count > 0)
+        {
+            cycleIterations.Clear(); // Очищаем список итераций
+        }
 
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
@@ -664,7 +678,7 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     public void SetIterations(int iterations)
     {
-        selectedIterations = iterations;
+        cycleIterations.Add(iterations); // Добавляем количество итераций в список
         AddStep($"до {iterations} повторять (");
         NumberButtons.SetActive(false);
     }

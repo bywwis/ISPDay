@@ -114,14 +114,15 @@ public class IvanMoveLevel4 : MonoBehaviour
            Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
         }
 
-        // Ищем чекпоинт с координатами (1217.60, 913.00, -0.33)
-        //Vector3 targetPosition = new Vector3(1217.60f, 913.00f, -0.33f);
-        //targetCheckPoint = FindCheckPointByCoordinates(targetPosition);
-
-        //if (targetCheckPoint == null)
-        //{
-        //    Debug.LogError("Чекпоинт с координатами (1217.60, 913.00, -0.33) не найден.");
-        //}
+        // Ищем чекпоинт
+        if (checkPoints.Count > 56)
+        {
+            targetCheckPoint = checkPoints[56];
+        }
+        else
+        {
+            Debug.LogError("Чекпоинт 56 отсутствует в списке checkPoints.");
+        }
 
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
         if (scrollRect == null)
@@ -153,10 +154,10 @@ public class IvanMoveLevel4 : MonoBehaviour
             PlayAlgorithm();
         }
 
-        // Проверяем, собраны ли 3 блюда и достигнут ли целевой чекпоинт
-        if (collectedItemsCount >= 3 && targetCheckPoint != null)
+        // Проверка завершения уровня
+        if (collectedItemsCount >= 1 && targetCheckPoint != null)
         {
-            if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.01f)
+            if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
             {
                 ShowCompletionDialog();
             }
@@ -400,10 +401,13 @@ public class IvanMoveLevel4 : MonoBehaviour
             }
         }
 
-        // После завершения всех шагов проверяем, нужно ли показать диалоговое окно
-        if (collectedItemsCount >= itemsToCollect.Count)
+        // Проверка завершения уровня после выполнения всех шагов
+        if (collectedItemsCount >= 1 && targetCheckPoint != null)
         {
-            ShowCompletionDialog();
+            if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
+            {
+                ShowCompletionDialog();
+            }
         }
         isPlaying = false;
     }
@@ -547,7 +551,6 @@ public class IvanMoveLevel4 : MonoBehaviour
 
     private void ExecuteGetCommand()
     {
-
         // Создаем временный список для объектов, которые нужно уничтожить
         List<GameObject> itemsToDestroy = new List<GameObject>();
 
@@ -560,7 +563,7 @@ public class IvanMoveLevel4 : MonoBehaviour
                 float distance = Vector3.Distance(player.position, item.transform.position);
 
                 // Если объект находится достаточно близко
-                if (distance < 100f) // Используем ваше значение расстояния
+                if (distance < 125f) // Используем ваше значение расстояния
                 {
                     // Если объект — рыба, устанавливаем флаг
                     if (item.CompareTag("fish"))
@@ -585,22 +588,22 @@ public class IvanMoveLevel4 : MonoBehaviour
             }
         }
     }
+    
 
     private void ShowCompletionDialog()
     {
-        // Проверяем, были ли собраны правильные предметы
-        if (!hasFish)
+        // Проверяем, был ли собран правильный предмет (например, объект с тегом "Item")
+        if (collectedItemsCount >= 1 && !hasFish)
         {
-            // Если рыба не была найдена, показываем диалоговое окно успеха
+            // Если собран правильный предмет и не была найдена рыба, показываем диалоговое окно успеха
             if (DialogeWindowGoodEnd != null)
             {
                 DialogeWindowGoodEnd.SetActive(true);
             }
-
         }
         else
         {
-            // Если была найдена рыба, показываем диалоговое окно ошибки
+            // Если была найдена рыба или не собран правильный предмет, показываем диалоговое окно ошибки
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);
