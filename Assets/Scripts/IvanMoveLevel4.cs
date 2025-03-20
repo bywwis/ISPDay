@@ -68,7 +68,7 @@ public class IvanMoveLevel4 : MonoBehaviour
     [SerializeField]
     private Button EndButton; // Кнопка для завершения цикла
 
-    private int selectedIterations = 1; // Выбранное количество итераций
+    private List<int> cycleIterations = new List<int>(); // Список для хранения количества итераций для каждого цикла
     private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
     private int cycleStartIndex = -1; // Индекс начала цикла
     private int cycleEndIndex = -1;   // Индекс конца цикла
@@ -102,17 +102,17 @@ public class IvanMoveLevel4 : MonoBehaviour
 
         // Находим все объекты с тегом "Item"
         // Находим все объекты с тегом "Item" и "Fish"
-        //GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
-        //GameObject[] fishObjects = GameObject.FindGameObjectsWithTag("fish");
+        GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
+        GameObject[] fishObjects = GameObject.FindGameObjectsWithTag("fish");
 
-        //itemsToCollect = new List<GameObject>();
-        //itemsToCollect.AddRange(itemObjects);
-        //itemsToCollect.AddRange(fishObjects);
+        itemsToCollect = new List<GameObject>();
+        itemsToCollect.AddRange(itemObjects);
+        itemsToCollect.AddRange(fishObjects);
 
-        //if (itemsToCollect.Count == 0)
-        //{
-           //Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
-        //}
+        if (itemsToCollect.Count == 0)
+        {
+           Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
+        }
 
         // Ищем чекпоинт с координатами (1217.60, 913.00, -0.33)
         //Vector3 targetPosition = new Vector3(1217.60f, 913.00f, -0.33f);
@@ -195,25 +195,6 @@ public class IvanMoveLevel4 : MonoBehaviour
             else if (step == ")")
             {
                 cycleEndIndex = algorithmSteps.Count - 1;
-            }
-
-            int maxSteps;
-            if (hasCycle)
-            {
-                maxSteps = MaxStepsWithCycle + 1;
-            }
-            else
-            {
-                maxSteps = MaxStepsWithoutCycle;
-            }
-
-            // Проверяем, что количество строк не превышено
-            int lineCount = algorithmText.text.Split('\n').Length;
-
-            if (lineCount > maxSteps)
-            {
-                ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
-                return;
             }
         }
     }
@@ -302,6 +283,26 @@ public class IvanMoveLevel4 : MonoBehaviour
             }
         }
 
+        int maxSteps;
+        
+        if (hasCycle)
+        {
+            maxSteps = MaxStepsWithCycle + 1;
+        }
+        else
+        {
+            maxSteps = MaxStepsWithoutCycle;
+        }
+
+        // Проверяем, что количество строк не превышено
+        int lineCount = algorithmText.text.Split('\n').Length;
+
+        if (lineCount > maxSteps)
+        {
+            ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
+            return;
+        }
+
         // Прокрутка текстового поля, если текст не помещается
         StartCoroutine(ScrollIfOverflow());
     }
@@ -346,6 +347,7 @@ public class IvanMoveLevel4 : MonoBehaviour
         else if (isCycleActive && !isCycleComplete)
         {
             ShowErrorDialog("Алгоритм не может быть запущен, пока цикл не завершен.");
+            StopAlgorithm();
         }
     }
 
@@ -353,6 +355,7 @@ public class IvanMoveLevel4 : MonoBehaviour
     private IEnumerator ExecuteAlgorithm()
     {
         Stack<int> cycleStack = new Stack<int>(); // Стек для хранения индексов начала и конца циклов
+        int cycleIndex = 0; // Индекс для отслеживания текущего цикла
 
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
@@ -365,8 +368,9 @@ public class IvanMoveLevel4 : MonoBehaviour
 
             if (step.StartsWith("Для"))
             {
-                // Получаем количество итераций из шага
-                int iterations = selectedIterations;
+                // Получаем количество итераций из списка
+                int iterations = cycleIterations[cycleIndex];
+                cycleIndex++;
 
                 // Запоминаем индекс начала цикла
                 cycleStack.Push(i);
@@ -403,6 +407,7 @@ public class IvanMoveLevel4 : MonoBehaviour
         }
         isPlaying = false;
     }
+
     private IEnumerator ExecuteStep(string step)
     {
         Vector3 direction = GetDirectionFromStep(step);
@@ -519,6 +524,7 @@ public class IvanMoveLevel4 : MonoBehaviour
         isPlaying = false;
 
         algorithmSteps.Clear();
+        cycleIterations.Clear(); // Очищаем список итераций
 
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
@@ -615,6 +621,7 @@ public class IvanMoveLevel4 : MonoBehaviour
     public void AddLeftStep() { AddStep("Влево"); }
     public void AddRightStep() { AddStep("Вправо"); }
     public void AddGet() { AddStep("Взять"); }
+    public void AddSitStep() { AddStep("Сесть"); }
     public void SetIterations1() { SetIterations(1); }
     public void SetIterations2() { SetIterations(2); }
     public void SetIterations3() { SetIterations(3); }
@@ -660,7 +667,7 @@ public class IvanMoveLevel4 : MonoBehaviour
 
     public void SetIterations(int iterations)
     {
-        selectedIterations = iterations;
+        cycleIterations.Add(iterations); // Добавляем количество итераций в список
         AddStep($"до {iterations} повторять (");
         NumberButtons.SetActive(false);
     }

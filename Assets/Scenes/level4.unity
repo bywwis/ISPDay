@@ -1029,7 +1029,7 @@ GameObject:
   - component: {fileID: 127837349}
   m_Layer: 3
   m_Name: Chair2
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1291,6 +1291,7 @@ RectTransform:
   - {fileID: 1810634145}
   - {fileID: 2008117457}
   - {fileID: 222377392}
+  - {fileID: 1424648347}
   - {fileID: 1619381453}
   m_Father: {fileID: 1179418715}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2367,8 +2368,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: AddGet
         m_Mode: 1
         m_Arguments:
@@ -3656,8 +3657,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations8
         m_Mode: 1
         m_Arguments:
@@ -6133,8 +6134,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations9
         m_Mode: 1
         m_Arguments:
@@ -6415,8 +6416,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations3
         m_Mode: 1
         m_Arguments:
@@ -6679,8 +6680,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations4
         m_Mode: 1
         m_Arguments:
@@ -7052,6 +7053,7 @@ RectTransform:
   - {fileID: 636195790}
   - {fileID: 1787148076}
   - {fileID: 1179418715}
+  - {fileID: 1298658402}
   - {fileID: 1032228533}
   - {fileID: 697716763}
   - {fileID: 1848672193}
@@ -7747,7 +7749,7 @@ GameObject:
   - component: {fileID: 1048814937}
   m_Layer: 3
   m_Name: Chair1
-  m_TagString: Untagged
+  m_TagString: fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9017,7 +9019,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 136200569}
-  - {fileID: 1298658402}
   - {fileID: 2065847366}
   m_Father: {fileID: 970658696}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9333,8 +9334,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations1
         m_Mode: 1
         m_Arguments:
@@ -9555,7 +9556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1298658402
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9563,7 +9564,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298658401}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9577,11 +9578,11 @@ RectTransform:
   - {fileID: 1558916018}
   - {fileID: 469344656}
   - {fileID: 826385358}
-  m_Father: {fileID: 1179418715}
+  m_Father: {fileID: 970658696}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -532.74, y: -315.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1300435853
@@ -9855,6 +9856,138 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1417431314}
+  m_CullTransparentMesh: 1
+--- !u!1 &1424648346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1424648347}
+  - component: {fileID: 1424648350}
+  - component: {fileID: 1424648349}
+  - component: {fileID: 1424648348}
+  m_Layer: 5
+  m_Name: SitButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1424648347
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424648346}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 136200569}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -273.76, y: -136}
+  m_SizeDelta: {x: 237, y: 64}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1424648348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424648346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1424648349}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
+        m_MethodName: AddSitStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1424648349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424648346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 7219830438018454713, guid: c9ddbc060fe6d604ba3e4c55d8405107, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1424648350
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424648346}
   m_CullTransparentMesh: 1
 --- !u!1 &1438286215
 GameObject:
@@ -10227,7 +10360,7 @@ GameObject:
   - component: {fileID: 1515474130}
   m_Layer: 3
   m_Name: Chair3
-  m_TagString: Untagged
+  m_TagString: fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10492,8 +10625,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations6
         m_Mode: 1
         m_Arguments:
@@ -10624,8 +10757,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations7
         m_Mode: 1
         m_Arguments:
@@ -11059,8 +11192,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations5
         m_Mode: 1
         m_Arguments:
@@ -11905,8 +12038,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: SetIterations2
         m_Mode: 1
         m_Arguments:
@@ -13094,25 +13227,25 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -394.29834, y: -320.49234}
-      - {x: -209.1051, y: -323.24112}
+    - - {x: -383.13214, y: -305.10367}
+      - {x: -206.38342, y: -305.6955}
       - {x: -206.96155, y: -195.20587}
       - {x: -124.39453, y: -196.32672}
-      - {x: -123.30444, y: -322.54858}
-      - {x: 394.46838, y: -316.29788}
+      - {x: -121.90527, y: -306.6431}
+      - {x: 385.99463, y: -306.98038}
       - {x: 433.9326, y: -389.90085}
       - {x: -425.31616, y: -382.9562}
       - {x: -431.5566, y: 391.2342}
       - {x: 433.109, y: 392.35345}
       - {x: 434.68823, y: -30.952515}
       - {x: 436.02295, y: -388.74643}
-      - {x: 399.99927, y: -325.48145}
-      - {x: 396.62128, y: 321.15167}
-      - {x: -124.63733, y: 318.70844}
+      - {x: 386.25305, y: -306.76312}
+      - {x: 384.55023, y: 305.7008}
+      - {x: -123.98071, y: 303.6048}
       - {x: -123.71521, y: -98.47232}
       - {x: -209.01062, y: -100.26193}
-      - {x: -209.88477, y: 320.69708}
-      - {x: -393.04724, y: 320.75348}
+      - {x: -209.37964, y: 302.0069}
+      - {x: -381.42896, y: 302.06317}
   m_UseDelaunayMesh: 0
 --- !u!1 &1861381721
 GameObject:
@@ -14655,9 +14788,12 @@ MonoBehaviour:
   DialogeWindowStory: {fileID: 233690993}
   DialogeWindowStory2: {fileID: 290329649}
   NextPageButton: {fileID: 1028176188}
-  DialogeWindowGoodEnd: {fileID: 397093824}
-  DialogeWindowBadEnd: {fileID: 363868289}
-  itemsToCollect: []
+  DialogeWindowGoodEnd: {fileID: 363868289}
+  DialogeWindowBadEnd: {fileID: 397093824}
+  itemsToCollect:
+  - {fileID: 1048814935}
+  - {fileID: 127837347}
+  - {fileID: 1515474128}
   CycleButton: {fileID: 2065847367}
   NumberButtons: {fileID: 1298658401}
   NextButton: {fileID: 1032228534}

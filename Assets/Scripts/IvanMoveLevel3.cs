@@ -348,6 +348,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         else if (isCycleActive && !isCycleComplete)
         {
             ShowErrorDialog("Алгоритм не может быть запущен, пока цикл не завершен.");
+            StopAlgorithm();
         }
     }
 
@@ -405,6 +406,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
         isPlaying = false;
     }
+    
     private IEnumerator ExecuteStep(string step)
     {
         Vector3 direction = GetDirectionFromStep(step);
