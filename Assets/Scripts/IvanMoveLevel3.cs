@@ -196,6 +196,27 @@ public class IvanMoveLevel3 : MonoBehaviour
             {
                 cycleEndIndex = algorithmSteps.Count - 1;
             }
+
+            // Определяем текущее ограничение в зависимости от наличия цикла
+            int maxSteps;
+            if (hasCycle)
+            {
+                maxSteps = MaxStepsWithCycle + 1;
+            }
+            else
+            {
+                maxSteps = MaxStepsWithoutCycle;
+            }
+
+            // Проверяем, что количество строк не превышено
+            int lineCount = algorithmText.text.Split('\n').Length;
+
+            if (lineCount > maxSteps)
+            {
+                ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
+                return;
+            }
+
         }
     }
 
@@ -321,26 +342,6 @@ public class IvanMoveLevel3 : MonoBehaviour
     {
         if (!isPlaying && algorithmSteps.Count > 0)
         {
-            // Определяем текущее ограничение в зависимости от наличия цикла
-            int maxSteps;
-            if (hasCycle)
-            {
-                maxSteps = MaxStepsWithCycle + 1;
-            }
-            else
-            {
-                maxSteps = MaxStepsWithoutCycle;
-            }
-
-            // Проверяем, что количество строк не превышено
-            int lineCount = algorithmText.text.Split('\n').Length;
-
-            if (lineCount > maxSteps)
-            {
-                ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
-                return;
-            }
-
             isPlaying = true;
             StartCoroutine(ExecuteAlgorithm());
         }

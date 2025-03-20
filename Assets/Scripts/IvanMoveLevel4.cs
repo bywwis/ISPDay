@@ -75,7 +75,7 @@ public class IvanMoveLevel4 : MonoBehaviour
     private bool isCycleComplete = false; // Флаг для проверки завершения цикла
 
     private const int MaxStepsWithoutCycle = 10; // Максимальное количество строк без цикла
-    private const int MaxStepsWithCycle = 17;   // Максимальное количество строк с циклом
+    private const int MaxStepsWithCycle = 26;   // Максимальное количество строк с циклом
     private bool hasCycle = false;
 
     [SerializeField]
@@ -102,26 +102,26 @@ public class IvanMoveLevel4 : MonoBehaviour
 
         // Находим все объекты с тегом "Item"
         // Находим все объекты с тегом "Item" и "Fish"
-        GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
-        GameObject[] fishObjects = GameObject.FindGameObjectsWithTag("fish");
+        //GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
+        //GameObject[] fishObjects = GameObject.FindGameObjectsWithTag("fish");
 
-        itemsToCollect = new List<GameObject>();
-        itemsToCollect.AddRange(itemObjects);
-        itemsToCollect.AddRange(fishObjects);
+        //itemsToCollect = new List<GameObject>();
+        //itemsToCollect.AddRange(itemObjects);
+        //itemsToCollect.AddRange(fishObjects);
 
-        if (itemsToCollect.Count == 0)
-        {
-            Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
-        }
+        //if (itemsToCollect.Count == 0)
+        //{
+           //Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
+        //}
 
         // Ищем чекпоинт с координатами (1217.60, 913.00, -0.33)
-        Vector3 targetPosition = new Vector3(1217.60f, 913.00f, -0.33f);
-        targetCheckPoint = FindCheckPointByCoordinates(targetPosition);
+        //Vector3 targetPosition = new Vector3(1217.60f, 913.00f, -0.33f);
+        //targetCheckPoint = FindCheckPointByCoordinates(targetPosition);
 
-        if (targetCheckPoint == null)
-        {
-            Debug.LogError("Чекпоинт с координатами (1217.60, 913.00, -0.33) не найден.");
-        }
+        //if (targetCheckPoint == null)
+        //{
+        //    Debug.LogError("Чекпоинт с координатами (1217.60, 913.00, -0.33) не найден.");
+        //}
 
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
         if (scrollRect == null)
@@ -195,6 +195,25 @@ public class IvanMoveLevel4 : MonoBehaviour
             else if (step == ")")
             {
                 cycleEndIndex = algorithmSteps.Count - 1;
+            }
+
+            int maxSteps;
+            if (hasCycle)
+            {
+                maxSteps = MaxStepsWithCycle + 1;
+            }
+            else
+            {
+                maxSteps = MaxStepsWithoutCycle;
+            }
+
+            // Проверяем, что количество строк не превышено
+            int lineCount = algorithmText.text.Split('\n').Length;
+
+            if (lineCount > maxSteps)
+            {
+                ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
+                return;
             }
         }
     }
@@ -321,26 +340,6 @@ public class IvanMoveLevel4 : MonoBehaviour
     {
         if (!isPlaying && algorithmSteps.Count > 0)
         {
-            // Определяем текущее ограничение в зависимости от наличия цикла
-            int maxSteps;
-            if (hasCycle)
-            {
-                maxSteps = MaxStepsWithCycle + 1;
-            }
-            else
-            {
-                maxSteps = MaxStepsWithoutCycle;
-            }
-
-            // Проверяем, что количество строк не превышено
-            int lineCount = algorithmText.text.Split('\n').Length;
-
-            if (lineCount > maxSteps)
-            {
-                ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
-                return;
-            }
-
             isPlaying = true;
             StartCoroutine(ExecuteAlgorithm());
         }

@@ -2716,8 +2716,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
@@ -8162,8 +8162,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel4, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
@@ -14456,7 +14456,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 2.567749, y: -26.32935}
+  m_Offset: {x: 0.32348633, y: -18.24994}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -14466,7 +14466,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 45.47852, y: 30.40558}
+  m_Size: {x: 66.12573, y: 46.564396}
   m_EdgeRadius: 0
 --- !u!50 &2044351034
 Rigidbody2D:
@@ -14566,7 +14566,7 @@ MonoBehaviour:
   moveSpeed: 100
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   checkPoints:
   - {fileID: 533407655}
   - {fileID: 1104847332}
@@ -14655,8 +14655,8 @@ MonoBehaviour:
   DialogeWindowStory: {fileID: 233690993}
   DialogeWindowStory2: {fileID: 290329649}
   NextPageButton: {fileID: 1028176188}
-  DialogeWindowGoodEnd: {fileID: 0}
-  DialogeWindowBadEnd: {fileID: 0}
+  DialogeWindowGoodEnd: {fileID: 397093824}
+  DialogeWindowBadEnd: {fileID: 363868289}
   itemsToCollect: []
   CycleButton: {fileID: 2065847367}
   NumberButtons: {fileID: 1298658401}
