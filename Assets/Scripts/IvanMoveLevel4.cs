@@ -155,7 +155,7 @@ public class IvanMoveLevel4 : MonoBehaviour
         }
 
         // Проверка завершения уровня
-        if (collectedItemsCount >= 1 && targetCheckPoint != null)
+        if (collectedItemsCount == 1 && targetCheckPoint != null)
         {
             if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
             {
@@ -402,11 +402,19 @@ public class IvanMoveLevel4 : MonoBehaviour
         }
 
         // Проверка завершения уровня после выполнения всех шагов
-        if (collectedItemsCount >= 1 && targetCheckPoint != null)
+        if (collectedItemsCount == 1 && targetCheckPoint != null)
         {
             if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
             {
                 ShowCompletionDialog();
+            }
+            else
+            {
+                // Если персонаж не на правильном чекпоинте, показываем BadEnd
+                if (DialogeWindowBadEnd != null)
+                {
+                    DialogeWindowBadEnd.SetActive(true);
+                }
             }
         }
         isPlaying = false;
@@ -428,6 +436,16 @@ public class IvanMoveLevel4 : MonoBehaviour
         else if (step == "Взять")
         {
             ExecuteGetCommand();
+
+            // Если персонаж взял рыбу, показываем BadEnd
+            if (hasFish)
+            {
+                if (DialogeWindowBadEnd != null)
+                {
+                    DialogeWindowBadEnd.SetActive(true);
+                }
+                yield break; // Останавливаем выполнение алгоритма
+            }
         }
     }
 
@@ -593,9 +611,9 @@ public class IvanMoveLevel4 : MonoBehaviour
     private void ShowCompletionDialog()
     {
         // Проверяем, был ли собран правильный предмет (например, объект с тегом "Item")
-        if (collectedItemsCount >= 1 && !hasFish)
+        if (collectedItemsCount == 1 && !hasFish && IsAtCorrectCheckpoint())
         {
-            // Если собран правильный предмет и не была найдена рыба, показываем диалоговое окно успеха
+            // Если собран правильный предмет, не была найдена рыба и персонаж на правильном чекпоинте, показываем диалоговое окно успеха
             if (DialogeWindowGoodEnd != null)
             {
                 DialogeWindowGoodEnd.SetActive(true);
@@ -603,12 +621,22 @@ public class IvanMoveLevel4 : MonoBehaviour
         }
         else
         {
-            // Если была найдена рыба или не собран правильный предмет, показываем диалоговое окно ошибки
+            // Если была найдена рыба, не собран правильный предмет или персонаж не на правильном чекпоинте, показываем диалоговое окно ошибки
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);
             }
         }
+    }
+
+    private bool IsAtCorrectCheckpoint()
+    {
+        // Проверяем, находится ли персонаж на правильном чекпоинте
+        if (targetCheckPoint != null)
+        {
+            return Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f;
+        }
+        return false;
     }
 
     // Переход на 4 уровень 
