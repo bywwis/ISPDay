@@ -409,9 +409,20 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
 
         // После завершения всех шагов проверяем, нужно ли показать диалоговое окно
-        if (collectedItemsCount >= itemsToCollect.Count)
+        if (collectedItemsCount >= itemsToCollect.Count && targetCheckPoint != null)
         {
-            ShowCompletionDialog();
+            if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
+            {
+                ShowCompletionDialog();
+            }
+            else
+            {
+                // Если персонаж не на правильном чекпоинте, показываем BadEnd
+                if (DialogeWindowBadEnd != null)
+                {
+                    DialogeWindowBadEnd.SetActive(true);
+                }
+            }
         }
         isPlaying = false;
     }
@@ -427,6 +438,17 @@ public class IvanMoveLevel3 : MonoBehaviour
             {
                 yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
                 currentCheckPoint = nextCheckPoint;
+
+                // Проверяем, достиг ли персонаж целевого чекпоинта
+                if (targetCheckPoint != null && Vector3.Distance(player.position, targetCheckPoint.position) > 0.1f)
+                {
+                    // Если персонаж не на правильном чекпоинте, показываем BadEnd
+                    if (DialogeWindowBadEnd != null)
+                    {
+                        DialogeWindowBadEnd.SetActive(true);
+                    }
+                    yield break; // Прерываем выполнение алгоритма
+                }
             }
         }
         else if (step == "Взять")
@@ -559,63 +581,70 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     private void ExecuteGetCommand()
     {
-
-      // Создаем временный список для объектов, которые нужно уничтожить
         List<GameObject> itemsToDestroy = new List<GameObject>();
 
-        // Проверяем все объекты в списке
         foreach (var item in itemsToCollect)
         {
             if (item != null)
             {
-                // Рассчитываем расстояние между игроком и объектом
                 float distance = Vector3.Distance(player.position, item.transform.position);
 
-                // Если объект находится достаточно близко
-                if (distance < 100f) // Используем ваше значение расстояния
+                if (distance < 100f)
                 {
-                    // Если объект — рыба, устанавливаем флаг
                     if (item.CompareTag("fish"))
                     {
-                        hasFish = true; // Устанавливаем флаг, что найден объект "fish"
+                        hasFish = true;
+                        // Если взята рыба, сразу показываем BadEnd
+                        if (DialogeWindowBadEnd != null)
+                        {
+                            DialogeWindowBadEnd.SetActive(true);
+                        }
                     }
 
-                    // Добавляем объект в список для уничтожения
                     itemsToDestroy.Add(item);
                     collectedItemsCount++;
                 }
             }
         }
 
-        // Уничтожаем объекты и удаляем их из списка после завершения цикла
         foreach (var item in itemsToDestroy)
         {
             if (item != null)
             {
-                Destroy(item); // Уничтожаем объект
-                itemsToCollect.Remove(item); // Удаляем объект из списка
+                Destroy(item);
+                itemsToCollect.Remove(item);
             }
         }
     }
 
     private void ShowCompletionDialog()
     {
-        // Проверяем, были ли собраны правильные предметы
-        if (!hasFish)
+        // Проверяем, достиг ли персонаж целевого чекпоинта
+        if (targetCheckPoint != null && Vector3.Distance(player.position, targetCheckPoint.position) > 0.1f)
         {
-            // Если рыба не была найдена, показываем диалоговое окно успеха
-            if (DialogeWindowGoodEnd != null)
-            {
-                DialogeWindowGoodEnd.SetActive(true);
-            }
-  
-        }
-        else
-        {
-            // Если была найдена рыба, показываем диалоговое окно ошибки
+            // Если персонаж не достиг целевого чекпоинта, показываем BadEnd
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);
+            }
+            return;
+        }
+
+        // Проверяем, были ли собраны правильные предметы
+        if (!hasFish || collectedItemsCount < 3)
+        {
+            // Если рыба не была найдена или собрано меньше 3 предметов, показываем BadEnd
+            if (DialogeWindowBadEnd != null)
+            {
+                DialogeWindowBadEnd.SetActive(true);
+            }
+        }
+        else
+        {
+            // Если всё в порядке, показываем GoodEnd
+            if (DialogeWindowGoodEnd != null)
+            {
+                DialogeWindowGoodEnd.SetActive(true);
             }
         }
     }
