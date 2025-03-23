@@ -114,13 +114,13 @@ public class IvanMoveLevel3 : MonoBehaviour
             Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
         }
 
-        // Ищем чекпоинт с координатами (1217.60, 913.00, -0.33)
-        Vector3 targetPosition = new Vector3(1217.60f, 913.00f, -0.33f);
-        targetCheckPoint = FindCheckPointByCoordinates(targetPosition);
-
-        if (targetCheckPoint == null)
+        if (checkPoints.Count > 25)
         {
-            Debug.LogError("Чекпоинт с координатами (1217.60, 913.00, -0.33) не найден.");
+            targetCheckPoint = checkPoints[25];
+        }
+        else
+        {
+            Debug.LogError("Чекпоинт 56 отсутствует в списке checkPoints.");
         }
 
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
@@ -443,17 +443,6 @@ public class IvanMoveLevel3 : MonoBehaviour
             {
                 yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
                 currentCheckPoint = nextCheckPoint;
-
-                // Проверяем, достиг ли персонаж целевого чекпоинта
-                if (targetCheckPoint != null && Vector3.Distance(player.position, targetCheckPoint.position) > 0.1f)
-                {
-                    // Если персонаж не на правильном чекпоинте, показываем BadEnd
-                    if (DialogeWindowBadEnd != null)
-                    {
-                        DialogeWindowBadEnd.SetActive(true);
-                    }
-                    yield break; // Прерываем выполнение алгоритма
-                }
             }
         }
         else if (step == "Взять")
@@ -636,7 +625,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
 
         // Проверяем, были ли собраны правильные предметы
-        if (!hasFish || collectedItemsCount < 3)
+        if (hasFish || collectedItemsCount < 3)
         {
             // Если рыба не была найдена или собрано меньше 3 предметов, показываем BadEnd
             if (DialogeWindowBadEnd != null)
@@ -650,14 +639,24 @@ public class IvanMoveLevel3 : MonoBehaviour
             if (DialogeWindowGoodEnd != null)
             {
                 DialogeWindowGoodEnd.SetActive(true);
+                SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
             }
         }
+
     }
 
     // Переход на 4 уровень 
     public void LoadNextScene()
     {
-        SceneManager.LoadScene("level4");
+        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextLevelIndex);
+        }
+        else
+        {
+            Debug.Log("Все уровни пройдены!");
+        }
     }
 
 

@@ -364,11 +364,7 @@ public class IvanMoveLevel5 : MonoBehaviour
             // Показываем диалоговое окно для успешного прохождения уровня
             if (DialogeWindowGoodEnd != null)
             {
-                DialogeWindowGoodEnd5.SetActive(true);
-                DialogeWindowGoodEnd4.SetActive(true);
-                DialogeWindowGoodEnd3.SetActive(true);
-                DialogeWindowGoodEnd2.SetActive(true);
-                DialogeWindowGoodEnd.SetActive(true);
+                ShowCompletionDialog();
             }
         }
         else
@@ -541,13 +537,22 @@ public class IvanMoveLevel5 : MonoBehaviour
             DialogeWindowGoodEnd3.SetActive(true);
             DialogeWindowGoodEnd2.SetActive(true);
             DialogeWindowGoodEnd.SetActive(true);
+
+            SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
         }
     }
 
-    // Переход на 3 уровень 
     public void LoadNextScene()
     {
-        SceneManager.LoadScene("level3");
+        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextLevelIndex);
+        }
+        else
+        {
+            Debug.Log("Все уровни пройдены!");
+        }
     }
 
     // Методы для кнопок

@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
-    // Ссылки на кнопки
     public Button continueButton;
     public Button startGameButton;
     public Button handbookButton;
@@ -17,28 +14,40 @@ public class MenuScript : MonoBehaviour
 
     void Start()
     {
-        // Если нет сохраненной игры, кнопка "Продолжить" будет неактивна
-        continueButton.interactable = CheckForSavedGame();
-    }
-
-    // Метод для проверки наличия сохраненной игры
-    private bool CheckForSavedGame()
-    {
-        return false; 
+        // Проверяем, есть ли сохраненный прогресс
+        continueButton.interactable = SaveLoadManager.LoadProgress() != null;
     }
 
     // Метод для кнопки "Продолжить"
     public void ContinueGame()
     {
-        // Загружаем сцену с сохраненной игрой
-        SceneManager.LoadScene("SavedGameScene"); // Замените на имя сцены
+        GameProgress progress = SaveLoadManager.LoadProgress();
+        if (progress != null)
+        {
+            // Загружаем последний пройденный уровень
+            string lastCompletedLevel = progress.completedLevels[progress.completedLevels.Count - 1];
+            int nextLevelIndex = SceneUtility.GetBuildIndexByScenePath(lastCompletedLevel) + 1;
+
+            if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+            {
+                SceneManager.LoadScene(nextLevelIndex);
+            }
+            else
+            {
+                Debug.Log("Все уровни пройдены!");
+                SceneManager.LoadScene("Menu"); // Возвращаем в меню, если все уровни пройдены
+            }
+        }
     }
 
     // Метод для кнопки "Начать игру"
     public void StartGame()
     {
-        // Загружаем сцену с новой игрой
-        SceneManager.LoadScene("level1"); // Замените на имя вашей сцены
+        // Сбрасываем прогресс
+        SaveLoadManager.ResetProgress();
+
+        // Загружаем первый уровень
+        SceneManager.LoadScene("level1");
     }
 
     // Метод для кнопки "Справочник"
@@ -51,7 +60,6 @@ public class MenuScript : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
-
         Debug.Log("Игра закрыта");
     }
 }

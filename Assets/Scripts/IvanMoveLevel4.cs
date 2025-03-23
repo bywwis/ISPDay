@@ -622,6 +622,7 @@ public class IvanMoveLevel4 : MonoBehaviour
             if (DialogeWindowGoodEnd != null)
             {
                 DialogeWindowGoodEnd.SetActive(true);
+                SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
             }
         }
         else
@@ -647,7 +648,15 @@ public class IvanMoveLevel4 : MonoBehaviour
     // Переход на 5 уровень 
     public void LoadNextScene()
     {
-        SceneManager.LoadScene("level5");
+        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextLevelIndex);
+        }
+        else
+        {
+            Debug.Log("Все уровни пройдены!");
+        }
     }
 
 

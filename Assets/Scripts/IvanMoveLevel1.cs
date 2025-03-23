@@ -376,12 +376,22 @@ public class IvanMoveLevel1 : MonoBehaviour
         {
             DialogeWindowGoodEnd.SetActive(true);
         }
+
+        SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
     }
 
     // Переход на 2 уровень 
     public void LoadNextScene()
     {
-        SceneManager.LoadScene("level2");
+        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextLevelIndex);
+        }
+        else
+        {
+            Debug.Log("Все уровни пройдены!");
+        }
     }
 
     // Методы для кнопок

@@ -372,7 +372,7 @@ public class IvanMoveLevel2 : MonoBehaviour
             // Показываем диалоговое окно для успешного прохождения уровня
             if (DialogeWindowGoodEnd != null)
             {
-                DialogeWindowGoodEnd.SetActive(true);
+                ShowCompletionDialog();
             }
         }
         else
@@ -511,44 +511,28 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
     }
 
-    //private void ExecuteGetCommand()
-    //{
-    //    // Проверяем, находится ли персонаж рядом с предметом
-    //    foreach (var item in itemsToCollect)
-    //    {
-    //        if (item != null)
-    //        {
-    //            float distance = Vector3.Distance(player.position, item.transform.position);
-
-    //            if (distance < 200f)
-    //            {
-    //                Destroy(item);
-    //                collectedItemsCount++;
-
-    //                // Проверяем, собраны ли все предметы
-    //                if (collectedItemsCount >= 4)
-    //                {
-    //                    ShowCompletionDialog();
-    //                }
-    //                break;
-    //            }
-    //        }
-    //    }
-    //}
-
     // Метод для показа диалогового окна о завершении уровня
     private void ShowCompletionDialog()
     {
         if (DialogeWindowGoodEnd != null)
         {
             DialogeWindowGoodEnd.SetActive(true);
+            SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
         }
     }
 
     // Переход на 3 уровень 
     public void LoadNextScene()
     {
-        SceneManager.LoadScene("level3");
+        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextLevelIndex);
+        }
+        else
+        {
+            Debug.Log("Все уровни пройдены!");
+        }
     }
 
     // Методы для кнопок
