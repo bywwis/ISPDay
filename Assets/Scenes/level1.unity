@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &14947794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,7 +413,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &62563902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -780,7 +780,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 106958632}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
+        m_MethodName: BackToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &106958632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1560,7 +1572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &233690994
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1916,9 +1928,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2044351028}
+      - m_Target: {fileID: 2044351036}
         m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4430,7 +4442,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 783509358}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
+        m_MethodName: BackToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &783509358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7674,7 +7698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1584818680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9323,7 +9347,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1822310360}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel1, Assembly-CSharp
+        m_MethodName: BackToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1822310360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10794,10 +10830,10 @@ MonoBehaviour:
   - {fileID: 419526155}
   - {fileID: 599695993}
   - {fileID: 1708640619}
-  DialogeWindowStory: {fileID: 0}
-  DialogeWindowStory2: {fileID: 0}
-  DialogeWindowStory3: {fileID: 0}
-  DialogeWindowStory4: {fileID: 0}
+  DialogeWindowStory: {fileID: 233690993}
+  DialogeWindowStory2: {fileID: 62563901}
+  DialogeWindowStory3: {fileID: 14947793}
+  DialogeWindowStory4: {fileID: 1584818679}
   NextPageButton: {fileID: 0}
   DialogeWindowGoodEnd: {fileID: 363868289}
   DialogeWindowBadEnd: {fileID: 397093824}

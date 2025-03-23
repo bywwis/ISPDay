@@ -60,25 +60,10 @@ public class IvanMoveLevel1 : MonoBehaviour
 
     void Start()
     {
-        if (DialogeWindowStory != null)
-        {
-            DialogeWindowStory.SetActive(true);
-        }
-
-        if (DialogeWindowStory2 != null)
-        {
-            DialogeWindowStory2.SetActive(false);
-        }
-
-        if (DialogeWindowStory3 != null)
-        {
-            DialogeWindowStory3.SetActive(false);
-        }
-
-        if (DialogeWindowStory4 != null)
-        {
-            DialogeWindowStory4.SetActive(false);
-        }
+        DialogeWindowStory4.SetActive(true);
+        DialogeWindowStory3.SetActive(true);
+        DialogeWindowStory2.SetActive(true);
+        DialogeWindowStory.SetActive(true);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
         if (checkPoints.Count > 0)
@@ -138,6 +123,11 @@ public class IvanMoveLevel1 : MonoBehaviour
                 ShowCompletionDialog();
             }
         }
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
     // Находим чекпоинт по координатам (x, y, z)

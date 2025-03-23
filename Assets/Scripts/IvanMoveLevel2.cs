@@ -127,6 +127,11 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
     }
 
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     // Добавляем шаг в алгоритм
     public void AddStep(string step)
     {

@@ -164,6 +164,11 @@ public class IvanMoveLevel4 : MonoBehaviour
         }
     }
 
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     // Находим чекпоинт по координатам (x, y, z)
     private Transform FindCheckPointByCoordinates(Vector3 targetPosition)
     {
@@ -639,10 +644,10 @@ public class IvanMoveLevel4 : MonoBehaviour
         return false;
     }
 
-    // Переход на 4 уровень 
+    // Переход на 5 уровень 
     public void LoadNextScene()
     {
-        SceneManager.LoadScene("level4");
+        SceneManager.LoadScene("level5");
     }
 
 

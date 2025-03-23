@@ -163,6 +163,11 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
     }
 
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     // Находим чекпоинт по координатам (x, y, z)
     private Transform FindCheckPointByCoordinates(Vector3 targetPosition)
     {

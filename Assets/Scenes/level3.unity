@@ -743,7 +743,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 106958632}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: BackToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &106958632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1379,13 +1391,14 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: "\u0418\u0432\u0430\u043D \u043E\u0447\u0435\u043D\u044C \u043B\u044E\u0431\u0438\u0442
-    \u043F\u043E\u043A\u0443\u0448\u0430\u0442\u044C! \u0412 \u0434\u0435\u0442\u0441\u0442\u0432\u0435
-    \u043E\u043D \u043E\u0447\u0435\u043D\u044C \u043B\u044E\u0431\u0438\u043B \u0443\u0445\u0443,
-    \u043A\u043E\u0442\u043E\u0440\u0443\u044E \u0433\u043E\u0442\u043E\u0432\u0438\u043B\u0430
-    \u043C\u0430\u043C\u0430. \u041D\u043E \u0438\u0437-\u0437\u0430 \u0442\u043E\u0433\u043E,
-    \u0447\u0442\u043E \u043E\u043D \u0435\u043B \u0435\u0451 \u043E\u0447\u0435\u043D\u044C
-    \u0447\u0430\u0441\u0442\u043E \u0443 \u0418\u0432\u0430\u043D\u0430 \u0440\u0430\u0437\u0432\u0438\u043B\u0430\u0441\u044C
+  m_Text: "\u041E\u0431\u0435\u0434! \u0418\u0432\u0430\u043D \u043E\u0447\u0435\u043D\u044C
+    \u043B\u044E\u0431\u0438\u0442 \u043F\u043E\u043A\u0443\u0448\u0430\u0442\u044C!
+    \u0412 \u0434\u0435\u0442\u0441\u0442\u0432\u0435 \u043E\u043D \u043E\u0447\u0435\u043D\u044C
+    \u043B\u044E\u0431\u0438\u043B \u0443\u0445\u0443, \u043A\u043E\u0442\u043E\u0440\u0443\u044E
+    \u0433\u043E\u0442\u043E\u0432\u0438\u043B\u0430 \u043C\u0430\u043C\u0430. \u041D\u043E
+    \u0438\u0437-\u0437\u0430 \u0442\u043E\u0433\u043E, \u0447\u0442\u043E \u043E\u043D
+    \u0435\u043B \u0435\u0451 \u043E\u0447\u0435\u043D\u044C \u0447\u0430\u0441\u0442\u043E
+    \u0443 \u0418\u0432\u0430\u043D\u0430 \u0440\u0430\u0437\u0432\u0438\u043B\u0430\u0441\u044C
     \u0430\u043B\u043B\u0435\u0440\u0433\u0438\u044F."
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
@@ -4502,13 +4515,14 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u0418\u0432\u0430\u043D \u043E\u0447\u0435\u043D\u044C \u043B\u044E\u0431\u0438\u0442
-    \u043F\u043E\u043A\u0443\u0448\u0430\u0442\u044C! \u0412 \u0434\u0435\u0442\u0441\u0442\u0432\u0435
-    \u043E\u043D \u043E\u0447\u0435\u043D\u044C \u043B\u044E\u0431\u0438\u043B \u0443\u0445\u0443,
-    \u043A\u043E\u0442\u043E\u0440\u0443\u044E \u0433\u043E\u0442\u043E\u0432\u0438\u043B\u0430
-    \u043C\u0430\u043C\u0430. \u041D\u043E \u0438\u0437-\u0437\u0430 \u0442\u043E\u0433\u043E,
-    \u0447\u0442\u043E \u043E\u043D \u0435\u043B \u0435\u0451 \u043E\u0447\u0435\u043D\u044C
-    \u0447\u0430\u0441\u0442\u043E \u0443 \u0418\u0432\u0430\u043D\u0430 \u0440\u0430\u0437\u0432\u0438\u043B\u0430\u0441\u044C
+  m_Text: "\u041E\u0431\u0435\u0434! \u0418\u0432\u0430\u043D \u043E\u0447\u0435\u043D\u044C
+    \u043B\u044E\u0431\u0438\u0442 \u043F\u043E\u043A\u0443\u0448\u0430\u0442\u044C!
+    \u0412 \u0434\u0435\u0442\u0441\u0442\u0432\u0435 \u043E\u043D \u043E\u0447\u0435\u043D\u044C
+    \u043B\u044E\u0431\u0438\u043B \u0443\u0445\u0443, \u043A\u043E\u0442\u043E\u0440\u0443\u044E
+    \u0433\u043E\u0442\u043E\u0432\u0438\u043B\u0430 \u043C\u0430\u043C\u0430. \u041D\u043E
+    \u0438\u0437-\u0437\u0430 \u0442\u043E\u0433\u043E, \u0447\u0442\u043E \u043E\u043D
+    \u0435\u043B \u0435\u0451 \u043E\u0447\u0435\u043D\u044C \u0447\u0430\u0441\u0442\u043E
+    \u0443 \u0418\u0432\u0430\u043D\u0430 \u0440\u0430\u0437\u0432\u0438\u043B\u0430\u0441\u044C
     \u0430\u043B\u043B\u0435\u0440\u0433\u0438\u044F."
 --- !u!222 &680429134
 CanvasRenderer:
@@ -5321,7 +5335,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 783509358}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: BackToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &783509358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11724,7 +11750,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1822310360}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2044351036}
+        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+        m_MethodName: BackToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1822310360
 MonoBehaviour:
   m_ObjectHideFlags: 0
