@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class IvanMoveLevel2 : MonoBehaviour
+public class IvanMoveLevel5 : MonoBehaviour
 {
     [SerializeField] 
     private GameObject ifButton; // Кнопка условия
@@ -49,13 +49,15 @@ public class IvanMoveLevel2 : MonoBehaviour
     private RectTransform textRectTransform;
 
     [SerializeField]
-    private GameObject DialogeWindowStory; // Диалоговое окно для истории
-
-    [SerializeField]
-    private GameObject DialogeWindowStory2; // Второе диалоговое окно для истории
-
-    [SerializeField]
     private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
+    [SerializeField]
+    private GameObject DialogeWindowGoodEnd2; // Диалоговое окно для прохождения
+    [SerializeField]
+    private GameObject DialogeWindowGoodEnd3; // Диалоговое окно для прохождения
+    [SerializeField]
+    private GameObject DialogeWindowGoodEnd4; // Диалоговое окно для прохождения
+    [SerializeField]
+    private GameObject DialogeWindowGoodEnd5; // Диалоговое окно для прохождения
 
     [SerializeField]
     private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
@@ -65,16 +67,6 @@ public class IvanMoveLevel2 : MonoBehaviour
 
     void Start()
     {
-        if (DialogeWindowStory2 != null)
-        {
-            DialogeWindowStory2.SetActive(true);
-        }
-
-        if (DialogeWindowStory != null)
-        {
-            DialogeWindowStory.SetActive(false);
-        }
-
         // Находим всех персонажей с тегом "Player"
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -83,12 +75,12 @@ public class IvanMoveLevel2 : MonoBehaviour
             if (p.name == "Ivan") // Если это Иван
             {
                 ivan = p.transform;
-                currentIvanCheckPoint = checkPoints[32]; // Чекпоинт для Ивана
+                currentIvanCheckPoint = checkPoints[7]; // Чекпоинт для Ивана
             }
             else if (p.name == "Paulina") // Если это Паулина
             {
                 paulina = p.transform;
-                currentPaulinaCheckPoint = checkPoints[44]; // Чекпоинт для Паулины
+                currentPaulinaCheckPoint = checkPoints[15]; // Чекпоинт для Паулины
             }
         }
 
@@ -362,11 +354,15 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
 
         // Проверка чекпоинтов после завершения всего алгоритма
-        if (currentIvanCheckPoint == checkPoints[110] && currentPaulinaCheckPoint == checkPoints[57])
+        if (currentIvanCheckPoint == checkPoints[27] && currentPaulinaCheckPoint == checkPoints[35])
         {
             // Показываем диалоговое окно для успешного прохождения уровня
             if (DialogeWindowGoodEnd != null)
             {
+                DialogeWindowGoodEnd5.SetActive(true);
+                DialogeWindowGoodEnd4.SetActive(true);
+                DialogeWindowGoodEnd3.SetActive(true);
+                DialogeWindowGoodEnd2.SetActive(true);
                 DialogeWindowGoodEnd.SetActive(true);
             }
         }
@@ -387,7 +383,7 @@ public class IvanMoveLevel2 : MonoBehaviour
     {
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
         {
-            if (!isPlaying || isPathBlocked || DialogeWindowBadEnd.activeSelf || DialogeWindowGoodEnd.activeSelf)
+            if (!isPlaying || isPathBlocked || DialogeWindowBadEnd.activeSelf)
             {
                 yield break;
             }
@@ -477,7 +473,6 @@ public class IvanMoveLevel2 : MonoBehaviour
     public void StopAlgorithm()
     {
         isPlaying = false;
-
         StopAllCoroutines();
 
         algorithmSteps.Clear();
@@ -494,14 +489,14 @@ public class IvanMoveLevel2 : MonoBehaviour
             scrollRect.verticalNormalizedPosition = 1f;
         }
 
-        if (ivan != null && checkPoints.Count > 32)
+        if (ivan != null && checkPoints.Count > 7)
         {
-            currentIvanCheckPoint = checkPoints[32]; // Назначаем чекпоинт
+            currentIvanCheckPoint = checkPoints[7]; // Назначаем чекпоинт
             ivan.position = currentIvanCheckPoint.position;
         }
-        if (paulina != null && checkPoints.Count > 44)
+        if (paulina != null && checkPoints.Count > 15)
         {
-            currentPaulinaCheckPoint = checkPoints[44]; // Назначаем чекпоинт
+            currentPaulinaCheckPoint = checkPoints[15]; // Назначаем чекпоинт
             paulina.position = currentPaulinaCheckPoint.position;
         }
     }
@@ -536,6 +531,10 @@ public class IvanMoveLevel2 : MonoBehaviour
     {
         if (DialogeWindowGoodEnd != null)
         {
+            DialogeWindowGoodEnd5.SetActive(true);
+            DialogeWindowGoodEnd4.SetActive(true);
+            DialogeWindowGoodEnd3.SetActive(true);
+            DialogeWindowGoodEnd2.SetActive(true);
             DialogeWindowGoodEnd.SetActive(true);
         }
     }
