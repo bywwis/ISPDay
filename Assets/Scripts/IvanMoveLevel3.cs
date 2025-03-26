@@ -31,15 +31,6 @@ public class IvanMoveLevel3 : MonoBehaviour
     private RectTransform textRectTransform;
 
     [SerializeField]
-    private GameObject DialogeWindowStory; // Диалоговое окно для истории
-
-    [SerializeField]
-    private GameObject DialogeWindowStory2; // Второе диалоговое окно для истории
-
-    [SerializeField]
-    private Button NextPageButton; // Кнопка для перехода на следующую страницу
-
-    [SerializeField]
     private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
 
     [SerializeField]
@@ -83,16 +74,6 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     void Start()
     {
-        if (DialogeWindowStory2 != null)
-        {
-            DialogeWindowStory2.SetActive(true);
-        }
-
-        if (DialogeWindowStory != null)
-        {
-            DialogeWindowStory.SetActive(true);
-        }
-
         player = GameObject.FindGameObjectWithTag("Player").transform;
         if (checkPoints.Count > 0)
         {
