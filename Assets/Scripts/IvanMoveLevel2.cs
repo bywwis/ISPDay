@@ -56,6 +56,9 @@ public class IvanMoveLevel2 : MonoBehaviour
 
     private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
 
+    [SerializeField]
+    private GameObject DialogeWindowError; // Диалоговое окно для ошибки незаполненного условия
+
 
     void Start()
     {
@@ -234,11 +237,42 @@ public class IvanMoveLevel2 : MonoBehaviour
     // Проигрываем алгоритм
     public void PlayAlgorithm()
     {
+        // Проверяем, есть ли незавершенное условие в алгоритме
+        if (HasUnfinishedCondition())
+        {
+            // Показываем окно ошибки
+            if (DialogeWindowError != null)
+            {
+                DialogeWindowError.SetActive(true);
+            }
+            return;
+        }
+
         if (!isPlaying && algorithmSteps.Count > 0)
         {
             isPlaying = true;
             StartCoroutine(ExecuteAlgorithm());
         }
+    }
+
+    // Проверяет, есть ли незавершенное условие в алгоритме
+    private bool HasUnfinishedCondition()
+    {
+        bool hasOpenCondition = false;
+        
+        foreach (string step in algorithmSteps)
+        {
+            if (step.StartsWith("Если") || step.StartsWith("Иван, то (") || step.StartsWith("Паулина, то ("))
+            {
+                hasOpenCondition = true;
+            }
+            else if (step == ")")
+            {
+                hasOpenCondition = false;
+            }
+        }
+        
+        return hasOpenCondition;
     }
 
     private IEnumerator ExecuteAlgorithm()
@@ -533,7 +567,7 @@ public class IvanMoveLevel2 : MonoBehaviour
         movementButtons.SetActive(false);
         nameButtons.SetActive(true);
         endButton.SetActive(false);
-        nextButton.SetActive(true);
+        nextButton.SetActive(false);
         ifButton.SetActive(false);
 
         // Добавляем текст "Если " в поле алгоритма
@@ -548,6 +582,7 @@ public class IvanMoveLevel2 : MonoBehaviour
 
         // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
+        nextButton.SetActive(true);
     }
 
     // Метод для обработки нажатия на кнопку "Паулина"
@@ -558,6 +593,7 @@ public class IvanMoveLevel2 : MonoBehaviour
 
         // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
+        nextButton.SetActive(true);
     }
 
 

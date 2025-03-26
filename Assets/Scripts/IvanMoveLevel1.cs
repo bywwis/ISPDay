@@ -208,6 +208,21 @@ public class IvanMoveLevel1 : MonoBehaviour
                 ExecuteGetCommand();
             }
         }
+
+        if (allItemsCollected && targetCheckPoint != null)
+        {
+            float distance = Vector3.Distance(player.position, targetCheckPoint.position);
+
+            if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.01f)
+            {
+                ShowCompletionDialog();
+            }
+        }
+        else
+        {
+            DialogeWindowBadEnd.SetActive(true);
+        }
+
         isPlaying = false;
     }
 
