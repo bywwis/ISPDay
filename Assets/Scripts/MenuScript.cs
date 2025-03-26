@@ -5,12 +5,6 @@ using UnityEngine.SceneManagement;
 public class MenuScript : MonoBehaviour
 {
     public Button continueButton;
-    public Button startGameButton;
-    public Button handbookButton;
-    public Button exitButton;
-
-    [SerializeField]
-    private GameObject GuideWindow;
 
     void Start()
     {
@@ -48,12 +42,6 @@ public class MenuScript : MonoBehaviour
 
         // Загружаем первый уровень
         SceneManager.LoadScene("level1");
-    }
-
-    // Метод для кнопки "Справочник"
-    public void OpenHandbook()
-    {
-        GuideWindow.SetActive(true);
     }
 
     // Метод для кнопки "Выход"

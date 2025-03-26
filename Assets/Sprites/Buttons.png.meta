@@ -855,6 +855,94 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: "Button_Guide\u0421ondition"
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 181
+        width: 377
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1331a55e69c641d40a0e55bf3d6cf474
+      internalID: -1087955120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_GuideCycle
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 72
+        width: 378
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12b0b621fb255c04d9d73f4d42aceff4
+      internalID: 2062108719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button_GuideMoving
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 181
+        width: 376
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 361c22325007cd94c9a5e52beadde0bd
+      internalID: 706772960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Button_GuideInteraction
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 73
+        width: 376
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ddc04465c32ab34791825c15faf4cb2
+      internalID: -641975422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -887,6 +975,9 @@ TextureImporter:
       Button_Exit: -305046009
       Button_Get: -5402412272178277761
       Button_Guide: -1650338798
+      Button_GuideInteraction: -641975422
+      Button_GuideMoving: 706772960
+      "Button_Guide\u0421ondition": -1087955120
       Button_Ivan: 4520375771122408675
       Button_Left: -3243065930256096816
       Button_Menu: -1327288346
@@ -901,6 +992,7 @@ TextureImporter:
       Button_Stop: -7811504096720598664
       Button_Up: 7664807735657788756
       "Button_\u0421ondition": -5316896731886317114
+      Buttons_GuideCycle: 2062108719
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -49,12 +49,6 @@ public class IvanMoveLevel2 : MonoBehaviour
     private RectTransform textRectTransform;
 
     [SerializeField]
-    private GameObject DialogeWindowStory; // Диалоговое окно для истории
-
-    [SerializeField]
-    private GameObject DialogeWindowStory2; // Второе диалоговое окно для истории
-
-    [SerializeField]
     private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
 
     [SerializeField]
@@ -65,16 +59,6 @@ public class IvanMoveLevel2 : MonoBehaviour
 
     void Start()
     {
-        if (DialogeWindowStory2 != null)
-        {
-            DialogeWindowStory2.SetActive(true);
-        }
-
-        if (DialogeWindowStory != null)
-        {
-            DialogeWindowStory.SetActive(false);
-        }
-
         // Находим всех персонажей с тегом "Player"
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
