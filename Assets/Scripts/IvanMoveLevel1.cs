@@ -42,6 +42,8 @@ public class IvanMoveLevel1 : MonoBehaviour
     private List<bool> itemActiveStates = new List<bool>(); // Исходные состояния предметов
     private int collectedItemsCount = 0; // Счетчик собранных предметов
 
+    public Canvas canvas; // Укажите Canvas в инспекторе
+
     private bool allItemsCollected = false; // Флаг, что все предметы собраны
     private Transform targetCheckPoint; // Чекпоинт (3, 1)
 
@@ -350,16 +352,28 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
+    // Подбор объекта
     private void ExecuteGetCommand()
     {
+        // Получаем масштаб канваса
+        float scale = canvas.scaleFactor;
+
+        float pickupDistance = 200f * scale;
+
+        // Позиция игрока
+        Vector2 playerPos = RectTransformUtility.WorldToScreenPoint(Camera.main, player.position);
+
         for (int i = 0; i < itemsToCollect.Count; i++)
         {
-            var item = itemsToCollect[i];
+            GameObject item = itemsToCollect[i];
+
             if (item != null && item.activeSelf)
             {
-                float distance = Vector3.Distance(player.position, item.transform.position);
+                // Получение позиции предмета
+                Vector2 itemPos = RectTransformUtility.WorldToScreenPoint(Camera.main, item.transform.position);
 
-                if (distance < 200f)
+                // Проверка расстояния
+                if (Vector2.Distance(playerPos, itemPos) < pickupDistance)
                 {
                     item.SetActive(false);
                     collectedItemsCount++;
