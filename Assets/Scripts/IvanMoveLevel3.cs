@@ -42,6 +42,10 @@ public class IvanMoveLevel3 : MonoBehaviour
     [SerializeField]
     private List<GameObject> itemsToCollect; // Список предметов для сбора
     private int collectedItemsCount = 0; // Счетчик собранных предметов
+    private List<Vector3> itemOriginalPositions = new List<Vector3>();
+    private List<bool> itemActiveStates = new List<bool>();
+
+    public Canvas canvas;
 
     private Transform targetCheckPoint; // Чекпоинт (2, 7)
 
@@ -72,9 +76,6 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     [SerializeField]
     private GameObject DialogeWindowError;
-
-    private List<Vector3> itemOriginalPositions = new List<Vector3>();
-    private List<bool> itemActiveStates = new List<bool>(); 
 
     void Start()
     {
@@ -588,16 +589,28 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
     }
 
+    // Подбор объекта
     private void ExecuteGetCommand()
     {
+        // Получаем масштаб канваса
+        float scale = canvas.scaleFactor;
+
+        float pickupDistance = 100f * scale;
+
+        // Позиция игрока
+        Vector2 playerPos = RectTransformUtility.WorldToScreenPoint(Camera.main, player.position);
+
         for (int i = 0; i < itemsToCollect.Count; i++)
         {
-            var item = itemsToCollect[i];
+            GameObject item = itemsToCollect[i];
+
             if (item != null && item.activeSelf)
             {
-                float distance = Vector3.Distance(player.position, item.transform.position);
+                // Получение позиции предмета
+                Vector2 itemPos = RectTransformUtility.WorldToScreenPoint(Camera.main, item.transform.position);
 
-                if (distance < 100f)
+                // Проверка расстояния
+                if (Vector2.Distance(playerPos, itemPos) < pickupDistance)
                 {
                     if (item.CompareTag("fish"))
                     {

@@ -42,7 +42,7 @@ public class IvanMoveLevel1 : MonoBehaviour
     private List<bool> itemActiveStates = new List<bool>(); // Исходные состояния предметов
     private int collectedItemsCount = 0; // Счетчик собранных предметов
 
-    public Canvas canvas; // Укажите Canvas в инспекторе
+    public Canvas canvas;
 
     private bool allItemsCollected = false; // Флаг, что все предметы собраны
     private Transform targetCheckPoint; // Чекпоинт (3, 1)

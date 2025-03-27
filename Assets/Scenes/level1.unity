@@ -10818,7 +10818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   algorithmText: {fileID: 1787148077}
-  moveSpeed: 1
+  moveSpeed: 0.8
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8

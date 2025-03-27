@@ -28,8 +28,7 @@ public class MenuScript : MonoBehaviour
             }
             else
             {
-                Debug.Log("Все уровни пройдены!");
-                SceneManager.LoadScene("Menu"); // Возвращаем в меню, если все уровни пройдены
+                SceneManager.LoadScene(lastCompletedLevel);
             }
         }
     }

@@ -19,7 +19,7 @@ public class IvanMoveLevel4 : MonoBehaviour
     private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
 
-    private bool hasFish = false; // Флаг для проверки, был ли найден объект с тегом "fish"
+    private bool wrongChair = false; // Флаг для проверки, был ли найден объект с тегом "wrongChair"
 
     private Transform player; // Ссылка на персонажа
     private Transform currentCheckPoint; // Текущий чекпоинт
@@ -42,6 +42,10 @@ public class IvanMoveLevel4 : MonoBehaviour
     [SerializeField]
     private List<GameObject> itemsToCollect; // Список предметов для сбора
     private int collectedItemsCount = 0; // Счетчик собранных предметов
+    private List<Vector3> itemOriginalPositions = new List<Vector3>();
+    private List<bool> itemActiveStates = new List<bool>();
+
+    public Canvas canvas;
 
     private Transform targetCheckPoint; // Чекпоинт (2, 7)
 
@@ -73,9 +77,6 @@ public class IvanMoveLevel4 : MonoBehaviour
     [SerializeField]
     private GameObject DialogeWindowError;
 
-    private List<Vector3> itemOriginalPositions = new List<Vector3>();
-    private List<bool> itemActiveStates = new List<bool>(); 
-
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -85,14 +86,13 @@ public class IvanMoveLevel4 : MonoBehaviour
             player.position = currentCheckPoint.position;
         }
 
-        // Находим все объекты с тегом "Item"
-        // Находим все объекты с тегом "Item" и "Fish"
+        // Находим все объекты с тегом "Item" и "wrongChair"
         GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
-        GameObject[] fishObjects = GameObject.FindGameObjectsWithTag("fish");
+        GameObject[] wrongChairObjects = GameObject.FindGameObjectsWithTag("wrongChair");
 
         itemsToCollect = new List<GameObject>();
         itemsToCollect.AddRange(itemObjects);
-        itemsToCollect.AddRange(fishObjects);
+        itemsToCollect.AddRange(wrongChairObjects);
 
         foreach (var item in itemsToCollect)
         {
@@ -105,7 +105,7 @@ public class IvanMoveLevel4 : MonoBehaviour
 
         if (itemsToCollect.Count == 0)
         {
-           Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
+           Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'wrongChair'.");
         }
 
         // Ищем чекпоинт
@@ -450,16 +450,6 @@ public class IvanMoveLevel4 : MonoBehaviour
         else if (step == "Взять")
         {
             ExecuteGetCommand();
-
-            // Если персонаж взял рыбу, показываем BadEnd
-            if (hasFish)
-            {
-                if (DialogeWindowBadEnd != null)
-                {
-                    DialogeWindowBadEnd.SetActive(true);
-                }
-                yield break; // Останавливаем выполнение алгоритма
-            }
         }
     }
 
@@ -595,7 +585,7 @@ public class IvanMoveLevel4 : MonoBehaviour
     private void ResetItems()
     {
         collectedItemsCount = 0;
-        hasFish = false;
+        wrongChair = false;
         
         // Восстанавливаем все предметы
         for (int i = 0; i < itemsToCollect.Count; i++)
@@ -608,24 +598,32 @@ public class IvanMoveLevel4 : MonoBehaviour
         }
     }
 
+    // Подбор объекта
     private void ExecuteGetCommand()
     {
+        // Получаем масштаб канваса
+        float scale = canvas.scaleFactor;
+
+        float pickupDistance = 100f * scale;
+
+        // Позиция игрока
+        Vector2 playerPos = RectTransformUtility.WorldToScreenPoint(Camera.main, player.position);
+
         for (int i = 0; i < itemsToCollect.Count; i++)
         {
-            var item = itemsToCollect[i];
+            GameObject item = itemsToCollect[i];
+
             if (item != null && item.activeSelf)
             {
-                float distance = Vector3.Distance(player.position, item.transform.position);
+                // Получение позиции предмета
+                Vector2 itemPos = RectTransformUtility.WorldToScreenPoint(Camera.main, item.transform.position);
 
-                if (distance < 100f)
+                // Проверка расстояния
+                if (Vector2.Distance(playerPos, itemPos) < pickupDistance)
                 {
-                    if (item.CompareTag("fish"))
+                    if (item.CompareTag("wrongChair"))
                     {
-                        hasFish = true;
-                        if (DialogeWindowBadEnd != null)
-                        {
-                            DialogeWindowBadEnd.SetActive(true);
-                        }
+                        wrongChair = true;
                     }
 
                     item.SetActive(false);
@@ -636,13 +634,11 @@ public class IvanMoveLevel4 : MonoBehaviour
         }
     }
     
-
     private void ShowCompletionDialog()
     {
-        // Проверяем, был ли собран правильный предмет (например, объект с тегом "Item")
-        if (collectedItemsCount == 1 && !hasFish && IsAtCorrectCheckpoint())
+        // Проверяем, был ли собран правильный правильный стул и нанужно ли чекпоинте персонаж
+        if (collectedItemsCount == 1 && !wrongChair && IsAtCorrectCheckpoint())
         {
-            // Если собран правильный предмет, не была найдена рыба и персонаж на правильном чекпоинте, показываем диалоговое окно успеха
             if (DialogeWindowGoodEnd != null)
             {
                 DialogeWindowGoodEnd.SetActive(true);
@@ -651,7 +647,6 @@ public class IvanMoveLevel4 : MonoBehaviour
         }
         else
         {
-            // Если была найдена рыба, не собран правильный предмет или персонаж не на правильном чекпоинте, показываем диалоговое окно ошибки
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);

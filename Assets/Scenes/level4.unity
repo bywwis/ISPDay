@@ -7029,7 +7029,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -7045,8 +7045,8 @@ Canvas:
   m_GameObject: {fileID: 970658692}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 631435751}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -7783,7 +7783,7 @@ GameObject:
   - component: {fileID: 1048814937}
   m_Layer: 3
   m_Name: Chair1
-  m_TagString: fish
+  m_TagString: wrongChair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10266,7 +10266,7 @@ GameObject:
   - component: {fileID: 1515474130}
   m_Layer: 3
   m_Name: Chair3
-  m_TagString: fish
+  m_TagString: wrongChair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10287,7 +10287,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -352.55005, y: 277.09998}
+  m_AnchoredPosition: {x: -348, y: 277.09998}
   m_SizeDelta: {x: 76, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &1515474130
@@ -10324,7 +10324,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.83496094, y: -0.41749573}
+  m_Offset: {x: -0.6479988, y: -0.41749573}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -10334,7 +10334,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 79.489746, y: 61.954742}
+  m_Size: {x: 76.52383, y: 61.954742}
   m_EdgeRadius: 0
 --- !u!114 &1515474131
 MonoBehaviour:
@@ -14609,7 +14609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   algorithmText: {fileID: 1787148077}
-  moveSpeed: 100
+  moveSpeed: 0.8
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -14704,6 +14704,7 @@ MonoBehaviour:
   - {fileID: 1048814935}
   - {fileID: 127837347}
   - {fileID: 1515474128}
+  canvas: {fileID: 970658695}
   CycleButton: {fileID: 2065847367}
   NumberButtons: {fileID: 1298658401}
   NextButton: {fileID: 1032228534}

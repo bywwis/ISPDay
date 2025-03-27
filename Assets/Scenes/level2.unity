@@ -2285,7 +2285,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -8.932007, y: -462.0519}
+  m_AnchoredPosition: {x: -8.932007, y: -462.05066}
   m_SizeDelta: {x: -17.864, y: 924.1035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &205158400
@@ -6162,7 +6162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 309.03168, y: -44.306488}
+  m_AnchoredPosition: {x: 309.03162, y: -44.30652}
   m_SizeDelta: {x: 271.93665, y: 79.387024}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &636195791
@@ -9371,7 +9371,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -9387,8 +9387,8 @@ Canvas:
   m_GameObject: {fileID: 970658692}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 631435751}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -12957,7 +12957,7 @@ MonoBehaviour:
   nextButton: {fileID: 1032228532}
   endButton: {fileID: 697716762}
   algorithmText: {fileID: 1787148077}
-  moveSpeed: 100
+  moveSpeed: 0.8
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -20487,7 +20487,7 @@ MonoBehaviour:
   nextButton: {fileID: 1032228532}
   endButton: {fileID: 697716762}
   algorithmText: {fileID: 1787148077}
-  moveSpeed: 100
+  moveSpeed: 0.8
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8

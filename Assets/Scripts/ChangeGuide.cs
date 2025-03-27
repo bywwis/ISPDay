@@ -18,11 +18,6 @@ public class ChangeGuide : MonoBehaviour
     void Start()
     {
         imageComponent = GetComponent<Image>();
-        SetInitialButtonState(); 
-    }
-
-    void SetInitialButtonState()
-    {
         movingButton.interactable = false;
     }
 
