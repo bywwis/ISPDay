@@ -146,15 +146,6 @@ public class IvanMoveLevel3 : MonoBehaviour
         {
             PlayAlgorithm();
         }
-
-        // Проверяем, собраны ли 3 блюда и достигнут ли целевой чекпоинт
-        if (collectedItemsCount >= 3 && targetCheckPoint != null)
-        {
-            if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.01f)
-            {
-                ShowCompletionDialog();
-            }
-        }
     }
 
     public void BackToMenu()
@@ -418,25 +409,17 @@ public class IvanMoveLevel3 : MonoBehaviour
             }
         }
 
-        // После завершения всех шагов проверяем, нужно ли показать диалоговое окно
-        if (collectedItemsCount >= itemsToCollect.Count && targetCheckPoint != null)
+        if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
         {
-            if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
-            {
-                ShowCompletionDialog();
-            }
-            else
-            {
-                // Если персонаж не на правильном чекпоинте, показываем BadEnd
-                if (DialogeWindowBadEnd != null)
-                {
-                    DialogeWindowBadEnd.SetActive(true);
-                }
-            }
+            ShowCompletionDialog();
         }
         else
         {
-            DialogeWindowBadEnd.SetActive(true);
+            // Если персонаж не на правильном чекпоинте, показываем BadEnd
+            if (DialogeWindowBadEnd != null)
+            {
+                DialogeWindowBadEnd.SetActive(true);
+            }
         }
         isPlaying = false;
     }
@@ -619,10 +602,6 @@ public class IvanMoveLevel3 : MonoBehaviour
                     if (item.CompareTag("fish"))
                     {
                         hasFish = true;
-                        if (DialogeWindowBadEnd != null)
-                        {
-                            DialogeWindowBadEnd.SetActive(true);
-                        }
                     }
 
                     item.SetActive(false);
@@ -635,21 +614,9 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     private void ShowCompletionDialog()
     {
-        // Проверяем, достиг ли персонаж целевого чекпоинта
-        if (targetCheckPoint != null && Vector3.Distance(player.position, targetCheckPoint.position) > 0.1f)
-        {
-            // Если персонаж не достиг целевого чекпоинта, показываем BadEnd
-            if (DialogeWindowBadEnd != null)
-            {
-                DialogeWindowBadEnd.SetActive(true);
-            }
-            return;
-        }
-
-        // Проверяем, были ли собраны правильные предметы
+        // Если рыба была найдена или собрано меньше 3 предметов, показываем BadEnd
         if (hasFish || collectedItemsCount < 3)
         {
-            // Если рыба не была найдена или собрано меньше 3 предметов, показываем BadEnd
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);
