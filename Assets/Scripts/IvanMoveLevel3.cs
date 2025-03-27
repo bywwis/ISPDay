@@ -71,7 +71,10 @@ public class IvanMoveLevel3 : MonoBehaviour
     private bool hasCycle = false;
 
     [SerializeField]
-    private GameObject DialogeWindowError; 
+    private GameObject DialogeWindowError;
+
+    private List<Vector3> itemOriginalPositions = new List<Vector3>();
+    private List<bool> itemActiveStates = new List<bool>(); 
 
     void Start()
     {
@@ -90,6 +93,15 @@ public class IvanMoveLevel3 : MonoBehaviour
         itemsToCollect = new List<GameObject>();
         itemsToCollect.AddRange(itemObjects);
         itemsToCollect.AddRange(fishObjects);
+
+        foreach (var item in itemsToCollect)
+        {
+            if (item != null)
+            {
+                itemOriginalPositions.Add(item.transform.position);
+                itemActiveStates.Add(item.activeSelf);
+            }
+        }
 
         if (itemsToCollect.Count == 0)
         {
@@ -552,6 +564,8 @@ public class IvanMoveLevel3 : MonoBehaviour
             cycleIterations.Clear(); // Очищаем список итераций
         }
 
+        ResetItems();
+
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
         EndButton.gameObject.SetActive(false);
@@ -571,13 +585,28 @@ public class IvanMoveLevel3 : MonoBehaviour
         }
     }
 
+    private void ResetItems()
+    {
+        collectedItemsCount = 0;
+        hasFish = false;
+        
+        // Восстанавливаем все предметы
+        for (int i = 0; i < itemsToCollect.Count; i++)
+        {
+            if (itemsToCollect[i] != null)
+            {
+                itemsToCollect[i].SetActive(itemActiveStates[i]);
+                itemsToCollect[i].transform.position = itemOriginalPositions[i];
+            }
+        }
+    }
+
     private void ExecuteGetCommand()
     {
-        List<GameObject> itemsToDestroy = new List<GameObject>();
-
-        foreach (var item in itemsToCollect)
+        for (int i = 0; i < itemsToCollect.Count; i++)
         {
-            if (item != null)
+            var item = itemsToCollect[i];
+            if (item != null && item.activeSelf)
             {
                 float distance = Vector3.Distance(player.position, item.transform.position);
 
@@ -586,25 +615,16 @@ public class IvanMoveLevel3 : MonoBehaviour
                     if (item.CompareTag("fish"))
                     {
                         hasFish = true;
-                        // Если взята рыба, сразу показываем BadEnd
                         if (DialogeWindowBadEnd != null)
                         {
                             DialogeWindowBadEnd.SetActive(true);
                         }
                     }
 
-                    itemsToDestroy.Add(item);
+                    item.SetActive(false);
                     collectedItemsCount++;
+                    break;
                 }
-            }
-        }
-
-        foreach (var item in itemsToDestroy)
-        {
-            if (item != null)
-            {
-                Destroy(item);
-                itemsToCollect.Remove(item);
             }
         }
     }
@@ -659,20 +679,64 @@ public class IvanMoveLevel3 : MonoBehaviour
 
 
     // Методы для кнопок
-    public void AddUpStep() { AddStep("Вверх"); }
-    public void AddDownStep() { AddStep("Вниз"); }
-    public void AddLeftStep() { AddStep("Влево"); }
-    public void AddRightStep() { AddStep("Вправо"); }
+     public void AddUpStep() 
+    { 
+        AddStep("Вверх");
+        if (CycleButton.gameObject.activeSelf)
+        {
+            EndButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            EndButton.gameObject.SetActive(true);
+        }  
+    }
+    public void AddDownStep() 
+    { 
+        AddStep("Вниз");
+        if (CycleButton.gameObject.activeSelf)
+        {
+            EndButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            EndButton.gameObject.SetActive(true);
+        }  
+    }
+    public void AddLeftStep()
+    { 
+        AddStep("Влево");
+        if (CycleButton.gameObject.activeSelf)
+        {
+            EndButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            EndButton.gameObject.SetActive(true);
+        } 
+    }
+    public void AddRightStep() 
+    { 
+        AddStep("Вправо");
+        if (CycleButton.gameObject.activeSelf)
+        {
+            EndButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            EndButton.gameObject.SetActive(true);
+        }  
+    }
     public void AddGet() { AddStep("Взять"); }
-    public void SetIterations1() { SetIterations(1); }
-    public void SetIterations2() { SetIterations(2); }
-    public void SetIterations3() { SetIterations(3); }
-    public void SetIterations4() { SetIterations(4); }
-    public void SetIterations5() { SetIterations(5); }
-    public void SetIterations6() { SetIterations(6); }
-    public void SetIterations7() { SetIterations(7); }
-    public void SetIterations8() { SetIterations(8); }
-    public void SetIterations9() { SetIterations(9); }
+    public void SetIterations1() { SetIterations(1); NextButton.gameObject.SetActive(true);}
+    public void SetIterations2() { SetIterations(2); NextButton.gameObject.SetActive(true);}
+    public void SetIterations3() { SetIterations(3); NextButton.gameObject.SetActive(true);}
+    public void SetIterations4() { SetIterations(4); NextButton.gameObject.SetActive(true);}
+    public void SetIterations5() { SetIterations(5); NextButton.gameObject.SetActive(true);}
+    public void SetIterations6() { SetIterations(6); NextButton.gameObject.SetActive(true);}
+    public void SetIterations7() { SetIterations(7); NextButton.gameObject.SetActive(true);}
+    public void SetIterations8() { SetIterations(8); NextButton.gameObject.SetActive(true);}
+    public void SetIterations9() { SetIterations(9); NextButton.gameObject.SetActive(true);}
 
     void OnCycleButtonClicked()
     {
@@ -680,7 +744,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         NumberButtons.SetActive(true);
         ButtonsAlgoritm.SetActive(false);
         EndButton.gameObject.SetActive(false);
-        NextButton.gameObject.SetActive(true);
+        NextButton.gameObject.SetActive(false);
         CycleButton.gameObject.SetActive(false);
 
         AddStep("Для Ивана от 1 ");
@@ -691,7 +755,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         // Показываем кнопки для описания алгоритма
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
-        EndButton.gameObject.SetActive(true);
+        EndButton.gameObject.SetActive(false);
         NextButton.gameObject.SetActive(false);
 
     }

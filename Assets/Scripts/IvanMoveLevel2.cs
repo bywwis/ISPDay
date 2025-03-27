@@ -25,7 +25,7 @@ public class IvanMoveLevel2 : MonoBehaviour
     private InputField algorithmText; // Текстовое поле для отображения алгоритма
     
     [SerializeField]
-    private float moveSpeed = 2f; // Скорость движения персонажа
+    private float moveSpeed = 100f; // Скорость движения персонажа
     
     [SerializeField]
     private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
@@ -59,6 +59,8 @@ public class IvanMoveLevel2 : MonoBehaviour
     [SerializeField]
     private GameObject DialogeWindowError; // Диалоговое окно для ошибки незаполненного условия
 
+    private bool isConditionComplete = false;
+    private bool isConditionBeingEdited = false;
 
     void Start()
     {
@@ -126,6 +128,16 @@ public class IvanMoveLevel2 : MonoBehaviour
         {
             algorithmSteps.Add(step);
             UpdateAlgorithmText();
+            
+            // Если добавляем шаг внутри условия, показываем кнопку "Закончить"
+            if (isConditionBeingEdited && !step.StartsWith("Если") && !step.StartsWith("Иван") && !step.StartsWith("Паулина"))
+            {
+                endButton.SetActive(true);
+            }
+            else
+            {
+                endButton.SetActive(false);
+            }
         }
     }
 
@@ -154,7 +166,6 @@ public class IvanMoveLevel2 : MonoBehaviour
                 }
                 stepNumber++; // Увеличиваем номер шага
                 hasCondition = true; // Устанавливаем флаг условия
-
             }
             // Если шаг начинается с "Иван" или "Паулина", добавляем как часть условия
             else if (algorithmSteps[i].StartsWith("Иван") || algorithmSteps[i].StartsWith("Паулина"))
@@ -167,7 +178,6 @@ public class IvanMoveLevel2 : MonoBehaviour
                 if (stepNumber < 10)
                 {
                     algorithmText.text += $"\n{stepNumber}   );";
-
                 }
                 else
                 {
@@ -186,13 +196,11 @@ public class IvanMoveLevel2 : MonoBehaviour
                     if (stepNumber < 10)
                     {
                         algorithmText.text += $"\n{stepNumber}     {algorithmSteps[i]};";
-
                     }
                     else
                     {
                         algorithmText.text += $"\n{stepNumber}    {algorithmSteps[i]};";
                     }
-
                 }
                 else
                 {
@@ -410,7 +418,7 @@ public class IvanMoveLevel2 : MonoBehaviour
     {
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
         {
-            if (!isPlaying || isPathBlocked || DialogeWindowBadEnd.activeSelf || DialogeWindowGoodEnd.activeSelf)
+            if (!isPlaying || isPathBlocked || (DialogeWindowBadEnd != null && DialogeWindowBadEnd.activeSelf) || (DialogeWindowGoodEnd != null && DialogeWindowGoodEnd.activeSelf))
             {
                 yield break;
             }
@@ -510,6 +518,9 @@ public class IvanMoveLevel2 : MonoBehaviour
         nextButton.SetActive(false);
         ifButton.SetActive(true);
 
+        isConditionBeingEdited = false;
+        isConditionComplete = false;
+
         algorithmText.text = "";
         if (scrollRect != null)
         {
@@ -569,6 +580,9 @@ public class IvanMoveLevel2 : MonoBehaviour
         nextButton.SetActive(false);
         ifButton.SetActive(false);
 
+        isConditionBeingEdited = true;
+        isConditionComplete = false;
+
         // Добавляем текст "Если " в поле алгоритма
         AddStep("Если ");
     }
@@ -595,16 +609,16 @@ public class IvanMoveLevel2 : MonoBehaviour
         nextButton.SetActive(true);
     }
 
-
     // Метод для обработки нажатия на кнопку "Далее"
     public void OnNextButtonClick()
     {
-        // Показываем кнопки для движения (они же для описания алгоритма) и кнопку "Закончить"
+        // Показываем кнопки для движения (они же для описания алгоритма)
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
-        endButton.SetActive(true);
         nextButton.SetActive(false);
         ifButton.SetActive(false);
+
+        isConditionBeingEdited = true;
     }
 
     // Метод для обработки нажатия на кнопку "Закончить"
@@ -616,6 +630,9 @@ public class IvanMoveLevel2 : MonoBehaviour
         endButton.SetActive(false);
         nextButton.SetActive(false);
         ifButton.SetActive(true);
+
+        isConditionComplete = true;
+        isConditionBeingEdited = false;
 
         // Добавляем закрывающую скобку и знак ";" в поле алгоритма
         AddStep(")");

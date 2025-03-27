@@ -10,7 +10,7 @@ public class IvanMoveLevel1 : MonoBehaviour
     private InputField algorithmText; // Текстовое поле для отображения алгоритма
 
     [SerializeField]
-    private float moveSpeed = 2f; // Скорость движения персонажа
+    private float moveSpeed = 100f; // Скорость движения персонажа
 
     [SerializeField]
     private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
@@ -38,6 +38,8 @@ public class IvanMoveLevel1 : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> itemsToCollect; // Список предметов для сбора
+    private List<Vector3> itemOriginalPositions = new List<Vector3>(); // Исходные позиции предметов
+    private List<bool> itemActiveStates = new List<bool>(); // Исходные состояния предметов
     private int collectedItemsCount = 0; // Счетчик собранных предметов
 
     private bool allItemsCollected = false; // Флаг, что все предметы собраны
@@ -57,6 +59,13 @@ public class IvanMoveLevel1 : MonoBehaviour
         if (itemObjects.Length > 0)
         {
             itemsToCollect = new List<GameObject>(itemObjects);
+            
+            // Сохраняем исходные позиции и состояния предметов
+            foreach (var item in itemsToCollect)
+            {
+                itemOriginalPositions.Add(item.transform.position);
+                itemActiveStates.Add(item.activeSelf);
+            }
         }
         else
         {
@@ -64,13 +73,13 @@ public class IvanMoveLevel1 : MonoBehaviour
             itemsToCollect = new List<GameObject>(); // Инициализируем пустой список
         }
 
-        // Ищем чекпоинт с координатами (1372.00, 329.79, 0.00)
-        Vector3 targetPosition = new Vector3(1372.00f, 329.79f, 0.00f);
-        targetCheckPoint = FindCheckPointByCoordinates(targetPosition);
-
-        if (targetCheckPoint == null)
+        if (checkPoints.Count > 19)
         {
-            Debug.LogError("Чекпоинт с координатами (1372.00, 329.79, 0.00) не найден.");
+            targetCheckPoint = checkPoints[19];
+        }
+        else
+        {
+            Debug.LogError("Чекпоинт 19 отсутствует в списке checkPoints.");
         }
 
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
@@ -80,7 +89,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
 
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-     
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         UpdateAlgorithmText();
@@ -110,12 +118,10 @@ public class IvanMoveLevel1 : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    // Находим чекпоинт по координатам (x, y, z)
     private Transform FindCheckPointByCoordinates(Vector3 targetPosition)
     {
         foreach (var checkPoint in checkPoints)
         {
-
             if (Vector3.Distance(checkPoint.position, targetPosition) < 0.1f)
             {
                 return checkPoint;
@@ -125,7 +131,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         return null;
     }
 
-    // Добавляем шаг в алгоритм
     public void AddStep(string step)
     {
         if (!isPlaying)
@@ -135,7 +140,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Обновляем текстовое поле с алгоритмом
     void UpdateAlgorithmText()
     {
         algorithmText.text = "";
@@ -162,7 +166,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         Canvas.ForceUpdateCanvases();
 
         float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
-
         float scrollRectHeight = scrollRectTransform.rect.height;
 
         if (textHeight > scrollRectHeight)
@@ -171,7 +174,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Проигрываем алгоритм
     public void PlayAlgorithm()
     {
         if (!isPlaying && algorithmSteps.Count > 0)
@@ -181,7 +183,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Пошагово выполняем алгоритм
     private IEnumerator ExecuteAlgorithm()
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
@@ -226,7 +227,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         isPlaying = false;
     }
 
-    // Двигаем персонажа к целевой позиции
     private IEnumerator MovePlayer(Vector3 targetPosition)
     {
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
@@ -243,7 +243,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         player.position = targetPosition;
     }
 
-    // Получаем направление из шага алгоритма
     private Vector3 GetDirectionFromStep(string step)
     {
         switch (step)
@@ -261,7 +260,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Находим следующий чекпоинт в заданном направлении
     private Transform FindNextCheckPoint(Vector3 direction)
     {
         Transform nearestCheckPoint = null;
@@ -284,7 +282,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         return nearestCheckPoint;
     }
 
-    // Обработчик события входа в триггер
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
@@ -292,10 +289,8 @@ public class IvanMoveLevel1 : MonoBehaviour
             isPathBlocked = true;
             Debug.Log("Путь заблокирован: " + collision.gameObject.name);
 
-            // Останавливаем выполнение алгоритма
             StopAlgorithm();
 
-            // Показываем диалоговое окно
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);
@@ -303,7 +298,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Обработчик события выхода из триггера
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
@@ -312,9 +306,9 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Перезапускаем уровень
     public void RestartLevel()
     {
+        ResetItems();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -336,28 +330,43 @@ public class IvanMoveLevel1 : MonoBehaviour
             player.position = checkPoints[4].position;
             currentCheckPoint = checkPoints[4];
         }
+
+        // Восстанавливаем предметы при сбросе алгоритма
+        ResetItems();
+    }
+
+    private void ResetItems()
+    {
+        collectedItemsCount = 0;
+        allItemsCollected = false;
+        
+        for (int i = 0; i < itemsToCollect.Count; i++)
+        {
+            if (itemsToCollect[i] != null)
+            {
+                itemsToCollect[i].SetActive(itemActiveStates[i]);
+                itemsToCollect[i].transform.position = itemOriginalPositions[i];
+            }
+        }
     }
 
     private void ExecuteGetCommand()
     {
-        // Проверяем, находится ли персонаж рядом с предметом
-        foreach (var item in itemsToCollect)
+        for (int i = 0; i < itemsToCollect.Count; i++)
         {
-            if (item != null)
+            var item = itemsToCollect[i];
+            if (item != null && item.activeSelf)
             {
                 float distance = Vector3.Distance(player.position, item.transform.position);
 
                 if (distance < 200f)
                 {
-   
-                    Destroy(item);
+                    item.SetActive(false);
                     collectedItemsCount++;
 
-                    // Проверяем, собраны ли все предметы
                     if (collectedItemsCount >= 4)
                     {
-                        allItemsCollected = true; // Все предметы собраны
-
+                        allItemsCollected = true;
                     }
                     break;
                 }
@@ -365,7 +374,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Метод для показа диалогового окна о завершении сбора всех предметов
     private void ShowCompletionDialog()
     {
         if (DialogeWindowGoodEnd != null)
@@ -376,7 +384,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
     }
 
-    // Переход на 2 уровень 
     public void LoadNextScene()
     {
         int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
@@ -390,7 +397,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         }
     }
 
-    // Методы для кнопок
     public void AddUpStep() { AddStep("Вверх"); }
     public void AddDownStep() { AddStep("Вниз"); }
     public void AddLeftStep() { AddStep("Влево"); }
