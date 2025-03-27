@@ -561,7 +561,11 @@ public class IvanMoveLevel4 : MonoBehaviour
 
         algorithmSteps.Clear();
         StopAllCoroutines();
-        
+
+        isCycleActive = false; // Сброс активности цикла
+        cycleStartIndex = -1; // Сброс индекса начала цикла
+        hasCycle = false;
+
         if (cycleIterations.Count > 0)
         {
             cycleIterations.Clear(); // Очищаем список итераций
