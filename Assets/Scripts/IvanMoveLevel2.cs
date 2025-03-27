@@ -500,7 +500,6 @@ public class IvanMoveLevel2 : MonoBehaviour
     public void StopAlgorithm()
     {
         isPlaying = false;
-
         StopAllCoroutines();
 
         algorithmSteps.Clear();

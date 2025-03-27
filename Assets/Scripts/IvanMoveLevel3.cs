@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class IvanMoveLevel3 : MonoBehaviour
 {
@@ -326,15 +327,26 @@ public class IvanMoveLevel3 : MonoBehaviour
     // Проигрываем алгоритм
     public void PlayAlgorithm()
     {
+        // Проверяем, есть ли незавершенные циклы
+        if (isCycleActive && !isCycleComplete)
+        {
+            ShowErrorDialog("Алгоритм не может быть запущен, пока цикл не завершен.");
+            StopAlgorithm();
+            return;
+        }
+
+        // Проверяем, что для всех циклов задано количество итераций
+        int cycleCount = algorithmSteps.Count(step => step.StartsWith("Для"));
+        if (cycleCount > 0 && cycleIterations.Count != cycleCount)
+        {
+            ShowErrorDialog("Для всех циклов должно быть задано количество итераций.");
+            return;
+        }
+
         if (!isPlaying && algorithmSteps.Count > 0)
         {
             isPlaying = true;
             StartCoroutine(ExecuteAlgorithm());
-        }
-        else if (isCycleActive && !isCycleComplete)
-        {
-            ShowErrorDialog("Алгоритм не может быть запущен, пока цикл не завершен.");
-            StopAlgorithm();
         }
     }
 
@@ -409,6 +421,10 @@ public class IvanMoveLevel3 : MonoBehaviour
                     DialogeWindowBadEnd.SetActive(true);
                 }
             }
+        }
+        else
+        {
+            DialogeWindowBadEnd.SetActive(true);
         }
         isPlaying = false;
     }
@@ -527,6 +543,7 @@ public class IvanMoveLevel3 : MonoBehaviour
     public void StopAlgorithm()
     {
         isPlaying = false;
+        StopAllCoroutines();
 
         algorithmSteps.Clear();
         
