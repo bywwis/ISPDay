@@ -33,6 +33,9 @@ public class IvanMoveLevel1 : MonoBehaviour
 
     [SerializeField]
     private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
+    
+    [SerializeField]
+    private GameObject DialogeWindowError;
 
     private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
 
@@ -158,7 +161,28 @@ public class IvanMoveLevel1 : MonoBehaviour
             }
         }
 
+        int lineCount = algorithmText.text.Split('\n').Length;
+
+        if (lineCount > 19)
+        {
+            ShowErrorDialog($"Превышено максимальное количество строк (19).");
+            return;
+        }
+
         StartCoroutine(ScrollIfOverflow());
+    }
+
+    private void ShowErrorDialog(string message)
+    {
+        if (DialogeWindowError != null)
+        {
+            DialogeWindowError.SetActive(true);
+            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
+            if (errorText != null)
+            {
+                errorText.text = message;
+            }
+        }
     }
 
     private IEnumerator ScrollIfOverflow()

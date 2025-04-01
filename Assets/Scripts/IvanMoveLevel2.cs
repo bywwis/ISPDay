@@ -222,8 +222,29 @@ public class IvanMoveLevel2 : MonoBehaviour
             }
         }
 
+        int lineCount = algorithmText.text.Split('\n').Length;
+
+        if (lineCount > 25)
+        {
+            ShowErrorDialog($"Превышено максимальное количество строк (25).");
+            return;
+        }
+
         // Прокрутка текстового поля, если текст не помещается
         StartCoroutine(ScrollIfOverflow());
+    }
+
+    private void ShowErrorDialog(string message)
+    {
+        if (DialogeWindowError != null)
+        {
+            DialogeWindowError.SetActive(true);
+            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
+            if (errorText != null)
+            {
+                errorText.text = message;
+            }
+        }
     }
 
     private IEnumerator ScrollIfOverflow()
