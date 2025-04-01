@@ -16,9 +16,6 @@ public class IvanMoveLevel5 : MonoBehaviour
     private GameObject nameButtons;
 
     [SerializeField]
-    private GameObject nextButton;
-
-    [SerializeField]
     private GameObject endButton;
 
     [SerializeField]
@@ -94,7 +91,6 @@ public class IvanMoveLevel5 : MonoBehaviour
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         endButton.SetActive(false);
-        nextButton.SetActive(false);
         nameButtons.SetActive(false);
         
         UpdateAlgorithmText();
@@ -454,7 +450,6 @@ public class IvanMoveLevel5 : MonoBehaviour
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
         endButton.SetActive(false);
-        nextButton.SetActive(false);
         ifButton.SetActive(true);
 
         isConditionBeingEdited = false;
@@ -493,50 +488,63 @@ public class IvanMoveLevel5 : MonoBehaviour
     public void AddRightStep() { AddStep("Вправо"); }
     public void AddSit() { AddStep("Сесть"); }
 
+// Метод для обработки нажатия на кнопку "Условие"
     public void OnConditionButtonClick()
     {
+        // Показываем кнопки для выбора имени и кнопку "Далее"
         movementButtons.SetActive(false);
         nameButtons.SetActive(true);
         endButton.SetActive(false);
-        nextButton.SetActive(false);
         ifButton.SetActive(false);
 
         isConditionBeingEdited = true;
+
+        // Добавляем текст "Если " в поле алгоритма
         AddStep("Если ");
     }
 
+    // Метод для обработки нажатия на кнопку "Иван"
     public void OnIvanButtonClick()
     {
+        // Добавляем текст "Иван, то ( " в поле алгоритма
         AddStep("Иван, то ( ");
+
+        // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
-        nextButton.SetActive(true);
+        OnNextButtonClick();
     }
 
+    // Метод для обработки нажатия на кнопку "Паулина"
     public void OnPaulinaButtonClick()
     {
+        // Добавляем текст "Паулина, то ( " в поле алгоритма
         AddStep("Паулина, то ( ");
+
+        // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
-        nextButton.SetActive(true);
+        OnNextButtonClick();
     }
 
     public void OnNextButtonClick()
     {
+        // Показываем кнопки для движения (они же для описания алгоритма)
         movementButtons.SetActive(true);
-        nameButtons.SetActive(false);
-        endButton.SetActive(false);
-        nextButton.SetActive(false);
-        ifButton.SetActive(false);
+
+        isConditionBeingEdited = true;
     }
 
+    // Метод для обработки нажатия на кнопку "Закончить"
     public void OnEndButtonClick()
     {
+        // Возвращаем всё в изначальное положение
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
         endButton.SetActive(false);
-        nextButton.SetActive(false);
         ifButton.SetActive(true);
 
         isConditionBeingEdited = false;
+
+        // Добавляем закрывающую скобку и знак ";" в поле алгоритма
         AddStep(")");
     }
 }

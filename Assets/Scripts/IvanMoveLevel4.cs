@@ -56,9 +56,6 @@ public class IvanMoveLevel4 : MonoBehaviour
     private GameObject NumberButtons; // Группа кнопок для выбора количества итераций
 
     [SerializeField]
-    private Button NextButton; // Кнопка для перехода к описанию алгоритма
-
-    [SerializeField]
     private GameObject ButtonsAlgoritm; // Группа кнопок для описания алгоритма
 
     [SerializeField]
@@ -129,14 +126,12 @@ public class IvanMoveLevel4 : MonoBehaviour
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         CycleButton.onClick.AddListener(OnCycleButtonClicked);
-        NextButton.onClick.AddListener(OnNextButtonClicked);
         EndButton.onClick.AddListener(OnEndButtonClicked);
 
         // Скрываем группы кнопок при старте
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
         EndButton.gameObject.SetActive(false);
-        NextButton.gameObject.SetActive(false);
 
         UpdateAlgorithmText();
     }
@@ -567,7 +562,6 @@ public class IvanMoveLevel4 : MonoBehaviour
         ButtonsAlgoritm.SetActive(true);
         EndButton.gameObject.SetActive(false);
         CycleButton.gameObject.SetActive(true);
-        NextButton.gameObject.SetActive(false);
 
         algorithmText.text = "";
         if (scrollRect != null)
@@ -733,15 +727,15 @@ public class IvanMoveLevel4 : MonoBehaviour
         AddStep("Взять"); 
     }
     public void AddSitStep() { AddStep("Сесть"); }
-    public void SetIterations1() { SetIterations(1); NextButton.gameObject.SetActive(true);}
-    public void SetIterations2() { SetIterations(2); NextButton.gameObject.SetActive(true);}
-    public void SetIterations3() { SetIterations(3); NextButton.gameObject.SetActive(true);}
-    public void SetIterations4() { SetIterations(4); NextButton.gameObject.SetActive(true);}
-    public void SetIterations5() { SetIterations(5); NextButton.gameObject.SetActive(true);}
-    public void SetIterations6() { SetIterations(6); NextButton.gameObject.SetActive(true);}
-    public void SetIterations7() { SetIterations(7); NextButton.gameObject.SetActive(true);}
-    public void SetIterations8() { SetIterations(8); NextButton.gameObject.SetActive(true);}
-    public void SetIterations9() { SetIterations(9); NextButton.gameObject.SetActive(true);}
+    public void SetIterations1() { SetIterations(1);}
+    public void SetIterations2() { SetIterations(2);}
+    public void SetIterations3() { SetIterations(3);}
+    public void SetIterations4() { SetIterations(4);}
+    public void SetIterations5() { SetIterations(5);}
+    public void SetIterations6() { SetIterations(6);}
+    public void SetIterations7() { SetIterations(7);}
+    public void SetIterations8() { SetIterations(8);}
+    public void SetIterations9() { SetIterations(9);}
 
     void OnCycleButtonClicked()
     {
@@ -749,7 +743,6 @@ public class IvanMoveLevel4 : MonoBehaviour
         NumberButtons.SetActive(true);
         ButtonsAlgoritm.SetActive(false);
         EndButton.gameObject.SetActive(false);
-        NextButton.gameObject.SetActive(false);
         CycleButton.gameObject.SetActive(false);
 
         AddStep("Для Ивана от 1 ");
@@ -761,8 +754,6 @@ public class IvanMoveLevel4 : MonoBehaviour
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
         EndButton.gameObject.SetActive(false);
-        NextButton.gameObject.SetActive(false);
-
     }
 
     void OnEndButtonClicked()
@@ -781,5 +772,6 @@ public class IvanMoveLevel4 : MonoBehaviour
         cycleIterations.Add(iterations); // Добавляем количество итераций в список
         AddStep($"до {iterations} повторять (");
         NumberButtons.SetActive(false);
+        OnNextButtonClicked();
     }
 }

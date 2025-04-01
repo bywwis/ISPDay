@@ -16,9 +16,6 @@ public class IvanMoveLevel2 : MonoBehaviour
     private GameObject nameButtons; // Кнопки для выбора имени
 
     [SerializeField]
-    private GameObject nextButton; // Кнопка Далее Условие
-
-    [SerializeField]
     private GameObject endButton; // Кнопка Закончить Условие
 
     [SerializeField]
@@ -102,7 +99,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         endButton.SetActive(false);
-        nextButton.SetActive(false);
         nameButtons.SetActive(false);
         
         UpdateAlgorithmText();
@@ -536,7 +532,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
         endButton.SetActive(false);
-        nextButton.SetActive(false);
         ifButton.SetActive(true);
 
         isConditionBeingEdited = false;
@@ -598,7 +593,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         movementButtons.SetActive(false);
         nameButtons.SetActive(true);
         endButton.SetActive(false);
-        nextButton.SetActive(false);
         ifButton.SetActive(false);
 
         isConditionBeingEdited = true;
@@ -616,7 +610,7 @@ public class IvanMoveLevel2 : MonoBehaviour
 
         // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
-        nextButton.SetActive(true);
+        OnNextButtonClick();
     }
 
     // Метод для обработки нажатия на кнопку "Паулина"
@@ -627,17 +621,13 @@ public class IvanMoveLevel2 : MonoBehaviour
 
         // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
-        nextButton.SetActive(true);
+        OnNextButtonClick();
     }
 
-    // Метод для обработки нажатия на кнопку "Далее"
     public void OnNextButtonClick()
     {
         // Показываем кнопки для движения (они же для описания алгоритма)
         movementButtons.SetActive(true);
-        nameButtons.SetActive(false);
-        nextButton.SetActive(false);
-        ifButton.SetActive(false);
 
         isConditionBeingEdited = true;
     }
@@ -649,7 +639,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
         endButton.SetActive(false);
-        nextButton.SetActive(false);
         ifButton.SetActive(true);
 
         isConditionComplete = true;
