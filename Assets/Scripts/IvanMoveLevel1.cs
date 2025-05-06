@@ -123,19 +123,6 @@ public class IvanMoveLevel1 : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    private Transform FindCheckPointByCoordinates(Vector3 targetPosition)
-    {
-        foreach (var checkPoint in checkPoints)
-        {
-            if (Vector3.Distance(checkPoint.position, targetPosition) < 0.1f)
-            {
-                return checkPoint;
-            }
-        }
-        Debug.Log("Чекпоинт с указанными координатами не найден.");
-        return null;
-    }
-
     public void AddStep(string step)
     {
         if (!isPlaying)
@@ -334,7 +321,6 @@ public class IvanMoveLevel1 : MonoBehaviour
 
     public void RestartLevel()
     {
-        ResetItems();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

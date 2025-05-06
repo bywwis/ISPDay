@@ -158,21 +158,6 @@ public class IvanMoveLevel4 : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    // Находим чекпоинт по координатам (x, y, z)
-    private Transform FindCheckPointByCoordinates(Vector3 targetPosition)
-    {
-        foreach (var checkPoint in checkPoints)
-        {
-
-            if (Vector3.Distance(checkPoint.position, targetPosition) < 0.1f)
-            {
-                return checkPoint;
-            }
-        }
-        Debug.Log("Чекпоинт с указанными координатами не найден.");
-        return null;
-    }
-
     // Добавляем шаг в алгоритм
     public void AddStep(string step)
     {
