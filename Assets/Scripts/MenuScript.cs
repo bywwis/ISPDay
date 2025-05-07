@@ -49,4 +49,9 @@ public class MenuScript : MonoBehaviour
         Application.Quit();
         Debug.Log("Игра закрыта");
     }
+
+    public void RequestClick() 
+    {
+        Application.OpenURL("https://forms.yandex.ru/u/681b1ebaeb6146d7ee95ddfd/");
+    }
 }
