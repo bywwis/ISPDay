@@ -1,0 +1,766 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Linq;
+
+public class IvanMoveMaze : MonoBehaviour
+{
+    [SerializeField]
+    private InputField algorithmText; // Текстовое поле для отображения алгоритма
+
+    [SerializeField]
+    private float moveSpeed = 2f; // Скорость движения персонажа
+
+    [SerializeField]
+    private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
+
+    private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
+    private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
+
+    private bool hasFish = false; // Флаг для проверки, был ли найден объект с тегом "fish"
+
+    private Transform player; // Ссылка на персонажа
+    private Transform currentCheckPoint; // Текущий чекпоинт
+
+    [SerializeField]
+    private List<Transform> checkPoints; // Список всех чекпоинтов
+
+    private ScrollRect scrollRect;
+    private RectTransform scrollRectTransform;
+    private RectTransform textRectTransform;
+
+    [SerializeField]
+    private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
+
+    [SerializeField]
+    private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
+
+    private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
+
+    [SerializeField]
+    private List<GameObject> itemsToCollect; // Список предметов для сбора
+    private int collectedItemsCount = 0; // Счетчик собранных предметов
+    private List<Vector3> itemOriginalPositions = new List<Vector3>();
+    private List<bool> itemActiveStates = new List<bool>();
+
+    public Canvas canvas;
+
+    private Transform targetCheckPoint; // Чекпоинт (2, 7)
+
+    [SerializeField]
+    private Button CycleButton; // Кнопка для начала цикла
+
+    [SerializeField]
+    private GameObject NumberButtons; // Группа кнопок для выбора количества итераций
+
+    [SerializeField]
+    private GameObject ButtonsAlgoritm; // Группа кнопок для описания алгоритма
+
+    [SerializeField]
+    private Button EndButton; // Кнопка для завершения цикла
+
+    private List<int> cycleIterations = new List<int>(); // Список для хранения количества итераций для каждого цикла
+    private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
+    private int cycleStartIndex = -1; // Индекс начала цикла
+    private int cycleEndIndex = -1;   // Индекс конца цикла
+    private bool isCycleComplete = false; // Флаг для проверки завершения цикла
+
+    private const int MaxStepsWithoutCycle = 10; // Максимальное количество строк без цикла
+    private const int MaxStepsWithCycle = 17;   // Максимальное количество строк с циклом
+    private bool hasCycle = false;
+
+    [SerializeField]
+    private GameObject DialogeWindowError;
+
+    [SerializeField] 
+    private MazeGenerator mazeGenerator; 
+
+    [SerializeField]
+    private int mazeWidth = 10; // Ширина лабиринта
+    [SerializeField]
+    private int mazeHeight = 10; // Высота лабиринта
+    [SerializeField]
+    private float cellSize = 1f; // Размер одной клетки лабиринта
+
+    void Start()
+    {
+        mazeGenerator.GenerateMaze(mazeWidth, mazeHeight); 
+    
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        
+        // Получаем все чекпоинты из сцены
+        GameObject[] checkpointObjects = GameObject.FindGameObjectsWithTag("Checkpoint");
+        checkPoints = checkpointObjects.Select(go => go.transform).ToList();
+        
+        if (checkPoints.Count > 0)
+        {
+            // Стартовая позиция - первый чекпоинт
+            currentCheckPoint = checkPoints[0];
+            player.position = currentCheckPoint.position;
+            
+            // Финиш - последний чекпоинт
+            targetCheckPoint = checkPoints[checkPoints.Count - 1];
+        }
+
+        // Находим все объекты с тегом "Item"
+        // Находим все объекты с тегом "Item" и "Fish"
+        GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
+        GameObject[] fishObjects = GameObject.FindGameObjectsWithTag("fish");
+
+        itemsToCollect = new List<GameObject>();
+        itemsToCollect.AddRange(itemObjects);
+        itemsToCollect.AddRange(fishObjects);
+
+        foreach (var item in itemsToCollect)
+        {
+            if (item != null)
+            {
+                itemOriginalPositions.Add(item.transform.position);
+                itemActiveStates.Add(item.activeSelf);
+            }
+        }
+
+        if (itemsToCollect.Count == 0)
+        {
+            Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
+        }
+
+        scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
+        if (scrollRect == null)
+        {
+            Debug.LogError("ScrollRect не найден на InputField или его родитель!");
+        }
+
+        scrollRectTransform = scrollRect.GetComponent<RectTransform>();
+     
+        textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
+
+        CycleButton.onClick.AddListener(OnCycleButtonClicked);
+        EndButton.onClick.AddListener(OnEndButtonClicked);
+
+        // Скрываем группы кнопок при старте
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(false);
+
+        UpdateAlgorithmText();
+    }
+
+    void Update()
+    {
+        if (isPlaying && algorithmSteps.Count > 0)
+        {
+            PlayAlgorithm();
+        }
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    // Добавляем шаг в алгоритм
+    public void AddStep(string step)
+    {
+        if (!isPlaying)
+        {
+            algorithmSteps.Add(step);
+            UpdateAlgorithmText();
+
+            // Если шаг начинается с "Для", запоминаем индекс начала цикла
+            if (step.StartsWith("Для"))
+            {
+                cycleStartIndex = algorithmSteps.Count - 1;
+            }
+            // Если шаг — закрывающая скобка ")", запоминаем индекс конца цикла
+            else if (step == ")")
+            {
+                cycleEndIndex = algorithmSteps.Count - 1;
+            }
+
+            // Определяем текущее ограничение в зависимости от наличия цикла
+            int maxSteps;
+            if (hasCycle)
+            {
+                maxSteps = MaxStepsWithCycle + 1;
+            }
+            else
+            {
+                maxSteps = MaxStepsWithoutCycle;
+            }
+
+            // Проверяем, что количество строк не превышено
+            int lineCount = algorithmText.text.Split('\n').Length;
+
+            if (lineCount > maxSteps)
+            {
+                ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
+                return;
+            }
+
+        }
+    }
+
+    // Обновляем текстовое поле с алгоритмом
+    void UpdateAlgorithmText()
+    {
+        algorithmText.text = ""; // Очищаем текстовое поле
+        int stepNumber = 1; // Нумерация шагов начинается с 1
+
+        for (int i = 0; i < algorithmSteps.Count; i++)
+        {
+            // Если шаг начинается с "Для", добавляем его с новой строки
+            if (algorithmSteps[i].StartsWith("Для"))
+            {
+                if (stepNumber == 1)
+                {
+                    algorithmText.text += $"{stepNumber}   {algorithmSteps[i]}";
+                }
+                else if (stepNumber >= 10)
+                {
+                    algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]}";
+                }
+                else
+                {
+                    algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]}";
+                }
+                stepNumber++; // Увеличиваем номер шага
+                isCycleActive = true; // Устанавливаем флаг цикла
+                isCycleComplete = false; // Цикл начался, но еще не завершен
+                hasCycle = true;
+            }
+            // Если шаг начинается с "до", добавляем как часть условия
+            else if (algorithmSteps[i].StartsWith("до"))
+            {
+                algorithmText.text += $"{algorithmSteps[i]}";
+            }
+            // Если шаг — закрывающая скобка ")", добавляем её с новой строки
+            else if (algorithmSteps[i] == ")")
+            {
+                if (stepNumber < 10)
+                {
+                    algorithmText.text += $"\n{stepNumber}   );";
+                }
+                else
+                {
+                    algorithmText.text += $"\n{stepNumber}  );";
+                }
+                stepNumber++;
+                isCycleActive = false; // Сбрасываем флаг условия
+                isCycleComplete = true; // Цикл завершен
+            }
+            // Обработка обычных шагов (не условий)
+            else
+            {
+                // Если шаг находится внутри условия, добавляем отступ
+                if (isCycleActive)
+                {
+                    // Отступ для вложенных шагов
+                    if (stepNumber < 10)
+                    {
+                        algorithmText.text += $"\n{stepNumber}     {algorithmSteps[i]};";
+                    }
+                    else
+                    {
+                        algorithmText.text += $"\n{stepNumber}    {algorithmSteps[i]};";
+                    }
+                }
+                else
+                {
+                    // Без отступа
+                    if (stepNumber == 1)
+                    {
+                        algorithmText.text += $"{stepNumber}   {algorithmSteps[i]};";
+                    }
+                    else if (stepNumber >= 10)
+                    {
+                        algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]};";
+                    }
+                    else
+                    {
+                        algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]};";
+                    }
+                }
+                stepNumber++; // Увеличиваем номер шага
+            }
+        }
+
+        // Прокрутка текстового поля, если текст не помещается
+        StartCoroutine(ScrollIfOverflow());
+    }
+
+    private IEnumerator ScrollIfOverflow()
+    {
+        yield return null;
+
+        Canvas.ForceUpdateCanvases();
+
+        float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
+
+        float scrollRectHeight = scrollRectTransform.rect.height;
+
+        if (textHeight > scrollRectHeight)
+        {
+            scrollRect.verticalNormalizedPosition = 0f;
+        }
+    }
+
+    private void ShowErrorDialog(string message)
+    {
+        if (DialogeWindowError != null)
+        {
+            DialogeWindowError.SetActive(true);
+            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
+            if (errorText != null)
+            {
+                errorText.text = message;
+            }
+        }
+    }
+
+    // Проигрываем алгоритм
+    public void PlayAlgorithm()
+    {
+        // Проверяем, есть ли незавершенные циклы
+        if (isCycleActive && !isCycleComplete)
+        {
+            ShowErrorDialog("Алгоритм не может быть запущен, пока цикл не завершен.");
+            StopAlgorithm();
+            return;
+        }
+
+        // Проверяем, что для всех циклов задано количество итераций
+        int cycleCount = algorithmSteps.Count(step => step.StartsWith("Для"));
+        if (cycleCount > 0 && cycleIterations.Count != cycleCount)
+        {
+            ShowErrorDialog("Для всех циклов должно быть задано количество итераций.");
+            return;
+        }
+
+        if (!isPlaying && algorithmSteps.Count > 0)
+        {
+            isPlaying = true;
+            StartCoroutine(ExecuteAlgorithm());
+        }
+    }
+
+    // Пошагово выполняем алгоритм
+    private IEnumerator ExecuteAlgorithm()
+    {
+        Stack<int> cycleStack = new Stack<int>(); // Стек для хранения индексов начала и конца циклов
+        int cycleIndex = 0; // Индекс для отслеживания текущего цикла
+
+        for (int i = 0; i < algorithmSteps.Count; i++)
+        {
+            if (!isPlaying || isPathBlocked)
+            {
+                yield break;
+            }
+
+            string step = algorithmSteps[i];
+
+            if (step.StartsWith("Для"))
+            {
+                // Проверяем, что список cycleIterations не пуст и индекс в пределах диапазона
+                if (cycleIterations.Count == 0 || cycleIndex >= cycleIterations.Count)
+                {
+                    Debug.LogError("Ошибка: список cycleIterations пуст или индекс выходит за пределы.");
+                    yield break;
+                }
+
+                // Получаем количество итераций из списка
+                int iterations = cycleIterations[cycleIndex];
+                cycleIndex++;
+
+                // Запоминаем индекс начала цикла
+                cycleStack.Push(i);
+
+                // Переходим к шагам внутри цикла
+                for (int j = 1; j < iterations; j++)
+                {
+                    for (int k = i + 1; k < algorithmSteps.Count; k++)
+                    {
+                        string innerStep = algorithmSteps[k];
+
+                        if (innerStep == ")")
+                        {
+                            break; // Завершаем выполнение цикла
+                        }
+
+                        yield return StartCoroutine(ExecuteStep(innerStep));
+                    }
+                }
+
+                // Пропускаем шаги внутри цикла, чтобы не выполнять их повторно
+                i = cycleStack.Pop(); // Возвращаемся к началу цикла
+            }
+            else
+            {
+                yield return StartCoroutine(ExecuteStep(step));
+            }
+        }
+
+        if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
+        {
+            ShowCompletionDialog();
+        }
+        else
+        {
+            // Если персонаж не на правильном чекпоинте, показываем BadEnd
+            if (DialogeWindowBadEnd != null)
+            {
+                DialogeWindowBadEnd.SetActive(true);
+            }
+        }
+        isPlaying = false;
+    }
+
+    private bool IsPathValid(Vector3 direction)
+    {
+        // Проверяем, есть ли препятствие в направлении движения
+        RaycastHit2D hit = Physics2D.Raycast(player.position, direction, cellSize, obstacleLayer);
+        return hit.collider == null;
+    }
+    
+    private IEnumerator ExecuteStep(string step)
+    {
+        Vector3 direction = GetDirectionFromStep(step);
+
+        if (direction != Vector3.zero)
+        {
+            // Проверяем, свободен ли путь
+            if (!IsPathValid(direction))
+            {
+                isPathBlocked = true;
+                ShowErrorDialog("Путь заблокирован препятствием!");
+                yield break;
+            }
+
+            Transform nextCheckPoint = FindNextCheckPoint(direction);
+            if (nextCheckPoint != null)
+            {
+                yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
+                currentCheckPoint = nextCheckPoint;
+            }
+        }
+        else if (step == "Взять")
+        {
+            ExecuteGetCommand();
+        }
+    }
+
+    // Двигаем персонажа к целевой позиции
+    private IEnumerator MovePlayer(Vector3 targetPosition)
+    {
+        while (Vector3.Distance(player.position, targetPosition) > 0.01f)
+        {
+            if (!isPlaying || isPathBlocked)
+            {
+                yield break;
+            }
+
+            player.position = Vector3.MoveTowards(player.position, targetPosition, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        player.position = targetPosition;
+    }
+
+    // Получаем направление из шага алгоритма
+    private Vector3 GetDirectionFromStep(string step)
+    {
+        switch (step)
+        {
+            case "Вверх":
+                return Vector3.up;
+            case "Вниз":
+                return Vector3.down;
+            case "Влево":
+                return Vector3.left;
+            case "Вправо":
+                return Vector3.right;
+            default:
+                return Vector3.zero;
+        }
+    }
+
+    // Находим следующий чекпоинт в заданном направлении
+    private Transform FindNextCheckPoint(Vector3 direction)
+    {
+        // Ищем ближайший чекпоинт в заданном направлении на расстоянии cellSize
+        foreach (var checkPoint in checkPoints)
+        {
+            Vector3 delta = checkPoint.position - currentCheckPoint.position;
+            if (Mathf.Approximately(delta.magnitude, cellSize) &&
+                Vector3.Dot(delta.normalized, direction.normalized) > 0.9f)
+            {
+                return checkPoint;
+            }
+        }
+        return null;
+    }
+
+    // Обработчик события входа в триггер
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
+        {
+            isPathBlocked = true;
+            Debug.Log("Путь заблокирован: " + collision.gameObject.name);
+
+            // Останавливаем выполнение алгоритма
+            StopAlgorithm();
+
+            // Показываем диалоговое окно
+            if (DialogeWindowBadEnd != null)
+            {
+                DialogeWindowBadEnd.SetActive(true);
+            }
+        }
+    }
+
+    // Обработчик события выхода из триггера
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
+        {
+            isPathBlocked = false;
+        }
+    }
+
+    // Перезапускаем уровень
+    public void RestartLevel()
+    {
+        // Очищаем текущий лабиринт
+        mazeGenerator.ClearMaze();
+        
+        // Генерируем новый лабиринт
+        mazeGenerator.GenerateMaze(mazeWidth, mazeHeight); 
+        
+        // Сбрасываем состояние игры
+        StopAlgorithm();
+    }
+
+    public void StopAlgorithm()
+    {
+        isPlaying = false;
+        StopAllCoroutines();
+
+        algorithmSteps.Clear();
+
+        isCycleActive = false; // Сброс активности цикла
+        cycleStartIndex = -1; // Сброс индекса начала цикла
+        hasCycle = false;
+
+        if (cycleIterations.Count > 0)
+        {
+            cycleIterations.Clear(); // Очищаем список итераций
+        }
+
+        ResetItems();
+
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(false);
+        CycleButton.gameObject.SetActive(true);
+
+        algorithmText.text = "";
+        if (scrollRect != null)
+        {
+            scrollRect.verticalNormalizedPosition = 1f;
+        }
+
+        if (checkPoints.Count > 0)
+        {
+            player.position = checkPoints[9].position;
+            currentCheckPoint = checkPoints[9];
+        }
+    }
+
+    private void ResetItems()
+    {
+        collectedItemsCount = 0;
+        hasFish = false;
+        
+        // Восстанавливаем все предметы
+        for (int i = 0; i < itemsToCollect.Count; i++)
+        {
+            if (itemsToCollect[i] != null)
+            {
+                itemsToCollect[i].SetActive(itemActiveStates[i]);
+                itemsToCollect[i].transform.position = itemOriginalPositions[i];
+            }
+        }
+    }
+
+    // Подбор объекта
+    private void ExecuteGetCommand()
+    {
+        // Получаем масштаб канваса
+        float scale = canvas.scaleFactor;
+
+        float pickupDistance = 100f * scale;
+
+        // Позиция игрока
+        Vector2 playerPos = RectTransformUtility.WorldToScreenPoint(Camera.main, player.position);
+
+        for (int i = 0; i < itemsToCollect.Count; i++)
+        {
+            GameObject item = itemsToCollect[i];
+
+            if (item != null && item.activeSelf)
+            {
+                // Получение позиции предмета
+                Vector2 itemPos = RectTransformUtility.WorldToScreenPoint(Camera.main, item.transform.position);
+
+                // Проверка расстояния
+                if (Vector2.Distance(playerPos, itemPos) < pickupDistance)
+                {
+                    if (item.CompareTag("fish"))
+                    {
+                        hasFish = true;
+                    }
+
+                    item.SetActive(false);
+                    collectedItemsCount++;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void ShowCompletionDialog()
+    {
+        // Проверяем, достиг ли игрок финиша
+        if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
+        {
+            if (DialogeWindowGoodEnd != null)
+            {
+                DialogeWindowGoodEnd.SetActive(true);
+                SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
+            }
+        }
+        else
+        {
+            if (DialogeWindowBadEnd != null)
+            {
+                DialogeWindowBadEnd.SetActive(true);
+            }
+        }
+    }
+
+    // Переход на 4 уровень 
+    public void LoadNextScene()
+    {
+        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextLevelIndex);
+        }
+        else
+        {
+            Debug.Log("Все уровни пройдены!");
+        }
+    }
+
+
+    // Методы для кнопок
+     public void AddUpStep() 
+    { 
+        AddStep("Вверх");
+        if (CycleButton.gameObject.activeSelf)
+        {
+            EndButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            EndButton.gameObject.SetActive(true);
+        }  
+    }
+    public void AddDownStep() 
+    { 
+        AddStep("Вниз");
+        if (CycleButton.gameObject.activeSelf)
+        {
+            EndButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            EndButton.gameObject.SetActive(true);
+        }  
+    }
+    public void AddLeftStep()
+    { 
+        AddStep("Влево");
+        if (CycleButton.gameObject.activeSelf)
+        {
+            EndButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            EndButton.gameObject.SetActive(true);
+        } 
+    }
+    public void AddRightStep() 
+    { 
+        AddStep("Вправо");
+        if (CycleButton.gameObject.activeSelf)
+        {
+            EndButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            EndButton.gameObject.SetActive(true);
+        }  
+    }
+    public void AddGet() { AddStep("Взять"); }
+    public void SetIterations1() { SetIterations(1);}
+    public void SetIterations2() { SetIterations(2);}
+    public void SetIterations3() { SetIterations(3);}
+    public void SetIterations4() { SetIterations(4);}
+    public void SetIterations5() { SetIterations(5);}
+    public void SetIterations6() { SetIterations(6);}
+    public void SetIterations7() { SetIterations(7);}
+    public void SetIterations8() { SetIterations(8);}
+    public void SetIterations9() { SetIterations(9);}
+
+    void OnCycleButtonClicked()
+    {
+        // Показываем кнопки для выбора количества итераций
+        NumberButtons.SetActive(true);
+        ButtonsAlgoritm.SetActive(false);
+        EndButton.gameObject.SetActive(false);
+        CycleButton.gameObject.SetActive(false);
+
+        AddStep("Для Ивана от 1 ");
+    }
+
+    void OnNextButtonClicked()
+    {
+        // Показываем кнопки для описания алгоритма
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(false);
+    }
+
+    void OnEndButtonClicked()
+    {
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(false);
+        CycleButton.gameObject.SetActive(true);
+
+        AddStep(")");
+        isCycleComplete = true; // Цикл завершен
+    }
+
+    public void SetIterations(int iterations)
+    {
+        cycleIterations.Add(iterations); // Добавляем количество итераций в список
+        AddStep($"до {iterations} повторять (");
+        NumberButtons.SetActive(false);
+        OnNextButtonClicked();
+    }
+}
