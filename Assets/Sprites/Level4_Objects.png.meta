@@ -152,8 +152,8 @@ TextureImporter:
       name: Level4_Chair1
       rect:
         serializedVersion: 2
-        x: 28
-        y: 417
+        x: 14
+        y: 331
         width: 56
         height: 96
       alignment: 0
@@ -171,101 +171,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level4_Desk
-      rect:
-        serializedVersion: 2
-        x: 131
-        y: 337
-        width: 78
-        height: 167
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 92569be4d1fe64040800000000000000
-      internalID: 4631652175950996777
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level4_NPC1
-      rect:
-        serializedVersion: 2
-        x: 246
-        y: 383
-        width: 82
-        height: 125
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: eafb3515e38c15a60800000000000000
-      internalID: 7661124611111894958
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level4_NPC2
-      rect:
-        serializedVersion: 2
-        x: 373
-        y: 387
-        width: 75
-        height: 119
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: eb05aa30da590f3d0800000000000000
-      internalID: -3174873166972825410
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level4_NPC3
-      rect:
-        serializedVersion: 2
-        x: 476
-        y: 364
-        width: 119
-        height: 136
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bdad76fd9ce742450800000000000000
-      internalID: 6063110403849181915
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Level4_Chair2
       rect:
         serializedVersion: 2
-        x: 24
-        y: 295
-        width: 63
-        height: 101
+        x: 10
+        y: 218
+        width: 60
+        height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,8 +196,8 @@ TextureImporter:
       name: Level4_Chair3
       rect:
         serializedVersion: 2
-        x: 129
-        y: 246
+        x: 108
+        y: 151
         width: 76
         height: 60
       alignment: 0
@@ -303,79 +215,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level4_NPC4
+      name: Level4_Desktop
       rect:
         serializedVersion: 2
-        x: 252
-        y: 231
-        width: 74
-        height: 111
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 021281cc2dfa5df90800000000000000
-      internalID: -6929439131737513696
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level4_NPC5
-      rect:
-        serializedVersion: 2
-        x: 362
-        y: 223
-        width: 74
-        height: 112
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bf3f8d080ebd599c0800000000000000
-      internalID: -3920986143275289605
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level4_NPC6
-      rect:
-        serializedVersion: 2
-        x: 480
-        y: 229
-        width: 73
-        height: 111
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 992a51b43304b8f20800000000000000
-      internalID: 3425902530592613017
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level4_Desks
-      rect:
-        serializedVersion: 2
-        x: 258
-        y: 17
-        width: 313
-        height: 173
+        x: 116
+        y: 250
+        width: 78
+        height: 168
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -386,6 +232,50 @@ TextureImporter:
       bones: []
       spriteID: fc9a7f2eb32550950800000000000000
       internalID: 6414623661423569359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level4_Desktops_1
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 123
+        width: 323
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6930e57669036c409c84cb5fd96dd3b
+      internalID: 1919445387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level4_Desktops_2
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 11
+        width: 483
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6283d1b0d20bec4eb9dcb6e7af65e6b
+      internalID: 2103010493
       vertices: []
       indices: 
       edges: []
@@ -407,8 +297,9 @@ TextureImporter:
       Level4_Chair1: 8932598106298382000
       Level4_Chair2: 4033409381559579331
       Level4_Chair3: 8909434971826426274
-      Level4_Desk: 4631652175950996777
-      Level4_Desks: 6414623661423569359
+      Level4_Desktop: 6414623661423569359
+      Level4_Desktops_1: 1919445387
+      Level4_Desktops_2: 2103010493
       Level4_NPC1: 7661124611111894958
       Level4_NPC2: -3174873166972825410
       Level4_NPC3: 6063110403849181915

@@ -1,40 +1,22 @@
 fileFormatVersion: 2
-guid: 44f57138774e44041af93b8776c24880
+guid: 2de9496373432ad4182a53bc91eec143
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4954218625351313683
-    second: Level2_Objects_0
+      213: -1384280160354514207
+    second: Level2_NPS_0
   - first:
-      213: 1581927613478399191
-    second: Level2_Objects_1
+      213: 1400101121436679669
+    second: Level2_NPS_1
   - first:
-      213: 4134203838106123060
-    second: Level2_Objects_2
+      213: -6211795568542840224
+    second: Level2_NPS_2
   - first:
-      213: -8331437797739586680
-    second: Level2_Objects_3
+      213: -7482072957607040621
+    second: Level2_NPS_3
   - first:
-      213: -1038409238054480231
-    second: Level2_Objects_4
-  - first:
-      213: -5460438835414374879
-    second: Level2_Objects_5
-  - first:
-      213: -7260116012441525503
-    second: Level2_Objects_6
-  - first:
-      213: -8445759338239065582
-    second: Level2_Objects_7
-  - first:
-      213: -3827696379770573618
-    second: Level2_Objects_8
-  - first:
-      213: -7989749117342792861
-    second: Level2_Objects_9
-  - first:
-      213: -884151621509303687
-    second: Level2_Objects_10
+      213: -353449745745509751
+    second: Level2_NPS_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -143,13 +125,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Level2_Main_Desktop
+      name: Level2_NPC_1
       rect:
         serializedVersion: 2
-        x: 19
-        y: 334
-        width: 269
-        height: 83
+        x: 21
+        y: 153
+        width: 58
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,20 +140,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7dce2c578c224f510800000000000000
-      internalID: 1581927613478399191
+      spriteID: 1eac274478c0acce0800000000000000
+      internalID: -1384280160354514207
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level2_Desktop_1
+      name: Level2_NPS_1
       rect:
         serializedVersion: 2
-        x: 19
-        y: 258
-        width: 135
-        height: 65
+        x: 88
+        y: 154
+        width: 59
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,20 +162,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1032c42d3f2ee3b90800000000000000
-      internalID: -7260116012441525503
+      spriteID: 5fdfbd84d882e6310800000000000000
+      internalID: 1400101121436679669
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level2_Desktop_2
+      name: Level2_NPS_2
       rect:
         serializedVersion: 2
-        x: 173
-        y: 261
-        width: 135
-        height: 63
+        x: 152
+        y: 154
+        width: 57
+        height: 80
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,20 +184,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 21282d121a2aaca80800000000000000
-      internalID: -8445759338239065582
+      spriteID: 06a88a787d44bc9a0800000000000000
+      internalID: -6211795568542840224
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level2_Desktop_3
+      name: Level2_NPS_3
       rect:
         serializedVersion: 2
-        x: 19
-        y: 184
-        width: 135
-        height: 63
+        x: 18
+        y: 44
+        width: 57
+        height: 86
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,20 +206,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ecce9bf2c6a41eac0800000000000000
-      internalID: -3827696379770573618
+      spriteID: 399a64a69465a2890800000000000000
+      internalID: -7482072957607040621
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level2_Desktop_5
+      name: Level2_NPS_5
       rect:
         serializedVersion: 2
-        x: 20
-        y: 100
-        width: 135
-        height: 70
+        x: 83
+        y: 44
+        width: 62
+        height: 86
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,96 +228,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 363ca406285be1190800000000000000
-      internalID: -7989749117342792861
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level2_Desktop_4
-      rect:
-        serializedVersion: 2
-        x: 175
-        y: 179
-        width: 135
-        height: 72
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9723a50e8ccdab3f0800000000000000
-      internalID: -884151621509303687
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level2_Desktop_6
-      rect:
-        serializedVersion: 2
-        x: 175
-        y: 100
-        width: 135
-        height: 63
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b6c3dff66a429eb4f816b1665b612e5a
-      internalID: 996946375
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level2_Desktop_7
-      rect:
-        serializedVersion: 2
-        x: 20
-        y: 8
-        width: 135
-        height: 66
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 21c64a4dad3250742a3696d5bbc051bf
-      internalID: 2022466065
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level2_Desktop_8
-      rect:
-        serializedVersion: 2
-        x: 177
-        y: 8
-        width: 135
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e526772cf663e1d46a0e989497588b42
-      internalID: 1978797550
+      spriteID: 98203e2345b481bf0800000000000000
+      internalID: -353449745745509751
       vertices: []
       indices: 
       edges: []
@@ -344,7 +238,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 83d1834936443e1428be95972fe3862a
+    spriteID: cf224364fca9fe24cae0e6288b598fbe
     internalID: 0
     vertices: []
     indices: 
@@ -354,20 +248,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Desktop: 1581927613478399191
-      Level2_Desktop_1: -7260116012441525503
-      Level2_Desktop_2: -8445759338239065582
-      Level2_Desktop_3: -3827696379770573618
-      Level2_Desktop_4: -884151621509303687
-      Level2_Desktop_5: -7989749117342792861
-      Level2_Desktop_6: 996946375
-      Level2_Desktop_7: 2022466065
-      Level2_Desktop_8: 1978797550
-      Level2_NPC_1: -4954218625351313683
-      Level2_NPC_2: 4134203838106123060
-      Level2_NPC_3: -8331437797739586680
-      Level2_NPC_4: -1038409238054480231
-      Level2_NPC_5: -5460438835414374879
+      Level2_NPC_1: -1384280160354514207
+      Level2_NPS_1: 1400101121436679669
+      Level2_NPS_2: -6211795568542840224
+      Level2_NPS_3: -7482072957607040621
+      Level2_NPS_5: -353449745745509751
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

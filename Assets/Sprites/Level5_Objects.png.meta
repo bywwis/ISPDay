@@ -125,13 +125,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Level5_Table
+      name: Level5_Table_1
       rect:
         serializedVersion: 2
-        x: 183
-        y: 254
-        width: 237
-        height: 109
+        x: 18
+        y: 572
+        width: 161
+        height: 74
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,10 +150,10 @@ TextureImporter:
       name: Level5_Sofa
       rect:
         serializedVersion: 2
-        x: 8
-        y: 378
-        width: 416
-        height: 272
+        x: 14
+        y: 381
+        width: 229
+        height: 169
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,10 +172,10 @@ TextureImporter:
       name: Level5_Bookcase
       rect:
         serializedVersion: 2
-        x: 253
-        y: 12
-        width: 187
-        height: 216
+        x: 17
+        y: 223
+        width: 165
+        height: 134
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,10 +194,10 @@ TextureImporter:
       name: Level5_Palm
       rect:
         serializedVersion: 2
-        x: 37
-        y: 37
-        width: 187
-        height: 156
+        x: 246
+        y: 246
+        width: 137
+        height: 115
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,6 +208,116 @@ TextureImporter:
       bones: []
       spriteID: e5f385b6a87be6410800000000000000
       internalID: 1472315933331046238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level5_Table_2
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 467
+        width: 78
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e18709ac9d865c4393e7edf7881937e
+      internalID: -1559123761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level5_Chair_1
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 574
+        width: 76
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89715c03b86c819488b54bbfd4d9f758
+      internalID: -733235234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level5_Chair_2
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 558
+        width: 61
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37533174ee3943b419203d7b54cc2f07
+      internalID: 1173603233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level5_Chair_3
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 439
+        width: 66
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 579ddd0dac105f24e82439afbb80d6fa
+      internalID: 1415979398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level5_Board
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 64
+        width: 257
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c1d627b235e17a478c5206ac7bbaafb
+      internalID: 645125887
       vertices: []
       indices: 
       edges: []
@@ -226,11 +336,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      Level5_Board: 645125887
       Level5_Bookcase: 6387453449936736626
+      Level5_Chair_1: -733235234
+      Level5_Chair_2: 1173603233
+      Level5_Chair_3: 1415979398
       Level5_Objects_2: 7577471592057849819
       Level5_Palm: 1472315933331046238
       Level5_Sofa: -5942532428403455227
-      Level5_Table: -4692683165988021283
+      Level5_Table_1: -4692683165988021283
+      Level5_Table_2: -1559123761
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

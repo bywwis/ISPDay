@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Level3_Table
+      name: Level3_Table_1
       rect:
         serializedVersion: 2
-        x: 207
-        y: 13
-        width: 298
-        height: 510
+        x: 17
+        y: 356
+        width: 524
+        height: 349
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,10 +138,10 @@ TextureImporter:
       name: Level3_FishSoup
       rect:
         serializedVersion: 2
-        x: 104
-        y: 308
-        width: 53
-        height: 51
+        x: 197
+        y: 107
+        width: 49
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,35 +157,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level3_NPC
-      rect:
-        serializedVersion: 2
-        x: 99
-        y: 381
-        width: 78
-        height: 124
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b92c28edcef0abd47b2576ff51738164
-      internalID: 162796213
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Level3_Lunch
       rect:
         serializedVersion: 2
-        x: 14
-        y: 356
-        width: 59
-        height: 40
+        x: 117
+        y: 42
+        width: 58
+        height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,10 +182,10 @@ TextureImporter:
       name: Level3_FishLunch
       rect:
         serializedVersion: 2
-        x: 15
-        y: 292
-        width: 61
-        height: 40
+        x: 37
+        y: 110
+        width: 58
+        height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -226,9 +204,9 @@ TextureImporter:
       name: Level3_Salat
       rect:
         serializedVersion: 2
-        x: 20
-        y: 420
-        width: 46
+        x: 43
+        y: 48
+        width: 45
         height: 27
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -248,8 +226,8 @@ TextureImporter:
       name: Level3_Soup
       rect:
         serializedVersion: 2
-        x: 21
-        y: 473
+        x: 121
+        y: 111
         width: 45
         height: 27
       alignment: 0
@@ -262,6 +240,72 @@ TextureImporter:
       bones: []
       spriteID: 5439bf2cbbbf1f04fad4601edcfb08c0
       internalID: -591011468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level3_Table_2
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 8
+        width: 204
+        height: 330
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b95211b66ea5ab24da648ae8f72a59c8
+      internalID: -2006385449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level3_Stand_1
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 170
+        width: 90
+        height: 181
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e0e6739d3883634aa9f67f19c389200
+      internalID: 1537187312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level3_Stand_2
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 180
+        width: 96
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a038cd2b4c867447a33d1e6187976ed
+      internalID: -328217691
       vertices: []
       indices: 
       edges: []
@@ -286,7 +330,10 @@ TextureImporter:
       Level3_NPC: 162796213
       Level3_Salat: -1555812406
       Level3_Soup: -591011468
-      Level3_Table: 9146715729662646076
+      Level3_Stand_1: 1537187312
+      Level3_Stand_2: -328217691
+      Level3_Table_1: 9146715729662646076
+      Level3_Table_2: -2006385449
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
