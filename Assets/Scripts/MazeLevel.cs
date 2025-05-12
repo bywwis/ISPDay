@@ -7,133 +7,58 @@ using System.Linq;
 
 public class MazeLevel : MonoBehaviour
 {
-    [SerializeField]
-    private InputField algorithmText; // Текстовое поле для отображения алгоритма
+    [Header("UI Elements")]
+    [SerializeField] private InputField algorithmText;
+    [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private LayerMask obstacleLayer;
+    
+    [Header("Level Settings")]
+    [SerializeField] private List<GameObject> locationPrefabs;
+    [SerializeField] private GameObject checkpointPrefab;
+    [SerializeField] private GameObject obstaclePrefab;
+    [SerializeField] private Vector2Int gridSize = new Vector2Int(10, 10);
+    [SerializeField] private float cellSize = 1f;
+    [SerializeField] [Range(10, 50)] private int obstacleDensity = 30;
+    
+    [Header("UI Windows")]
+    [SerializeField] private GameObject DialogeWindowGoodEnd;
+    [SerializeField] private GameObject DialogeWindowBadEnd;
+    [SerializeField] private GameObject DialogeWindowError;
+    
+    [Header("Cycle Settings")]
+    [SerializeField] private Button CycleButton;
+    [SerializeField] private GameObject NumberButtons;
+    [SerializeField] private GameObject ButtonsAlgoritm;
+    [SerializeField] private Button EndButton;
 
-    [SerializeField]
-    private float moveSpeed = 2f; // Скорость движения персонажа
-
-    [SerializeField]
-    private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
-
-    private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
-    private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
-
-    private bool hasFish = false; // Флаг для проверки, был ли найден объект с тегом "fish"
-
-    private Transform player; // Ссылка на персонажа
-    private Transform currentCheckPoint; // Текущий чекпоинт
-
-    [SerializeField]
-    private List<Transform> checkPoints; // Список всех чекпоинтов
-
-    private ScrollRect scrollRect;
-    private RectTransform scrollRectTransform;
-    private RectTransform textRectTransform;
-
-    [SerializeField]
-    private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
-
-    [SerializeField]
-    private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
-
-    private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
-
-    [SerializeField]
-    private List<GameObject> itemsToCollect; // Список предметов для сбора
-    private int collectedItemsCount = 0; // Счетчик собранных предметов
-    private List<Vector3> itemOriginalPositions = new List<Vector3>();
-    private List<bool> itemActiveStates = new List<bool>();
-
-    public Canvas canvas;
-
-    private Transform targetCheckPoint; // Чекпоинт (2, 7)
-
-    [SerializeField]
-    private Button CycleButton; // Кнопка для начала цикла
-
-    [SerializeField]
-    private GameObject NumberButtons; // Группа кнопок для выбора количества итераций
-
-    [SerializeField]
-    private GameObject ButtonsAlgoritm; // Группа кнопок для описания алгоритма
-
-    [SerializeField]
-    private Button EndButton; // Кнопка для завершения цикла
-
-    private List<int> cycleIterations = new List<int>(); // Список для хранения количества итераций для каждого цикла
-    private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
-    private int cycleStartIndex = -1; // Индекс начала цикла
-    private int cycleEndIndex = -1;   // Индекс конца цикла
-    private bool isCycleComplete = false; // Флаг для проверки завершения цикла
-
-    private const int MaxStepsWithoutCycle = 10; // Максимальное количество строк без цикла
-    private const int MaxStepsWithCycle = 17;   // Максимальное количество строк с циклом
+    private List<string> algorithmSteps = new List<string>();
+    private bool isPlaying = false;
+    private bool isPathBlocked = false;
+    
+    private Transform player;
+    private Transform currentCheckPoint;
+    private Transform targetCheckPoint;
+    private List<Transform> checkPoints = new List<Transform>();
+    
+    private List<int> cycleIterations = new List<int>();
+    private bool isCycleActive = false;
+    private int cycleStartIndex = -1;
+    private int cycleEndIndex = -1;
+    private bool isCycleComplete = false;
+    
+    private const int MaxStepsWithoutCycle = 10;
+    private const int MaxStepsWithCycle = 17;
     private bool hasCycle = false;
-
-    [SerializeField]
-    private GameObject DialogeWindowError;
+    
+    private GameObject currentLocation;
+    private Vector2Int startPoint = new Vector2Int(1, 1);
+    private Vector2Int endPoint;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        if (checkPoints.Count > 0)
-        {
-            currentCheckPoint = checkPoints[9]; // Начальный чекпоинт
-            player.position = currentCheckPoint.position;
-        }
-
-        // Находим все объекты с тегом "Item"
-        // Находим все объекты с тегом "Item" и "Fish"
-        GameObject[] itemObjects = GameObject.FindGameObjectsWithTag("Item");
-        GameObject[] fishObjects = GameObject.FindGameObjectsWithTag("fish");
-
-        itemsToCollect = new List<GameObject>();
-        itemsToCollect.AddRange(itemObjects);
-        itemsToCollect.AddRange(fishObjects);
-
-        foreach (var item in itemsToCollect)
-        {
-            if (item != null)
-            {
-                itemOriginalPositions.Add(item.transform.position);
-                itemActiveStates.Add(item.activeSelf);
-            }
-        }
-
-        if (itemsToCollect.Count == 0)
-        {
-            Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
-        }
-
-        if (checkPoints.Count > 25)
-        {
-            targetCheckPoint = checkPoints[25];
-        }
-        else
-        {
-            Debug.LogError("Чекпоинт 56 отсутствует в списке checkPoints.");
-        }
-
-        scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
-        if (scrollRect == null)
-        {
-            Debug.LogError("ScrollRect не найден на InputField или его родитель!");
-        }
-
-        scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-     
-        textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
-
-        CycleButton.onClick.AddListener(OnCycleButtonClicked);
-        EndButton.onClick.AddListener(OnEndButtonClicked);
-
-        // Скрываем группы кнопок при старте
-        NumberButtons.SetActive(false);
-        ButtonsAlgoritm.SetActive(true);
-        EndButton.gameObject.SetActive(false);
-
-        UpdateAlgorithmText();
+        GenerateRandomLevel();
+        InitializeUI();
     }
 
     void Update()
@@ -143,6 +68,133 @@ public class MazeLevel : MonoBehaviour
             PlayAlgorithm();
         }
     }
+
+    private void GenerateRandomLevel()
+    {
+        // Clean up previous level if exists
+        if (currentLocation != null) Destroy(currentLocation);
+        
+        // Randomly select location
+        currentLocation = Instantiate(locationPrefabs[Random.Range(0, locationPrefabs.Count)]);
+        
+        // Calculate end point (opposite corner)
+        endPoint = new Vector2Int(gridSize.x - 2, gridSize.y - 2);
+        
+        // Generate grid of checkpoints
+        GenerateCheckpoints();
+        
+        // Generate maze obstacles
+        GenerateMaze();
+        
+        // Set player start position
+        currentCheckPoint = checkPoints[startPoint.y * gridSize.x + startPoint.x];
+        targetCheckPoint = checkPoints[endPoint.y * gridSize.x + endPoint.x];
+        player.position = currentCheckPoint.position;
+    }
+
+    private void GenerateCheckpoints()
+    {
+        checkPoints.Clear();
+        
+        for (int y = 0; y < gridSize.y; y++)
+        {
+            for (int x = 0; x < gridSize.x; x++)
+            {
+                Vector3 position = new Vector3(x * cellSize, y * cellSize, 0);
+                var checkpoint = Instantiate(checkpointPrefab, position, Quaternion.identity, currentLocation.transform);
+                checkPoints.Add(checkpoint.transform);
+            }
+        }
+    }
+
+    private void GenerateMaze()
+    {
+        // Clear old obstacles
+        var oldObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+        foreach (var obs in oldObstacles) Destroy(obs);
+        
+        // Create border walls
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                // Skip start and end points
+                if ((x == startPoint.x && y == startPoint.y) || (x == endPoint.x && y == endPoint.y))
+                    continue;
+                
+                // Create border walls
+                if (x == 0 || y == 0 || x == gridSize.x - 1 || y == gridSize.y - 1)
+                {
+                    CreateObstacle(x, y);
+                    continue;
+                }
+                
+                // Random obstacles
+                if (Random.Range(0, 100) < obstacleDensity)
+                {
+                    CreateObstacle(x, y);
+                }
+            }
+        }
+        
+        // Ensure path exists (simple version)
+        EnsureBasicPath();
+    }
+
+    private void CreateObstacle(int x, int y)
+    {
+        Vector3 position = new Vector3(x * cellSize, y * cellSize, 0);
+        var obstacle = Instantiate(obstaclePrefab, position, Quaternion.identity, currentLocation.transform);
+        obstacle.tag = "Obstacle";
+    }
+
+    private void EnsureBasicPath()
+    {
+        // Simple path from start to end (right then up)
+        for (int x = startPoint.x; x <= endPoint.x; x++)
+        {
+            RemoveObstacleAt(x, startPoint.y);
+        }
+        
+        for (int y = startPoint.y; y <= endPoint.y; y++)
+        {
+            RemoveObstacleAt(endPoint.x, y);
+        }
+    }
+
+    private void RemoveObstacleAt(int x, int y)
+    {
+        Vector3 position = new Vector3(x * cellSize, y * cellSize, 0);
+        Collider2D[] colliders = Physics2D.OverlapPointAll(position);
+        
+        foreach (var collider in colliders)
+        {
+            if (collider.CompareTag("Obstacle"))
+            {
+                Destroy(collider.gameObject);
+            }
+        }
+    }
+
+    private void InitializeUI()
+    {
+        CycleButton.onClick.AddListener(OnCycleButtonClicked);
+        EndButton.onClick.AddListener(OnEndButtonClicked);
+        
+        NumberButtons.SetActive(false);
+        ButtonsAlgoritm.SetActive(true);
+        EndButton.gameObject.SetActive(false);
+    }
+
+    // ... (остальные методы UI и управления алгоритмом остаются без изменений, как в оригинальном файле)
+    // Включая:
+    // - AddStep, UpdateAlgorithmText, PlayAlgorithm, ExecuteAlgorithm
+    // - MovePlayer, FindNextCheckPoint, GetDirectionFromStep
+    // - OnTriggerEnter2D, OnTriggerExit2D
+    // - StopAlgorithm, RestartLevel, BackToMenu
+    // - Методы для кнопок (AddUpStep, AddDownStep и т.д.)
+    // - Методы для циклов (OnCycleButtonClicked, OnEndButtonClicked, SetIterations)
+
 
     public void BackToMenu()
     {
@@ -737,5 +789,11 @@ public class MazeLevel : MonoBehaviour
         AddStep($"до {iterations} повторять (");
         NumberButtons.SetActive(false);
         OnNextButtonClicked();
+    }
+
+    public void RegenerateLevel()
+    {
+        StopAlgorithm();
+        GenerateRandomLevel();
     }
 }
