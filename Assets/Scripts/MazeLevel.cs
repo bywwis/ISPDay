@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
-public class IvanMoveMaze : MonoBehaviour
+public class MazeLevel : MonoBehaviour
 {
     [SerializeField]
     private InputField algorithmText; // Текстовое поле для отображения алгоритма
@@ -74,34 +74,13 @@ public class IvanMoveMaze : MonoBehaviour
     [SerializeField]
     private GameObject DialogeWindowError;
 
-    [SerializeField] 
-    private MazeGenerator mazeGenerator; 
-
-    [SerializeField]
-    private int mazeWidth = 10; // Ширина лабиринта
-    [SerializeField]
-    private int mazeHeight = 10; // Высота лабиринта
-    [SerializeField]
-    private float cellSize = 1f; // Размер одной клетки лабиринта
-
     void Start()
     {
-        mazeGenerator.GenerateMaze(mazeWidth, mazeHeight); 
-    
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        
-        // Получаем все чекпоинты из сцены
-        GameObject[] checkpointObjects = GameObject.FindGameObjectsWithTag("Checkpoint");
-        checkPoints = checkpointObjects.Select(go => go.transform).ToList();
-        
         if (checkPoints.Count > 0)
         {
-            // Стартовая позиция - первый чекпоинт
-            currentCheckPoint = checkPoints[0];
+            currentCheckPoint = checkPoints[9]; // Начальный чекпоинт
             player.position = currentCheckPoint.position;
-            
-            // Финиш - последний чекпоинт
-            targetCheckPoint = checkPoints[checkPoints.Count - 1];
         }
 
         // Находим все объекты с тегом "Item"
@@ -125,6 +104,15 @@ public class IvanMoveMaze : MonoBehaviour
         if (itemsToCollect.Count == 0)
         {
             Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
+        }
+
+        if (checkPoints.Count > 25)
+        {
+            targetCheckPoint = checkPoints[25];
+        }
+        else
+        {
+            Debug.LogError("Чекпоинт 56 отсутствует в списке checkPoints.");
         }
 
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
@@ -416,13 +404,6 @@ public class IvanMoveMaze : MonoBehaviour
         }
         isPlaying = false;
     }
-
-    private bool IsPathValid(Vector3 direction)
-    {
-        // Проверяем, есть ли препятствие в направлении движения
-        RaycastHit2D hit = Physics2D.Raycast(player.position, direction, cellSize, obstacleLayer);
-        return hit.collider == null;
-    }
     
     private IEnumerator ExecuteStep(string step)
     {
@@ -430,14 +411,6 @@ public class IvanMoveMaze : MonoBehaviour
 
         if (direction != Vector3.zero)
         {
-            // Проверяем, свободен ли путь
-            if (!IsPathValid(direction))
-            {
-                isPathBlocked = true;
-                ShowErrorDialog("Путь заблокирован препятствием!");
-                yield break;
-            }
-
             Transform nextCheckPoint = FindNextCheckPoint(direction);
             if (nextCheckPoint != null)
             {
@@ -489,17 +462,24 @@ public class IvanMoveMaze : MonoBehaviour
     // Находим следующий чекпоинт в заданном направлении
     private Transform FindNextCheckPoint(Vector3 direction)
     {
-        // Ищем ближайший чекпоинт в заданном направлении на расстоянии cellSize
+        Transform nearestCheckPoint = null;
+        float nearestDistance = Mathf.Infinity;
+
         foreach (var checkPoint in checkPoints)
         {
             Vector3 delta = checkPoint.position - currentCheckPoint.position;
-            if (Mathf.Approximately(delta.magnitude, cellSize) &&
-                Vector3.Dot(delta.normalized, direction.normalized) > 0.9f)
+            if (Vector3.Dot(delta.normalized, direction.normalized) > 0.9f)
             {
-                return checkPoint;
+                float distance = Vector3.Distance(currentCheckPoint.position, checkPoint.position);
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestCheckPoint = checkPoint;
+                }
             }
         }
-        return null;
+
+        return nearestCheckPoint;
     }
 
     // Обработчик события входа в триггер
@@ -533,14 +513,7 @@ public class IvanMoveMaze : MonoBehaviour
     // Перезапускаем уровень
     public void RestartLevel()
     {
-        // Очищаем текущий лабиринт
-        mazeGenerator.ClearMaze();
-        
-        // Генерируем новый лабиринт
-        mazeGenerator.GenerateMaze(mazeWidth, mazeHeight); 
-        
-        // Сбрасываем состояние игры
-        StopAlgorithm();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void StopAlgorithm()
@@ -633,22 +606,24 @@ public class IvanMoveMaze : MonoBehaviour
 
     private void ShowCompletionDialog()
     {
-        // Проверяем, достиг ли игрок финиша
-        if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
-        {
-            if (DialogeWindowGoodEnd != null)
-            {
-                DialogeWindowGoodEnd.SetActive(true);
-                SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
-            }
-        }
-        else
+        // Если рыба была найдена или собрано меньше 3 предметов, показываем BadEnd
+        if (hasFish || collectedItemsCount < 3)
         {
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);
             }
         }
+        else
+        {
+            // Если всё в порядке, показываем GoodEnd
+            if (DialogeWindowGoodEnd != null)
+            {
+                DialogeWindowGoodEnd.SetActive(true);
+                SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
+            }
+        }
+
     }
 
     // Переход на 4 уровень 
