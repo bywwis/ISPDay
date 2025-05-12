@@ -54,6 +54,10 @@ public class MazeLevel : MonoBehaviour
     private Vector2Int startPoint = new Vector2Int(1, 1);
     private Vector2Int endPoint;
 
+    private ScrollRect scrollRect;
+    private RectTransform scrollRectTransform;
+    private RectTransform textRectTransform;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -74,8 +78,19 @@ public class MazeLevel : MonoBehaviour
         // Clean up previous level if exists
         if (currentLocation != null) Destroy(currentLocation);
         
+        // Check if we have location prefabs
+        if (locationPrefabs == null || locationPrefabs.Count == 0)
+        {
+            Debug.LogError("No location prefabs assigned!");
+            return;
+        }
+        
         // Randomly select location
-        currentLocation = Instantiate(locationPrefabs[Random.Range(0, locationPrefabs.Count)]);
+        int randomIndex = Random.Range(0, locationPrefabs.Count);
+        currentLocation = Instantiate(locationPrefabs[randomIndex]);
+        currentLocation.transform.position = Vector3.zero;
+        
+        Debug.Log($"Selected location index: {randomIndex}");
         
         // Calculate end point (opposite corner)
         endPoint = new Vector2Int(gridSize.x - 2, gridSize.y - 2);
@@ -87,9 +102,16 @@ public class MazeLevel : MonoBehaviour
         GenerateMaze();
         
         // Set player start position
-        currentCheckPoint = checkPoints[startPoint.y * gridSize.x + startPoint.x];
-        targetCheckPoint = checkPoints[endPoint.y * gridSize.x + endPoint.x];
-        player.position = currentCheckPoint.position;
+        if (checkPoints.Count > startPoint.y * gridSize.x + startPoint.x)
+        {
+            currentCheckPoint = checkPoints[startPoint.y * gridSize.x + startPoint.x];
+            player.position = currentCheckPoint.position;
+        }
+        
+        if (checkPoints.Count > endPoint.y * gridSize.x + endPoint.x)
+        {
+            targetCheckPoint = checkPoints[endPoint.y * gridSize.x + endPoint.x];
+        }
     }
 
     private void GenerateCheckpoints()
@@ -113,7 +135,14 @@ public class MazeLevel : MonoBehaviour
         var oldObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach (var obs in oldObstacles) Destroy(obs);
         
-        // Create border walls
+        // Check obstacle prefab
+        if (obstaclePrefab == null)
+        {
+            Debug.LogError("Obstacle prefab is not assigned!");
+            return;
+        }
+
+        // Create border walls and random obstacles
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)
@@ -137,7 +166,6 @@ public class MazeLevel : MonoBehaviour
             }
         }
         
-        // Ensure path exists (simple version)
         EnsureBasicPath();
     }
 
@@ -442,7 +470,7 @@ public class MazeLevel : MonoBehaviour
             }
         }
 
-        if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
+        /* if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
         {
             ShowCompletionDialog();
         }
@@ -453,7 +481,7 @@ public class MazeLevel : MonoBehaviour
             {
                 DialogeWindowBadEnd.SetActive(true);
             }
-        }
+        } */
         isPlaying = false;
     }
     
@@ -470,10 +498,10 @@ public class MazeLevel : MonoBehaviour
                 currentCheckPoint = nextCheckPoint;
             }
         }
-        else if (step == "Взять")
+        /* else if (step == "Взять")
         {
             ExecuteGetCommand();
-        }
+        } */
     }
 
     // Двигаем персонажа к целевой позиции
@@ -584,7 +612,7 @@ public class MazeLevel : MonoBehaviour
             cycleIterations.Clear(); // Очищаем список итераций
         }
 
-        ResetItems();
+        /* ResetItems(); */
 
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
@@ -604,7 +632,7 @@ public class MazeLevel : MonoBehaviour
         }
     }
 
-    private void ResetItems()
+    /* private void ResetItems()
     {
         collectedItemsCount = 0;
         hasFish = false;
@@ -618,10 +646,10 @@ public class MazeLevel : MonoBehaviour
                 itemsToCollect[i].transform.position = itemOriginalPositions[i];
             }
         }
-    }
+    } */
 
     // Подбор объекта
-    private void ExecuteGetCommand()
+    /* private void ExecuteGetCommand()
     {
         // Получаем масштаб канваса
         float scale = canvas.scaleFactor;
@@ -654,12 +682,12 @@ public class MazeLevel : MonoBehaviour
                 }
             }
         }
-    }
+    } */
 
-    private void ShowCompletionDialog()
+    /* private void ShowCompletionDialog()
     {
         // Если рыба была найдена или собрано меньше 3 предметов, показываем BadEnd
-        if (hasFish || collectedItemsCount < 3)
+        if (collectedItemsCount < 3)
         {
             if (DialogeWindowBadEnd != null)
             {
@@ -676,7 +704,7 @@ public class MazeLevel : MonoBehaviour
             }
         }
 
-    }
+    } */
 
     // Переход на 4 уровень 
     public void LoadNextScene()

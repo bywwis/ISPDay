@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1568995407435824429}
   - component: {fileID: 766380990804244851}
   - component: {fileID: 7049637569807164215}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: MazeBackground2
-  m_TagString: Untagged
+  m_TagString: Background
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
