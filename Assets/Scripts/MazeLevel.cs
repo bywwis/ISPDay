@@ -19,6 +19,8 @@ public class MazeLevel : MonoBehaviour
     [SerializeField] private Vector2Int gridSize = new Vector2Int(10, 10);
     [SerializeField] private float cellSize = 1f;
     [SerializeField] [Range(10, 50)] private int obstacleDensity = 30;
+    [SerializeField] private GameObject playerPrefab;
+
     
     [Header("UI Windows")]
     [SerializeField] private GameObject DialogeWindowGoodEnd;
@@ -60,7 +62,6 @@ public class MazeLevel : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         GenerateRandomLevel();
         InitializeUI();
     }
@@ -79,6 +80,15 @@ public class MazeLevel : MonoBehaviour
         float height = 2f * mainCamera.orthographicSize;
         float width = height * mainCamera.aspect;
         return new Vector2(width, height);
+    }
+
+    private void SetPlayerStartPosition()
+    {
+        GameObject newPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity, currentLocation.transform);
+        player = newPlayer.transform;
+
+        player.position = checkPoints[0].position;
+        currentCheckPoint = checkPoints[0];
     }
 
     private void GenerateRandomLevel()
@@ -119,11 +129,11 @@ public class MazeLevel : MonoBehaviour
         );
         
         // Генерация остальных элементов
-        /* GenerateCheckpoints();
-        GenerateMaze(); */
+        GenerateCheckpoints();
+        GenerateMaze();
         
         // Установка начальной позиции игрока
-        /* SetPlayerStartPosition(); */
+        SetPlayerStartPosition(); 
     }
 
     private void GenerateCheckpoints()
