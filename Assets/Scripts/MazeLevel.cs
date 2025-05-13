@@ -73,56 +73,74 @@ public class MazeLevel : MonoBehaviour
         }
     }
 
+    private Vector2 GetCameraBounds()
+    {
+        Camera mainCamera = Camera.main;
+        float height = 2f * mainCamera.orthographicSize;
+        float width = height * mainCamera.aspect;
+        return new Vector2(width, height);
+    }
+
     private void GenerateRandomLevel()
     {
-        // Clean up previous level if exists
-        if (currentLocation != null) Destroy(currentLocation);
+        // Очистка предыдущего уровня
+        if (currentLocation != null) 
+        {
+            Destroy(currentLocation);
+        }
         
-        // Check if we have location prefabs
+        // Проверка наличия префабов
         if (locationPrefabs == null || locationPrefabs.Count == 0)
         {
-            Debug.LogError("No location prefabs assigned!");
+            Debug.LogError("Список locationPrefabs пуст или не назначен!");
             return;
         }
-        
-        // Randomly select location
+
+        // Выбор случайной локации
         int randomIndex = Random.Range(0, locationPrefabs.Count);
-        currentLocation = Instantiate(locationPrefabs[randomIndex]);
-        currentLocation.transform.position = Vector3.zero;
+        GameObject selectedPrefab = locationPrefabs[randomIndex];
         
-        Debug.Log($"Selected location index: {randomIndex}");
+        // Создание экземпляра префаба
+        currentLocation = Instantiate(
+            selectedPrefab,
+            Vector3.zero, // Позиция будет корректироваться ниже
+            Quaternion.identity,
+            transform // Делаем дочерним объектом
+        );
+
+        Debug.Log($"Выбрана локация: {randomIndex} - {selectedPrefab.name}");
         
-        // Calculate end point (opposite corner)
-        endPoint = new Vector2Int(gridSize.x - 2, gridSize.y - 2);
+        // Центрирование локации
+        Vector2 cameraBounds = GetCameraBounds();
+        currentLocation.transform.localPosition = new Vector3(
+            -cameraBounds.x/2 + cellSize, 
+            -cameraBounds.y/2 + cellSize, 
+            0
+        );
         
-        // Generate grid of checkpoints
-        GenerateCheckpoints();
+        // Генерация остальных элементов
+        /* GenerateCheckpoints();
+        GenerateMaze(); */
         
-        // Generate maze obstacles
-        GenerateMaze();
-        
-        // Set player start position
-        if (checkPoints.Count > startPoint.y * gridSize.x + startPoint.x)
-        {
-            currentCheckPoint = checkPoints[startPoint.y * gridSize.x + startPoint.x];
-            player.position = currentCheckPoint.position;
-        }
-        
-        if (checkPoints.Count > endPoint.y * gridSize.x + endPoint.x)
-        {
-            targetCheckPoint = checkPoints[endPoint.y * gridSize.x + endPoint.x];
-        }
+        // Установка начальной позиции игрока
+        /* SetPlayerStartPosition(); */
     }
 
     private void GenerateCheckpoints()
     {
         checkPoints.Clear();
+        Vector3 startPos = currentLocation.transform.position;
         
         for (int y = 0; y < gridSize.y; y++)
         {
             for (int x = 0; x < gridSize.x; x++)
             {
-                Vector3 position = new Vector3(x * cellSize, y * cellSize, 0);
+                Vector3 position = new Vector3(
+                    startPos.x + x * cellSize,
+                    startPos.y + y * cellSize,
+                    0
+                );
+                
                 var checkpoint = Instantiate(checkpointPrefab, position, Quaternion.identity, currentLocation.transform);
                 checkPoints.Add(checkpoint.transform);
             }
