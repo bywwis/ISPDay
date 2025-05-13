@@ -21,7 +21,9 @@ public class MazeLevel : MonoBehaviour
     [SerializeField] [Range(10, 50)] private int obstacleDensity = 30;
     [SerializeField] private GameObject playerPrefab;
 
-    
+    [Header("Anchor Settings")]
+    [SerializeField] private Transform locationObject; // Перетащите сюда LocationObject со сцены
+
     [Header("UI Windows")]
     [SerializeField] private GameObject DialogeWindowGoodEnd;
     [SerializeField] private GameObject DialogeWindowBadEnd;
@@ -84,10 +86,13 @@ public class MazeLevel : MonoBehaviour
 
     private void SetPlayerStartPosition()
     {
-        GameObject newPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity, currentLocation.transform);
+        GameObject newPlayer = Instantiate(
+            playerPrefab, 
+            checkPoints[0].position, 
+            Quaternion.identity, 
+            locationObject);
+            
         player = newPlayer.transform;
-
-        player.position = checkPoints[0].position;
         currentCheckPoint = checkPoints[0];
     }
 
@@ -127,6 +132,16 @@ public class MazeLevel : MonoBehaviour
             -cameraBounds.y/2 + cellSize, 
             0
         );
+
+        if (locationObject == null)
+        {
+            locationObject = GameObject.Find("LocationObject").transform;
+            if (locationObject == null)
+            {
+                Debug.LogError("LocationObject не найден на сцене!");
+                return;
+            }
+        }
         
         // Генерация остальных элементов
         GenerateCheckpoints();
@@ -134,24 +149,28 @@ public class MazeLevel : MonoBehaviour
         
         // Установка начальной позиции игрока
         SetPlayerStartPosition(); 
+
+        currentLocation.transform.SetAsFirstSibling(); 
     }
 
     private void GenerateCheckpoints()
     {
         checkPoints.Clear();
-        Vector3 startPos = currentLocation.transform.position;
         
+        // Генерация относительно locationObject
         for (int y = 0; y < gridSize.y; y++)
         {
             for (int x = 0; x < gridSize.x; x++)
             {
-                Vector3 position = new Vector3(
-                    startPos.x + x * cellSize,
-                    startPos.y + y * cellSize,
-                    0
-                );
+                Vector3 position = locationObject.position + 
+                                 new Vector3(x * cellSize, y * cellSize, 0);
                 
-                var checkpoint = Instantiate(checkpointPrefab, position, Quaternion.identity, currentLocation.transform);
+                var checkpoint = Instantiate(
+                    checkpointPrefab, 
+                    position, 
+                    Quaternion.identity, 
+                    locationObject); // Делаем дочерним
+                
                 checkPoints.Add(checkpoint.transform);
             }
         }
@@ -199,9 +218,15 @@ public class MazeLevel : MonoBehaviour
 
     private void CreateObstacle(int x, int y)
     {
-        Vector3 position = new Vector3(x * cellSize, y * cellSize, 0);
-        var obstacle = Instantiate(obstaclePrefab, position, Quaternion.identity, currentLocation.transform);
-        obstacle.tag = "Obstacle";
+        Vector3 position = locationObject.position + 
+                          new Vector3(x * cellSize, y * cellSize, 0);
+        
+        Instantiate(
+            obstaclePrefab, 
+            position, 
+            Quaternion.identity, 
+            locationObject) // Делаем дочерним
+            .tag = "Obstacle";
     }
 
     private void EnsureBasicPath()
