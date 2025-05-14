@@ -1,0 +1,212 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;
+
+
+public class BaseMovementController : MonoBehaviour
+{
+    [Header("Base Settings")]
+    [SerializeField] protected InputField algorithmText; // Текстовое поле для отображения алгоритма
+    [SerializeField] protected float moveSpeed = 100f; // Скорость движения персонажа
+    [SerializeField] protected LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
+
+    [Header("Windows")]
+    [SerializeField] protected GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
+    [SerializeField] protected GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
+    [SerializeField] protected GameObject DialogeWindowError; // Диалоговое окно ошибки
+
+    protected List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
+    protected bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
+    protected bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
+    protected Transform playerTransform;
+    protected Transform currentCheckPoint;
+
+    //Для сбора предметов
+    protected List<GameObject> itemsToCollect = new List<GameObject>();
+    protected List<Vector3> itemOriginalPositions = new List<Vector3>();
+    protected List<bool> itemActiveStates = new List<bool>();
+    protected int collectedItemsCount = 0;
+    protected bool allItemsCollected = false;
+
+    protected ScrollRect scrollRect;
+    protected RectTransform scrollRectTransform;
+    protected RectTransform textRectTransform;
+
+    protected virtual void Start()
+    {
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+        scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
+        scrollRectTransform = scrollRect.GetComponent<RectTransform>();
+        textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
+
+        UpdateAlgorithmText();
+    }
+
+    public void AddStep(string step)
+    {
+        if (!isPlaying)
+        {
+            algorithmSteps.Add(step);
+            UpdateAlgorithmText();
+        }
+    }
+
+    protected virtual void UpdateAlgorithmText()
+    {
+        algorithmText.text = "";
+        for (int i = 0; i < algorithmSteps.Count; i++)
+        {
+            algorithmText.text += $"{i + 1}   {algorithmSteps[i]};\n";
+        }
+        StartCoroutine(ScrollIfOverflow());
+    }
+
+    protected virtual IEnumerator ScrollIfOverflow()
+    {
+        yield return null;
+        Canvas.ForceUpdateCanvases();
+
+        float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
+        if (textHeight > scrollRectTransform.rect.height)
+        {
+            scrollRect.verticalNormalizedPosition = 0f;
+        }
+    }
+
+    public void PlayAlgorithm()
+    {
+        if (!isPlaying && algorithmSteps.Count > 0)
+        {
+            isPlaying = true;
+            StartCoroutine(ExecuteAlgorithm());
+        }
+    }
+
+    protected virtual IEnumerator ExecuteAlgorithm()
+    {
+        yield break;
+    }
+
+    protected IEnumerator MovePlayer(Vector3 targetPosition)
+    {
+        while (Vector3.Distance(playerTransform.position, targetPosition) > 0.01f)
+        {
+            if (!isPlaying || isPathBlocked)
+                yield break;
+
+            playerTransform.position = Vector3.MoveTowards(
+                playerTransform.position,
+                targetPosition,
+                moveSpeed * Time.deltaTime
+            );
+            yield return null;
+        }
+        playerTransform.position = targetPosition;
+    }
+
+    protected Vector3 GetDirectionFromStep(string step)
+    {
+        switch (step)
+        {
+            case "Вверх": return Vector3.up;
+            case "Вниз": return Vector3.down;
+            case "Влево": return Vector3.left;
+            case "Вправо": return Vector3.right;
+            default: return Vector3.zero;
+        }
+    }
+
+    public virtual void StopAlgorithm()
+    {
+        isPlaying = false;
+        StopAllCoroutines();
+        algorithmSteps.Clear();
+        algorithmText.text = "";
+
+        if (scrollRect != null)
+            scrollRect.verticalNormalizedPosition = 1f;
+
+    }
+
+    protected virtual IEnumerator MoveToCheckPoint(Transform checkPoint)
+    {
+        yield return StartCoroutine(MovePlayer(checkPoint.position));
+        currentCheckPoint = checkPoint;
+    }
+
+    protected virtual void InitializeItems(string itemTag = "Item")
+    {
+        GameObject[] itemObjects = GameObject.FindGameObjectsWithTag(itemTag);
+        if (itemObjects.Length == 0) return;
+
+        itemsToCollect = new List<GameObject>(itemObjects);
+        foreach (var item in itemsToCollect)
+        {
+            itemOriginalPositions.Add(item.transform.position);
+            itemActiveStates.Add(item.activeSelf);
+        }
+    }
+
+    protected virtual void ResetItems()
+    {
+        collectedItemsCount = 0;
+        allItemsCollected = false;
+
+        for (int i = 0; i < itemsToCollect.Count; i++)
+        {
+            if (itemsToCollect[i] != null)
+            {
+                itemsToCollect[i].SetActive(itemActiveStates[i]);
+                itemsToCollect[i].transform.position = itemOriginalPositions[i];
+            }
+        }
+    }
+
+    protected virtual void ShowErrorDialog(string message)
+    {
+        if (DialogeWindowError != null)
+        {
+            DialogeWindowError.SetActive(true);
+            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
+            if (errorText != null) errorText.text = message;
+        }
+    }
+
+    protected virtual void HandleObstacleCollision(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
+        {
+            isPathBlocked = true;
+            StopAlgorithm();
+            if (DialogeWindowBadEnd != null) DialogeWindowBadEnd.SetActive(true);
+        }
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadNextScene()
+    {
+        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextLevelIndex);
+        }
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    // Методы для кнопок
+    public void AddUpStep() { AddStep("Вверх"); }
+    public void AddDownStep() { AddStep("Вниз"); }
+    public void AddLeftStep() { AddStep("Влево"); }
+    public void AddRightStep() { AddStep("Вправо"); }
+}
