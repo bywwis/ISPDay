@@ -283,8 +283,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -268, y: -267}
-  m_SizeDelta: {x: 65.32, y: 60.59}
+  m_AnchoredPosition: {x: -256, y: -260}
+  m_SizeDelta: {x: 39.28, y: 39.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &106958629
 GameObject:
@@ -3495,7 +3495,7 @@ MonoBehaviour:
   DialogeWindowError: {fileID: 758271038}
   CycleButton: {fileID: 2065847367}
   NumberButtons: {fileID: 1298658401}
-  ButtonsAlgoritm: {fileID: 1179418714}
+  ButtonsAlgoritm: {fileID: 136200568}
   EndButton: {fileID: 697716764}
 --- !u!222 &947067143
 CanvasRenderer:

@@ -16,7 +16,7 @@ public class MazeLevel : MonoBehaviour
     [SerializeField] private List<GameObject> locationPrefabs;
     [SerializeField] private GameObject checkpointPrefab;
     [SerializeField] private GameObject obstaclePrefab;
-    [SerializeField] private Vector2Int gridSize = new Vector2Int(10, 10);
+    private Vector2Int gridSize = new Vector2Int(10, 10);
     [SerializeField] private float cellSize = 1f;
     [SerializeField] [Range(10, 50)] private int obstacleDensity = 30;
     [SerializeField] private GameObject playerPrefab;
@@ -144,6 +144,15 @@ public class MazeLevel : MonoBehaviour
                 return;
             }
         }
+
+        if (randomIndex == 0)
+        {
+            gridSize = new Vector2Int(6, 7);
+        }
+        else
+        {
+            gridSize = new Vector2Int(5, 5);
+        }
         
         // Генерация остальных элементов
         GenerateCheckpoints();
@@ -173,6 +182,7 @@ public class MazeLevel : MonoBehaviour
                     Quaternion.identity, 
                     locationObject); // Делаем дочерним
                 
+                checkpoint.name($"CheckPoint({x})({y})");
                 checkPoints.Add(checkpoint.transform);
             }
         }
@@ -180,42 +190,269 @@ public class MazeLevel : MonoBehaviour
 
     private void GenerateMaze()
     {
-        // Clear old obstacles
+        // Очистка старых препятствий
         var oldObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach (var obs in oldObstacles) Destroy(obs);
         
-        // Check obstacle prefab
         if (obstaclePrefab == null)
         {
             Debug.LogError("Obstacle prefab is not assigned!");
             return;
         }
 
-        // Create border walls and random obstacles
+        // Установка конечной точки (противоположный угол от старта)
+        endPoint = new Vector2Int(gridSize.x - 2, gridSize.y - 2);
+
+        // 1. Создаем границы лабиринта
+        CreateBorderWalls();
+
+        // 2. Генерируем случайные комнаты
+        GenerateRandomRooms();
+
+        // 3. Создаем основной путь от старта до финиша
+        GenerateMainPath();
+
+        // 4. Добавляем случайные ответвления
+        GenerateRandomBranches();
+
+        // 5. Убедимся, что путь существует
+        EnsurePathExists();
+    }
+
+    private void CreateBorderWalls()
+    {
+        // Создаем стены по периметру
         for (int x = 0; x < gridSize.x; x++)
         {
-            for (int y = 0; y < gridSize.y; y++)
+            CreateObstacle(x, 0); // Нижняя стена
+            CreateObstacle(x, gridSize.y - 1); // Верхняя стена
+        }
+        
+        for (int y = 1; y < gridSize.y - 1; y++)
+        {
+            CreateObstacle(0, y); // Левая стена
+            CreateObstacle(gridSize.x - 1, y); // Правая стена
+        }
+    }
+
+    private void GenerateRandomRooms()
+    {
+        int roomCount = Random.Range(3, 6); // Количество комнат
+        
+        for (int i = 0; i < roomCount; i++)
+        {
+            int roomWidth = Random.Range(3, 6);
+            int roomHeight = Random.Range(3, 6);
+            
+            int startX = Random.Range(1, gridSize.x - roomWidth - 1);
+            int startY = Random.Range(1, gridSize.y - roomHeight - 1);
+            
+            // Создаем комнату (очищаем область)
+            for (int x = startX; x < startX + roomWidth; x++)
             {
-                // Skip start and end points
-                if ((x == startPoint.x && y == startPoint.y) || (x == endPoint.x && y == endPoint.y))
-                    continue;
-                
-                // Create border walls
-                if (x == 0 || y == 0 || x == gridSize.x - 1 || y == gridSize.y - 1)
+                for (int y = startY; y < startY + roomHeight; y++)
                 {
-                    CreateObstacle(x, y);
-                    continue;
+                    RemoveObstacleAt(x, y);
+                }
+            }
+            
+            // Добавляем стены вокруг комнаты с некоторой вероятностью
+            if (Random.value > 0.5f)
+            {
+                for (int x = startX - 1; x <= startX + roomWidth; x++)
+                {
+                    if (Random.value > 0.3f) CreateObstacle(x, startY - 1);
+                    if (Random.value > 0.3f) CreateObstacle(x, startY + roomHeight);
                 }
                 
-                // Random obstacles
-                if (Random.Range(0, 100) < obstacleDensity)
+                for (int y = startY; y < startY + roomHeight; y++)
                 {
-                    CreateObstacle(x, y);
+                    if (Random.value > 0.3f) CreateObstacle(startX - 1, y);
+                    if (Random.value > 0.3f) CreateObstacle(startX + roomWidth, y);
+                }
+            }
+        }
+    }
+
+    private void GenerateMainPath()
+    {
+        // Алгоритм "пьяницы" для создания извилистого пути
+        Vector2Int currentPos = startPoint;
+        int steps = 0;
+        int maxSteps = gridSize.x * gridSize.y * 2;
+        
+        while (currentPos != endPoint && steps < maxSteps)
+        {
+            // Очищаем текущую позицию
+            RemoveObstacleAt(currentPos.x, currentPos.y);
+            
+            // Определяем направление к цели
+            Vector2Int direction;
+            if (Random.value > 0.6f)
+            {
+                // Случайное направление
+                direction = RandomDirection();
+            }
+            else
+            {
+                // Направление к цели
+                direction = new Vector2Int(
+                    endPoint.x > currentPos.x ? 1 : endPoint.x < currentPos.x ? -1 : 0,
+                    endPoint.y > currentPos.y ? 1 : endPoint.y < currentPos.y ? -1 : 0);
+                
+                if (direction.x != 0 && direction.y != 0 && Random.value > 0.5f)
+                {
+                    direction = Random.value > 0.5f ? new Vector2Int(direction.x, 0) : new Vector2Int(0, direction.y);
+                }
+            }
+            
+            // Проверяем новую позицию
+            Vector2Int newPos = currentPos + direction;
+            
+            if (IsInBounds(newPos))
+            {
+                currentPos = newPos;
+                
+                // С некоторой вероятностью создаем "комнату" на пути
+                if (Random.value > 0.8f)
+                {
+                    CreatePathRoom(currentPos);
+                }
+            }
+            
+            steps++;
+        }
+    }
+
+    private Vector2Int RandomDirection()
+    {
+        int val = Random.Range(0, 4);
+        switch (val)
+        {
+            case 0: return Vector2Int.up;
+            case 1: return Vector2Int.right;
+            case 2: return Vector2Int.down;
+            default: return Vector2Int.left;
+        }
+    }
+
+    private void CreatePathRoom(Vector2Int center)
+    {
+        int size = Random.Range(1, 3);
+        
+        for (int x = center.x - size; x <= center.x + size; x++)
+        {
+            for (int y = center.y - size; y <= center.y + size; y++)
+            {
+                if (IsInBounds(new Vector2Int(x, y)))
+                {
+                    RemoveObstacleAt(x, y);
+                }
+            }
+        }
+    }
+
+    private void GenerateRandomBranches()
+    {
+        // Добавляем случайные ответвления от основного пути
+        int branchCount = Random.Range(5, 10);
+        
+        for (int i = 0; i < branchCount; i++)
+        {
+            // Выбираем случайную точку на сетке
+            Vector2Int start = new Vector2Int(
+                Random.Range(1, gridSize.x - 1),
+                Random.Range(1, gridSize.y - 1));
+            
+            if (IsEmpty(start.x, start.y))
+            {
+                int length = Random.Range(2, 6);
+                Vector2Int dir = RandomDirection();
+                
+                for (int j = 0; j < length; j++)
+                {
+                    Vector2Int pos = start + dir * j;
+                    if (IsInBounds(pos))
+                    {
+                        RemoveObstacleAt(pos.x, pos.y);
+                        
+                        // С некоторой вероятностью меняем направление
+                        if (Random.value > 0.7f)
+                        {
+                            dir = RandomDirection();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void EnsurePathExists()
+    {
+        // Используем поиск в ширину для проверки достижимости
+        if (!IsPathPossible(startPoint, endPoint))
+        {
+            // Если путь невозможен, очищаем дополнительные клетки
+            Debug.Log("Путь не существует, очищаем дополнительные клетки...");
+            
+            // Создаем прямой путь по диагонали
+            Vector2Int current = startPoint;
+            while (current != endPoint)
+            {
+                RemoveObstacleAt(current.x, current.y);
+                
+                if (current.x < endPoint.x) current.x++;
+                else if (current.x > endPoint.x) current.x--;
+                
+                if (current.y < endPoint.y) current.y++;
+                else if (current.y > endPoint.y) current.y--;
+            }
+            RemoveObstacleAt(endPoint.x, endPoint.y);
+        }
+    }
+
+    private bool IsPathPossible(Vector2Int start, Vector2Int end)
+    {
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+        
+        queue.Enqueue(start);
+        visited.Add(start);
+        
+        while (queue.Count > 0)
+        {
+            Vector2Int current = queue.Dequeue();
+            
+            if (current == end)
+            {
+                return true;
+            }
+            
+            foreach (Vector2Int dir in new Vector2Int[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left })
+            {
+                Vector2Int neighbor = current + dir;
+                
+                if (IsInBounds(neighbor) && !visited.Contains(neighbor) && IsEmpty(neighbor.x, neighbor.y))
+                {
+                    visited.Add(neighbor);
+                    queue.Enqueue(neighbor);
                 }
             }
         }
         
-        EnsureBasicPath();
+        return false;
+    }
+
+    private bool IsInBounds(Vector2Int pos)
+    {
+        return pos.x >= 0 && pos.x < gridSize.x && pos.y >= 0 && pos.y < gridSize.y;
+    }
+
+    private bool IsEmpty(int x, int y)
+    {
+        Vector3 position = locationObject.position + new Vector3(x * cellSize, y * cellSize, 0);
+        Collider2D[] colliders = Physics2D.OverlapPointAll(position);
+        return colliders.All(c => !c.CompareTag("Obstacle"));
     }
 
     private void CreateObstacle(int x, int y)
@@ -229,20 +466,6 @@ public class MazeLevel : MonoBehaviour
             Quaternion.identity, 
             locationObject) // Делаем дочерним
             .tag = "Obstacle";
-    }
-
-    private void EnsureBasicPath()
-    {
-        // Simple path from start to end (right then up)
-        for (int x = startPoint.x; x <= endPoint.x; x++)
-        {
-            RemoveObstacleAt(x, startPoint.y);
-        }
-        
-        for (int y = startPoint.y; y <= endPoint.y; y++)
-        {
-            RemoveObstacleAt(endPoint.x, y);
-        }
     }
 
     private void RemoveObstacleAt(int x, int y)
@@ -523,18 +746,6 @@ public class MazeLevel : MonoBehaviour
             }
         }
 
-        /* if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.1f)
-        {
-            ShowCompletionDialog();
-        }
-        else
-        {
-            // Если персонаж не на правильном чекпоинте, показываем BadEnd
-            if (DialogeWindowBadEnd != null)
-            {
-                DialogeWindowBadEnd.SetActive(true);
-            }
-        } */
         isPlaying = false;
     }
     
@@ -551,10 +762,6 @@ public class MazeLevel : MonoBehaviour
                 currentCheckPoint = nextCheckPoint;
             }
         }
-        /* else if (step == "Взять")
-        {
-            ExecuteGetCommand();
-        } */
     }
 
     // Двигаем персонажа к целевой позиции
@@ -615,31 +822,6 @@ public class MazeLevel : MonoBehaviour
         return nearestCheckPoint;
     }
 
-    // Обработчик события входа в триггер
-    /* private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
-        {
-            isPathBlocked = true;
-            Debug.Log("Путь заблокирован: " + collision.gameObject.name);
-            StopAlgorithm();
-            
-            if (DialogeWindowBadEnd != null)
-            {
-                DialogeWindowBadEnd.SetActive(true);
-            }
-        }
-    }
-
-    // Обработчик события выхода из триггера
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
-        {
-            isPathBlocked = false;
-        }
-    } */
-
     public void ReportCollision(bool isBlocked)
     {
         isPathBlocked = isBlocked;
@@ -672,8 +854,6 @@ public class MazeLevel : MonoBehaviour
         {
             cycleIterations.Clear(); // Очищаем список итераций
         }
-
-        /* ResetItems(); */
 
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
