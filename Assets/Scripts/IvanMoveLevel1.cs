@@ -51,29 +51,37 @@ public class IvanMoveLevel1 : BaseMovementController
 
     protected override void UpdateAlgorithmText()
     {
-        algorithmText.text = "";
+        base.UpdateAlgorithmText(); 
 
-        for (int i = 0; i < algorithmSteps.Count; i++)
-        {
-            if (i < 9)
-            {
-                algorithmText.text += $"{i + 1}   {algorithmSteps[i]};\n";
-            }
-            else if (i >= 9)
-            {
-                algorithmText.text += $"{i + 1}  {algorithmSteps[i]};\n";
-            }
-        }
-
-        int lineCount = algorithmText.text.Split('\n').Length;
-
+        // Проверка конкретно для первого уровня
+        int lineCount = algorithmText.text.Split('\n').Length - 1; // -1 для пустой строки в конце
         if (lineCount > 19)
         {
             ShowErrorDialog($"Превышено максимальное количество строк (19).");
-            return;
+            algorithmText.text = algorithmText.text.Substring(0, algorithmText.text.Length - 1);
         }
+    }
 
-        StartCoroutine(ScrollIfOverflow());
+    protected override string FormatStepLine(int index)
+    {
+        string numberPadding; // отступ
+
+        if (index < 9)
+        {
+            // Если индекс меньше 9 (шаги 1-9)
+            numberPadding = "   "; // 3 пробела
+        }
+        else
+        {
+            // Если индекс 9 и больше (шаги 10+)
+            numberPadding = "  ";  // 2 пробела
+        }
+        return $"{index + 1}{numberPadding}{algorithmSteps[index]};";
+    }
+
+    protected override void ValidateLineCount()
+    {
+        
     }
 
 

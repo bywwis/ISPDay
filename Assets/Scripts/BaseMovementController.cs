@@ -57,11 +57,30 @@ public class BaseMovementController : MonoBehaviour
     protected virtual void UpdateAlgorithmText()
     {
         algorithmText.text = "";
+
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            algorithmText.text += $"{i + 1}   {algorithmSteps[i]};\n";
+            // Виртуальный метод для форматирования строки
+            algorithmText.text += FormatStepLine(i) + "\n";
         }
+
         StartCoroutine(ScrollIfOverflow());
+        ValidateLineCount(); // Проверка количества строк
+    }
+
+    protected virtual string FormatStepLine(int index)
+    {
+        return $"{index + 1}   {algorithmSteps[index]};";
+    }
+
+    protected virtual void ValidateLineCount()
+    {
+        // Базовая проверка (можно переопределить в наследниках)
+        int lineCount = algorithmSteps.Count;
+        if (lineCount > 20)
+        {
+            ShowErrorDialog($"Превышено максимальное количество шагов (20).");
+        }
     }
 
     protected virtual IEnumerator ScrollIfOverflow()
@@ -202,6 +221,16 @@ public class BaseMovementController : MonoBehaviour
     public void BackToMenu()
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    public void RemoveLastStep()
+    {
+        if (!isPlaying && algorithmSteps.Count > 0)
+        {
+            algorithmSteps.RemoveAt(algorithmSteps.Count - 1);
+            UpdateAlgorithmText();
+            StartCoroutine(ScrollIfOverflow());
+        }
     }
 
     // Методы для кнопок
