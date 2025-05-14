@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 404.01038, y: 572.2201}
-  m_SizeDelta: {x: 179.3408, y: 66.9898}
+  m_SizeDelta: {x: 79, y: 76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6451192921093571430
 CanvasRenderer:
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8445759338239065582, guid: 44f57138774e44041af93b8776c24880, type: 3}
+  m_Sprite: {fileID: -8712576077851642502, guid: 7932eedb4e52b514785a86e6bf042cdb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -110,7 +110,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 6.7366295, y: 11.218718}
+  m_Offset: {x: -1.0814819, y: 2.2279034}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -120,5 +120,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 149.6784, y: 23.437435}
+  m_Size: {x: 38.661255, y: 41.419064}
   m_EdgeRadius: 0

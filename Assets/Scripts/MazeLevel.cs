@@ -64,6 +64,8 @@ public class MazeLevel : MonoBehaviour
 
     void Start()
     {
+        Physics2D.queriesStartInColliders = true;
+        Physics2D.queriesHitTriggers = true;
         GenerateRandomLevel();
         InitializeUI();
     }
@@ -259,6 +261,14 @@ public class MazeLevel : MonoBehaviour
 
     private void InitializeUI()
     {
+        scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
+        if (scrollRect == null)
+        {
+            Debug.LogError("ScrollRect не найден!");
+        }
+        scrollRectTransform = scrollRect.GetComponent<RectTransform>();
+        textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
+
         CycleButton.onClick.AddListener(OnCycleButtonClicked);
         EndButton.onClick.AddListener(OnEndButtonClicked);
         
@@ -266,16 +276,6 @@ public class MazeLevel : MonoBehaviour
         ButtonsAlgoritm.SetActive(true);
         EndButton.gameObject.SetActive(false);
     }
-
-    // ... (остальные методы UI и управления алгоритмом остаются без изменений, как в оригинальном файле)
-    // Включая:
-    // - AddStep, UpdateAlgorithmText, PlayAlgorithm, ExecuteAlgorithm
-    // - MovePlayer, FindNextCheckPoint, GetDirectionFromStep
-    // - OnTriggerEnter2D, OnTriggerExit2D
-    // - StopAlgorithm, RestartLevel, BackToMenu
-    // - Методы для кнопок (AddUpStep, AddDownStep и т.д.)
-    // - Методы для циклов (OnCycleButtonClicked, OnEndButtonClicked, SetIterations)
-
 
     public void BackToMenu()
     {
@@ -616,17 +616,14 @@ public class MazeLevel : MonoBehaviour
     }
 
     // Обработчик события входа в триггер
-    private void OnTriggerEnter2D(Collider2D collision)
+    /* private void OnTriggerEnter2D(Collider2D collision)
     {
         if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
         {
             isPathBlocked = true;
             Debug.Log("Путь заблокирован: " + collision.gameObject.name);
-
-            // Останавливаем выполнение алгоритма
             StopAlgorithm();
-
-            // Показываем диалоговое окно
+            
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);
@@ -640,6 +637,17 @@ public class MazeLevel : MonoBehaviour
         if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
         {
             isPathBlocked = false;
+        }
+    } */
+
+    public void ReportCollision(bool isBlocked)
+    {
+        isPathBlocked = isBlocked;
+        if (isBlocked)
+        {
+            Debug.Log("Путь заблокирован!");
+            if (DialogeWindowBadEnd != null)
+                DialogeWindowBadEnd.SetActive(true);
         }
     }
 
@@ -680,8 +688,8 @@ public class MazeLevel : MonoBehaviour
 
         if (checkPoints.Count > 0)
         {
-            player.position = checkPoints[9].position;
-            currentCheckPoint = checkPoints[9];
+            player.position = checkPoints[0].position;
+            currentCheckPoint = checkPoints[0];
         }
     }
 

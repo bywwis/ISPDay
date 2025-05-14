@@ -201,8 +201,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: AddDownStep
         m_Mode: 1
         m_Arguments:
@@ -260,7 +260,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 100580131}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: LocationObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -368,8 +368,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: BackToMenu
         m_Mode: 1
         m_Arguments:
@@ -1858,8 +1858,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations8
         m_Mode: 1
         m_Arguments:
@@ -2206,8 +2206,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: StopAlgorithm
         m_Mode: 1
         m_Arguments:
@@ -2979,8 +2979,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations9
         m_Mode: 1
         m_Arguments:
@@ -3111,8 +3111,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations3
         m_Mode: 1
         m_Arguments:
@@ -3375,8 +3375,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations4
         m_Mode: 1
         m_Arguments:
@@ -3436,8 +3436,7 @@ GameObject:
   - component: {fileID: 947067140}
   - component: {fileID: 947067141}
   - component: {fileID: 947067143}
-  - component: {fileID: 947067144}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3477,7 +3476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   algorithmText: {fileID: 1787148077}
-  moveSpeed: 2
+  moveSpeed: 0.8
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -3506,36 +3505,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947067139}
   m_CullTransparentMesh: 1
---- !u!114 &947067144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 947067139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 39795dd022a40fc4c82f1899e32d6ac1, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &970658692
 GameObject:
   m_ObjectHideFlags: 0
@@ -4308,8 +4277,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations1
         m_Mode: 1
         m_Arguments:
@@ -4710,8 +4679,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations6
         m_Mode: 1
         m_Arguments:
@@ -4842,8 +4811,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations7
         m_Mode: 1
         m_Arguments:
@@ -5052,8 +5021,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations5
         m_Mode: 1
         m_Arguments:
@@ -5184,8 +5153,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: AddLeftStep
         m_Mode: 1
         m_Arguments:
@@ -5476,8 +5445,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: SetIterations2
         m_Mode: 1
         m_Arguments:
@@ -5884,8 +5853,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: AddUpStep
         m_Mode: 1
         m_Arguments:
@@ -6431,8 +6400,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: PlayAlgorithm
         m_Mode: 1
         m_Arguments:
@@ -6649,8 +6618,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IvanMoveLevel3, Assembly-CSharp
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
         m_MethodName: AddRightStep
         m_Mode: 1
         m_Arguments:
@@ -6781,9 +6750,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 947067139}
         m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: AddSit
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

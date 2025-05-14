@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4970368391921120864}
   - component: {fileID: 6601927160562741822}
   - component: {fileID: 3524386329661892730}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: MazeBackground1
   m_TagString: Background
   m_Icon: {fileID: 0}

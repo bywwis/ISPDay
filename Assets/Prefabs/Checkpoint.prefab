@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2124470231816166866}
   - component: {fileID: 5822554516927616761}
   - component: {fileID: 2484184010121147490}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Checkpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 150.4, y: -224.20001}
-  m_SizeDelta: {x: 39.3496, y: 39.9745}
+  m_AnchoredPosition: {x: 144.46628, y: -216.87006}
+  m_SizeDelta: {x: 27.4821, y: 25.3146}
   m_Pivot: {x: 0.5, y: 0.49999997}
 --- !u!222 &5822554516927616761
 CanvasRenderer:
