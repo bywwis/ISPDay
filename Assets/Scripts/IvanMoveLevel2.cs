@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 public class IvanMoveLevel2 : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private GameObject ifButton; // Кнопка условия
-    
-    [SerializeField] 
+
+    [SerializeField]
     private GameObject movementButtons; // Кнопки для движения
 
-    [SerializeField] 
+    [SerializeField]
     private GameObject nameButtons; // Кнопки для выбора имени
 
     [SerializeField]
@@ -20,10 +20,10 @@ public class IvanMoveLevel2 : MonoBehaviour
 
     [SerializeField]
     private InputField algorithmText; // Текстовое поле для отображения алгоритма
-    
+
     [SerializeField]
     private float moveSpeed = 100f; // Скорость движения персонажа
-    
+
     [SerializeField]
     private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
 
@@ -93,14 +93,14 @@ public class IvanMoveLevel2 : MonoBehaviour
         {
             Debug.LogError("ScrollRect не найден на InputField или его родитель!");
         }
-        
+
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-        
+
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         endButton.SetActive(false);
         nameButtons.SetActive(false);
-        
+
         UpdateAlgorithmText();
     }
 
@@ -124,7 +124,7 @@ public class IvanMoveLevel2 : MonoBehaviour
         {
             algorithmSteps.Add(step);
             UpdateAlgorithmText();
-            
+
             // Если добавляем шаг внутри условия, показываем кнопку "Закончить"
             if (isConditionBeingEdited && !step.StartsWith("Если") && !step.StartsWith("Иван") && !step.StartsWith("Паулина"))
             {
@@ -246,13 +246,13 @@ public class IvanMoveLevel2 : MonoBehaviour
     private IEnumerator ScrollIfOverflow()
     {
         yield return null;
-        
+
         Canvas.ForceUpdateCanvases();
-        
+
         float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
-        
+
         float scrollRectHeight = scrollRectTransform.rect.height;
-        
+
         if (textHeight > scrollRectHeight)
         {
             scrollRect.verticalNormalizedPosition = 0f;
@@ -284,7 +284,7 @@ public class IvanMoveLevel2 : MonoBehaviour
     private bool HasUnfinishedCondition()
     {
         bool hasOpenCondition = false;
-        
+
         foreach (string step in algorithmSteps)
         {
             if (step.StartsWith("Если") || step.StartsWith("Иван, то (") || step.StartsWith("Паулина, то ("))
@@ -296,7 +296,7 @@ public class IvanMoveLevel2 : MonoBehaviour
                 hasOpenCondition = false;
             }
         }
-        
+
         return hasOpenCondition;
     }
 
@@ -495,10 +495,10 @@ public class IvanMoveLevel2 : MonoBehaviour
         {
             isPathBlocked = true;
             Debug.Log("Путь заблокирован: " + collision.gameObject.name);
-        
+
             // Останавливаем выполнение алгоритма
             StopAlgorithm();
-            
+
             // Показываем диалоговое окно
             if (DialogeWindowBadEnd != null)
             {

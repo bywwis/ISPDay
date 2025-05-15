@@ -9,27 +9,30 @@ public class IvanMoveLevel1 : BaseMovementController
     [SerializeField] private List<Transform> checkPoints; // Список всех чекпоинтов
 
     public Canvas canvas;
-    private Transform targetCheckPoint;
+    private Transform targetCheckPoint;  // Финальная точка
 
     protected override void Start()
     {
+        // Вызов базовой инициализации
         base.Start();
-        InitializeCheckpoints();
-        InitializeItems();
+        InitializeCheckpoints(); // Настройка точек маршрута
+        InitializeItems(); // Активация системы сбора предметов
     }
 
+    // Настройка точек маршрута
     private void InitializeCheckpoints()
     {
         if (checkPoints.Count > 0)
         {
-            currentCheckPoint = checkPoints[4];
-            playerTransform.position = currentCheckPoint.position;
+            currentCheckPoint = checkPoints[4]; // Стартовая точка
+            playerTransform.position = currentCheckPoint.position; // Установка позиции игрока
         }
 
-        if (checkPoints.Count > 19) targetCheckPoint = checkPoints[19];
+        if (checkPoints.Count > 19) targetCheckPoint = checkPoints[19]; // Финишная точка
 
     }
 
+    // Обновление текста алгоритма
     protected override void UpdateAlgorithmText()
     {
         base.UpdateAlgorithmText(); 
@@ -43,6 +46,7 @@ public class IvanMoveLevel1 : BaseMovementController
         }
     }
 
+    // Форматирование строк с разным отступом для номеров
     protected override string FormatStepLine(int index)
     {
         string numberPadding; // отступ
@@ -60,11 +64,10 @@ public class IvanMoveLevel1 : BaseMovementController
         return $"{index + 1}{numberPadding}{algorithmSteps[index]};";
     }
 
-    protected override void ValidateLineCount()
-    {
-        
-    }
+    // Отключение базовой проверки количества строк
+    protected override void ValidateLineCount() { }
 
+    // Основная логика выполнения алгоритма
     protected override IEnumerator ExecuteAlgorithm()
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
@@ -72,7 +75,7 @@ public class IvanMoveLevel1 : BaseMovementController
             string step = algorithmSteps[i];
             Vector3 direction = GetDirectionFromStep(step);
 
-            if (direction != Vector3.zero)
+            if (direction != Vector3.zero) // Для шагов движения
             {
                 Transform nextCheckPoint = FindNextCheckPoint(direction);
                 if (nextCheckPoint != null)
@@ -81,12 +84,13 @@ public class IvanMoveLevel1 : BaseMovementController
                     currentCheckPoint = nextCheckPoint;
                 }
             }
-            else if (step == "Взять")
+            else if (step == "Взять") // Для команды сбора
             {
                 ExecuteGetCommand();
             }
         }
 
+        // Проверка условий завершения уровня
         if (allItemsCollected && targetCheckPoint != null 
             && Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.01f)
         {
@@ -100,7 +104,7 @@ public class IvanMoveLevel1 : BaseMovementController
         isPlaying = false;
     }
 
-
+    // Поиск следующей точки в направлении движения
     private Transform FindNextCheckPoint(Vector3 direction)
     {
         Transform nearestCheckPoint = null;
@@ -158,6 +162,7 @@ public class IvanMoveLevel1 : BaseMovementController
         }
     }
 
+    // Обработчики столкновений
     private void OnTriggerEnter2D(Collider2D collision) => HandleObstacleCollision(collision);
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -168,19 +173,21 @@ public class IvanMoveLevel1 : BaseMovementController
         }
     }
 
+    // Сброс состояния
     public override void StopAlgorithm()
     {
         base.StopAlgorithm();
         if (checkPoints.Count > 0)
         {
-            playerTransform.position = checkPoints[4].position;
-            currentCheckPoint = checkPoints[4];
+            currentCheckPoint = checkPoints[4]; // Стартовая точка
+            playerTransform.position = currentCheckPoint.position; // Установка позиции игрока
         }
 
         // Восстанавливаем предметы при сбросе алгоритма
         ResetItems();
     }
 
+    // Завершение уровня
     private void ShowCompletionDialog()
     {
         if (DialogeWindowGoodEnd != null)

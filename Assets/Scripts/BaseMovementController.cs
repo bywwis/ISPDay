@@ -31,7 +31,7 @@ public class BaseMovementController : MonoBehaviour
     protected bool allItemsCollected = false; // Флаг полного сбора
 
     // Элементы интерфейса для прокрутки
-    protected ScrollRect scrollRect; 
+    protected ScrollRect scrollRect;
     protected RectTransform scrollRectTransform;
     protected RectTransform textRectTransform;
 
