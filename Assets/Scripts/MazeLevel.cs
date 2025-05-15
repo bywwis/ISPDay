@@ -22,6 +22,7 @@ public class MazeLevel : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     private float checkpointX;
     private float checkpointY;
+    [SerializeField] private GameObject endPointPrefab;
 
     [Header("Anchor Settings")]
     [SerializeField] private Transform locationObject; 
@@ -77,6 +78,14 @@ public class MazeLevel : MonoBehaviour
         if (isPlaying && algorithmSteps.Count > 0)
         {
             PlayAlgorithm();
+        }
+        if (player != null && currentCheckPoint != null)
+        {
+            Vector2Int currentGridPos = WorldToGridPosition(currentCheckPoint.position);
+            if (currentGridPos == endPoint)
+            {
+                ShowCompletionDialog(true);
+            }
         }
     }
 
@@ -159,10 +168,16 @@ public class MazeLevel : MonoBehaviour
             checkpointX = 1.2f;
             checkpointY = cellSize;
         }
+
+        endPoint = new Vector2Int(gridSize.x - 1, gridSize.y - 1);
+        Debug.Log($"Конечная точка определена: {endPoint}");
         
         // Генерация остальных элементов
         GenerateCheckpoints();
         GenerateMaze();
+
+        CreateEndPoint();
+        Debug.Log("Конечная точка создана");
         
         // Установка начальной позиции игрока
         SetPlayerStartPosition(); 
@@ -201,17 +216,36 @@ public class MazeLevel : MonoBehaviour
         }
     }
 
+    private void CreateEndPoint()
+    {
+        Transform checkpoint = GetCheckpointAt(gridSize.x - 1, gridSize.y - 1);
+        if (checkpoint == null)
+        {
+            Debug.Log($"Не найден чекпоинт для позиции {endPoint}");
+            return;
+        }
+        
+        Instantiate(
+            endPointPrefab, 
+            checkpoint.position, 
+            Quaternion.identity, 
+            locationObject
+        );
+    }
+
     private void GenerateMaze()
     {
-        // Очистка старых препятствий
+        // Очистка старых препятствий и конечных точек
         var oldObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach (var obs in oldObstacles) 
         {
-            // Удаляем только внутренние препятствия, не трогая границы
-            if (!IsBorderWall(obs.transform.position))
-            {
-                Destroy(obs);
-            }
+            Destroy(obs);
+        }
+        
+        var oldEndPoints = GameObject.FindGameObjectsWithTag("EndPoint");
+        foreach (var ep in oldEndPoints)
+        {
+            Destroy(ep);
         }
 
         if (obstaclePrefab == null)
@@ -219,9 +253,6 @@ public class MazeLevel : MonoBehaviour
             Debug.LogError("Obstacle prefab is not assigned!");
             return;
         }
-
-        // Установка конечной точки (противоположный угол от старта)
-        endPoint = new Vector2Int(gridSize.x - 2, gridSize.y - 2);
 
         // 1. Генерируем препятствия на сетке
         GenerateGridObstacles();
@@ -823,29 +854,27 @@ public class MazeLevel : MonoBehaviour
             player.position = checkPoints[0].position;
             currentCheckPoint = checkPoints[0];
         }
+
+        RegenerateLevel();
     }
 
-    /* private void ShowCompletionDialog()
+    private void ShowCompletionDialog(bool success)
     {
-        // Если рыба была найдена или собрано меньше 3 предметов, показываем BadEnd
-        if (collectedItemsCount < 3)
+        if (success)
+        {
+            if (DialogeWindowGoodEnd != null)
+            {
+                DialogeWindowGoodEnd.SetActive(true);
+            }
+        }
+        else if (isPathBlocked)
         {
             if (DialogeWindowBadEnd != null)
             {
                 DialogeWindowBadEnd.SetActive(true);
             }
         }
-        else
-        {
-            // Если всё в порядке, показываем GoodEnd
-            if (DialogeWindowGoodEnd != null)
-            {
-                DialogeWindowGoodEnd.SetActive(true);
-                SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
-            }
-        }
-
-    } */
+    }
 
     // Переход на 4 уровень 
     public void LoadNextScene()
@@ -962,7 +991,6 @@ public class MazeLevel : MonoBehaviour
 
     public void RegenerateLevel()
     {
-        StopAlgorithm();
-        GenerateRandomLevel();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
