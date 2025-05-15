@@ -54,4 +54,9 @@ public class MenuScript : MonoBehaviour
     {
         Application.OpenURL("https://forms.yandex.ru/u/681b1ebaeb6146d7ee95ddfd/");
     }
+
+    public void OpenMaze()
+    {
+        SceneManager.LoadScene("MazeLevel");
+    }
 }

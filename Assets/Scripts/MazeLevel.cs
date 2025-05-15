@@ -233,6 +233,7 @@ public class MazeLevel : MonoBehaviour
         );
     }
 
+    // Генерация лабиринта
     private void GenerateMaze()
     {
         // Очистка старых препятствий и конечных точек
@@ -464,6 +465,7 @@ public class MazeLevel : MonoBehaviour
             }
         }
     }
+    // Конец блока генерации лабиринта
 
     private void InitializeUI()
     {
@@ -854,8 +856,6 @@ public class MazeLevel : MonoBehaviour
             player.position = checkPoints[0].position;
             currentCheckPoint = checkPoints[0];
         }
-
-        RegenerateLevel();
     }
 
     private void ShowCompletionDialog(bool success)
