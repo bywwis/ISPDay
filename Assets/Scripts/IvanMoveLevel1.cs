@@ -18,25 +18,6 @@ public class IvanMoveLevel1 : BaseMovementController
         InitializeItems();
     }
 
-    //void Update()
-    //{
-    //    if (isPlaying && algorithmSteps.Count > 0)
-    //    {
-    //        PlayAlgorithm();
-    //    }
-
-    //    // Проверяем, достиг ли игрок целевого чекпоинта после сбора всех предметов
-    //    if (allItemsCollected && targetCheckPoint != null)
-    //    {
-    //        float distance = Vector3.Distance(player.position, targetCheckPoint.position);
-
-    //        if (Vector3.Distance(player.position, targetCheckPoint.position) < 0.01f)
-    //        {
-    //            ShowCompletionDialog();
-    //        }
-    //    }
-    //}
-
     private void InitializeCheckpoints()
     {
         if (checkPoints.Count > 0)
@@ -83,7 +64,6 @@ public class IvanMoveLevel1 : BaseMovementController
     {
         
     }
-
 
     protected override IEnumerator ExecuteAlgorithm()
     {

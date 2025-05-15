@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-
+// Базовый класс для управления движением персонажа по алгоритму
 public class BaseMovementController : MonoBehaviour
 {
     [Header("Base Settings")]
@@ -20,24 +20,26 @@ public class BaseMovementController : MonoBehaviour
     protected List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     protected bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
     protected bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
-    protected Transform playerTransform;
-    protected Transform currentCheckPoint;
+    protected Transform playerTransform;  // Ссылка на игрока
+    protected Transform currentCheckPoint; // Текущий чекпоинт
 
     //Для сбора предметов
-    protected List<GameObject> itemsToCollect = new List<GameObject>();
-    protected List<Vector3> itemOriginalPositions = new List<Vector3>();
-    protected List<bool> itemActiveStates = new List<bool>();
-    protected int collectedItemsCount = 0;
-    protected bool allItemsCollected = false;
+    protected List<GameObject> itemsToCollect = new List<GameObject>();// Предметы для сбора
+    protected List<Vector3> itemOriginalPositions = new List<Vector3>(); // Исходные позиции предметов
+    protected List<bool> itemActiveStates = new List<bool>(); // Исходное состояние предметов (взят или нет)
+    protected int collectedItemsCount = 0; // Счетчик собранных предметов
+    protected bool allItemsCollected = false; // Флаг полного сбора
 
-    protected ScrollRect scrollRect;
+    // Элементы интерфейса для прокрутки
+    protected ScrollRect scrollRect; 
     protected RectTransform scrollRectTransform;
     protected RectTransform textRectTransform;
 
     protected virtual void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform; // Поиск игрока по тегу
 
+        // Настройка элементов прокрутки
         scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
@@ -45,34 +47,39 @@ public class BaseMovementController : MonoBehaviour
         UpdateAlgorithmText();
     }
 
+    // Добавление шага в алгоритм
     public void AddStep(string step)
     {
-        if (!isPlaying)
+        if (!isPlaying) // Только если алгоритм не выполняется
         {
             algorithmSteps.Add(step);
             UpdateAlgorithmText();
         }
     }
 
+    // Обновление текстового поля с алгоритмом
     protected virtual void UpdateAlgorithmText()
     {
-        algorithmText.text = "";
+        algorithmText.text = ""; // Очистка поля
 
+        // Построчное заполнение с нумерацией
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
             // Виртуальный метод для форматирования строки
             algorithmText.text += FormatStepLine(i) + "\n";
         }
 
-        StartCoroutine(ScrollIfOverflow());
+        StartCoroutine(ScrollIfOverflow()); // Проверка прокрутки
         ValidateLineCount(); // Проверка количества строк
     }
 
+    // Форматирование строки с номером шага
     protected virtual string FormatStepLine(int index)
     {
         return $"{index + 1}   {algorithmSteps[index]};";
     }
 
+    // Проверка максимального количества шагов
     protected virtual void ValidateLineCount()
     {
         // Базовая проверка (можно переопределить в наследниках)
@@ -83,6 +90,7 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Автоматическая прокрутка при переполнении
     protected virtual IEnumerator ScrollIfOverflow()
     {
         yield return null;
@@ -95,6 +103,7 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Запуск выполнения алгоритма
     public void PlayAlgorithm()
     {
         if (!isPlaying && algorithmSteps.Count > 0)
@@ -104,11 +113,13 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Базовый метод выполнения алгоритма
     protected virtual IEnumerator ExecuteAlgorithm()
     {
         yield break;
     }
 
+    //Перемещение игрока к цели
     protected IEnumerator MovePlayer(Vector3 targetPosition)
     {
         while (Vector3.Distance(playerTransform.position, targetPosition) > 0.01f)
@@ -126,6 +137,7 @@ public class BaseMovementController : MonoBehaviour
         playerTransform.position = targetPosition;
     }
 
+    // Конвертация текстовой команды в вектор
     protected Vector3 GetDirectionFromStep(string step)
     {
         switch (step)
@@ -138,29 +150,33 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Остановка выполнения алгоритма
     public virtual void StopAlgorithm()
     {
         isPlaying = false;
-        StopAllCoroutines();
-        algorithmSteps.Clear();
-        algorithmText.text = "";
+        StopAllCoroutines(); // Остановка всех корутин
+        algorithmSteps.Clear(); // Очистка списка команд
+        algorithmText.text = ""; // Очистка текстового поля
 
         if (scrollRect != null)
-            scrollRect.verticalNormalizedPosition = 1f;
+            scrollRect.verticalNormalizedPosition = 1f; // Сброс прокрутки
 
     }
 
+    // Перемещение к чекпоинту точке
     protected virtual IEnumerator MoveToCheckPoint(Transform checkPoint)
     {
         yield return StartCoroutine(MovePlayer(checkPoint.position));
         currentCheckPoint = checkPoint;
     }
 
+    // Инициализация системы сбора предметов
     protected virtual void InitializeItems(string itemTag = "Item")
     {
         GameObject[] itemObjects = GameObject.FindGameObjectsWithTag(itemTag);
         if (itemObjects.Length == 0) return;
 
+        // Сохранение исходных состояний
         itemsToCollect = new List<GameObject>(itemObjects);
         foreach (var item in itemsToCollect)
         {
@@ -169,6 +185,7 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Сброс предметов в исходное состояние
     protected virtual void ResetItems()
     {
         collectedItemsCount = 0;
@@ -184,6 +201,7 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Показ окна ошибки
     protected virtual void ShowErrorDialog(string message)
     {
         if (DialogeWindowError != null)
@@ -194,6 +212,7 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Обработка столкновений с препятствиями
     protected virtual void HandleObstacleCollision(Collider2D collision)
     {
         if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
@@ -204,11 +223,13 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Перезагрузка уровня
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    // Загрузка следующего уровня
     public void LoadNextScene()
     {
         int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
@@ -218,11 +239,13 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
+    // Возврат в главное меню
     public void BackToMenu()
     {
         SceneManager.LoadScene("Menu");
     }
 
+    // Удаление последнего шага
     public void RemoveLastStep()
     {
         if (!isPlaying && algorithmSteps.Count > 0)
@@ -238,4 +261,5 @@ public class BaseMovementController : MonoBehaviour
     public void AddDownStep() { AddStep("Вниз"); }
     public void AddLeftStep() { AddStep("Влево"); }
     public void AddRightStep() { AddStep("Вправо"); }
+    public void AddGet() { AddStep("Взять"); }
 }
