@@ -1007,7 +1007,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.07043457, y: 9.965286}
+  m_Offset: {x: -0.07043457, y: 4.8039055}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1017,7 +1017,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 127.68579, y: 17.409943}
+  m_Size: {x: 127.68579, y: 17.688921}
   m_EdgeRadius: 0
 --- !u!114 &55479822
 MonoBehaviour:
@@ -1243,7 +1243,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -147.9, y: 128.2}
+  m_AnchoredPosition: {x: -147.9, y: 128.20001}
   m_SizeDelta: {x: 59, y: 86}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &82770983
@@ -4842,7 +4842,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.07043457, y: 9.965286}
+  m_Offset: {x: -0.07043457, y: -0.93178797}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4852,7 +4852,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 127.68579, y: 17.409943}
+  m_Size: {x: 127.68579, y: 16.95589}
   m_EdgeRadius: 0
 --- !u!114 &390769937
 MonoBehaviour:
@@ -5603,7 +5603,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.35723877, y: 4.363495}
+  m_Offset: {x: 0.35723877, y: -1.7970605}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5613,7 +5613,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 126.27185, y: 21.93927}
+  m_Size: {x: 126.27185, y: 20.929329}
   m_EdgeRadius: 0
 --- !u!1 &443813575
 GameObject:
@@ -6250,7 +6250,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.13586426, y: 8.58725}
+  m_Offset: {x: -0.3337822, y: 7.413139}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -6260,7 +6260,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 134.95605, y: 10.969299}
+  m_Size: {x: 131.66855, y: 13.317521}
   m_EdgeRadius: 0
 --- !u!1 &525993600
 GameObject:
@@ -9316,7 +9316,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -2.5773926, y: 5.2154846}
+  m_Offset: {x: -1.5951977, y: 1.5672898}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -9326,7 +9326,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 131.6997, y: 16.156067}
+  m_Size: {x: 129.73532, y: 15.033561}
   m_EdgeRadius: 0
 --- !u!212 &834608183
 SpriteRenderer:
@@ -13385,8 +13385,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2044351032}
-        m_TargetAssemblyTypeName: IvanMove, Assembly-CSharp
-        m_MethodName: StopAlgorithm
+        m_TargetAssemblyTypeName: BaseMovementController, Assembly-CSharp
+        m_MethodName: RemoveLastStep
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14032,7 +14032,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.3319702, y: 5.9709473}
+  m_Offset: {x: -0.7977524, y: -9.84498}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -14042,7 +14042,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 275.24646, y: 8.36853}
+  m_Size: {x: 262.14178, y: 19.213749}
   m_EdgeRadius: 0
 --- !u!1 &1284823339
 GameObject:
@@ -14946,7 +14946,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1.4321289, y: 7.22731}
+  m_Offset: {x: -1.4321289, y: 3.8605251}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -14956,7 +14956,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 130.28613, y: 15.92453}
+  m_Size: {x: 130.28613, y: 17.848412}
   m_EdgeRadius: 0
 --- !u!212 &1385170471
 SpriteRenderer:
@@ -17242,7 +17242,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.07043457, y: 9.965286}
+  m_Offset: {x: -0.07043457, y: -4.341791}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -17252,7 +17252,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 127.68579, y: 17.409943}
+  m_Size: {x: 127.68579, y: 21.667894}
   m_EdgeRadius: 0
 --- !u!1 &1736353091
 GameObject:
@@ -20901,7 +20901,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.07043457, y: 9.965286}
+  m_Offset: {x: -0.07043457, y: -0.13554525}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -20911,7 +20911,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 127.68579, y: 17.409943}
+  m_Size: {x: 127.68579, y: 16.568203}
   m_EdgeRadius: 0
 --- !u!114 &1955956350
 MonoBehaviour:
@@ -21888,15 +21888,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed193a761c7c19b4a87a57a535a0389f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ifButton: {fileID: 222377391}
-  movementButtons: {fileID: 136200568}
-  nameButtons: {fileID: 1298658401}
-  endButton: {fileID: 697716762}
   algorithmText: {fileID: 1787148077}
   moveSpeed: 0.8
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
+  DialogeWindowGoodEnd: {fileID: 363868289}
+  DialogeWindowBadEnd: {fileID: 397093824}
+  DialogeWindowError: {fileID: 736813451}
+  ifButton: {fileID: 222377391}
+  movementButtons: {fileID: 136200568}
+  nameButtons: {fileID: 1298658401}
+  endButton: {fileID: 697716762}
   checkPoints:
   - {fileID: 1214379645}
   - {fileID: 517167639}
@@ -22061,9 +22064,6 @@ MonoBehaviour:
   - {fileID: 1452697522}
   - {fileID: 15435412}
   - {fileID: 895498944}
-  DialogeWindowGoodEnd: {fileID: 363868289}
-  DialogeWindowBadEnd: {fileID: 397093824}
-  DialogeWindowError: {fileID: 736813451}
 --- !u!61 &2044351033
 BoxCollider2D:
   m_ObjectHideFlags: 0

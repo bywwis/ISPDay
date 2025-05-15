@@ -7,37 +7,23 @@ using System.Linq;
 
 public class IvanMoveLevel3 : MonoBehaviour
 {
-    [SerializeField]
-    private InputField algorithmText; // Текстовое поле для отображения алгоритма
-
-    [SerializeField]
-    private float moveSpeed = 2f; // Скорость движения персонажа
-
-    [SerializeField]
-    private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
-
+    [SerializeField] private InputField algorithmText; // Текстовое поле для отображения алгоритма
+    [SerializeField] private float moveSpeed = 2f; // Скорость движения персонажа
+    [SerializeField]private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
     private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
-
-    private bool hasFish = false; // Флаг для проверки, был ли найден объект с тегом "fish"
-
     private Transform player; // Ссылка на персонажа
     private Transform currentCheckPoint; // Текущий чекпоинт
-
-    [SerializeField]
-    private List<Transform> checkPoints; // Список всех чекпоинтов
-
     private ScrollRect scrollRect;
     private RectTransform scrollRectTransform;
     private RectTransform textRectTransform;
-
-    [SerializeField]
-    private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
-
-    [SerializeField]
-    private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
-
+    [SerializeField] private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
+    [SerializeField] private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
     private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
+
+    private bool hasFish = false; // Флаг для проверки, был ли найден объект с тегом "fish"
+
+    [SerializeField] private List<Transform> checkPoints; // Список всех чекпоинтов
 
     [SerializeField]
     private List<GameObject> itemsToCollect; // Список предметов для сбора

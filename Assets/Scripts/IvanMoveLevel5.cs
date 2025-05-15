@@ -4,31 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class IvanMoveLevel5 : MonoBehaviour
+public class IvanMoveLevel5 : BaseMovementController
 {
-    [SerializeField] 
-    private GameObject ifButton;
-    
-    [SerializeField] 
-    private GameObject movementButtons;
+    [SerializeField] private GameObject ifButton;
+    [SerializeField] private GameObject movementButtons;
+    [SerializeField] private GameObject nameButtons;
+    [SerializeField] private GameObject endButton;
 
-    [SerializeField] 
-    private GameObject nameButtons;
-
-    [SerializeField]
-    private GameObject endButton;
-
-    [SerializeField]
-    private InputField algorithmText;
-    
-    [SerializeField]
-    private float moveSpeed = 100f;
-    
-    [SerializeField]
-    private LayerMask obstacleLayer;
-
-    private List<string> algorithmSteps = new List<string>();
-    private bool isPlaying = false;
     private Transform ivan;
     private Transform paulina;
     private Transform currentIvanCheckPoint;
@@ -37,87 +19,48 @@ public class IvanMoveLevel5 : MonoBehaviour
     private string conditionCharacter = "";
     private bool isConditionBeingEdited = false;
 
-    [SerializeField]
-    private List<Transform> checkPoints;
+    [SerializeField] private List<Transform> checkPoints;
 
-    private ScrollRect scrollRect;
-    private RectTransform scrollRectTransform;
-    private RectTransform textRectTransform;
-
-    [SerializeField]
-    private GameObject DialogeWindowGoodEnd;
-
-    [SerializeField]
-    private GameObject DialogeWindowBadEnd;
-    private bool isPathBlocked = false;
-
-    [SerializeField]
-    private GameObject DialogeWindowError;
-
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
+        // Находим всех персонажей с тегом "Player"
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         foreach (var p in players)
         {
-            if (p.name == "Ivan")
+            if (p.name == "Ivan") // Если это Иван
             {
                 ivan = p.transform;
-                currentIvanCheckPoint = checkPoints[7];
+                currentIvanCheckPoint = checkPoints[55]; // Чекпоинт для Ивана
+                ivan.position = currentIvanCheckPoint.position;
             }
-            else if (p.name == "Paulina")
+            else if (p.name == "Paulina") // Если это Паулина
             {
                 paulina = p.transform;
-                currentPaulinaCheckPoint = checkPoints[15];
+                currentPaulinaCheckPoint = checkPoints[43]; // Чекпоинт для Паулины
+                paulina.position = currentPaulinaCheckPoint.position;
             }
         }
-
-        if (ivan != null && currentIvanCheckPoint != null)
-        {
-            ivan.position = currentIvanCheckPoint.position;
-        }
-        if (paulina != null && currentPaulinaCheckPoint != null)
-        {
-            paulina.position = currentPaulinaCheckPoint.position;
-        }
-
-        scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
-        if (scrollRect == null)
-        {
-            Debug.LogError("ScrollRect не найден!");
-        }
-        
-        scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-        textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
         endButton.SetActive(false);
         nameButtons.SetActive(false);
-        
-        UpdateAlgorithmText();
     }
 
-    void Update()
+    // Добавляем шаг в алгоритм
+    public override void AddStep(string step)
     {
-        if (isPlaying && algorithmSteps.Count > 0)
-        {
-            PlayAlgorithm();
-        }
-    }
+        // Вызываем базовую реализацию (добавляет шаг и обновляет текст)
+        base.AddStep(step);
 
-    public void BackToMenu()
-    {
-        SceneManager.LoadScene("Menu");
-    }
-
-    public void AddStep(string step)
-    {
+        // Дополнительная логика для управления кнопками
         if (!isPlaying)
         {
-            algorithmSteps.Add(step);
-            UpdateAlgorithmText();
-
-            if (isConditionBeingEdited && !step.StartsWith("Если") && 
-                !step.StartsWith("Иван") && !step.StartsWith("Паулина"))
+            if (isConditionBeingEdited
+                && !step.StartsWith("Если")
+                && !step.StartsWith("Иван")
+                && !step.StartsWith("Паулина"))
             {
                 endButton.SetActive(true);
             }
@@ -128,7 +71,8 @@ public class IvanMoveLevel5 : MonoBehaviour
         }
     }
 
-    void UpdateAlgorithmText()
+    // Обновляем текстовое поле с алгоритмом
+    protected override void UpdateAlgorithmText()
     {
         algorithmText.text = "";
         int stepNumber = 1;
@@ -205,36 +149,20 @@ public class IvanMoveLevel5 : MonoBehaviour
         StartCoroutine(ScrollIfOverflow());
     }
 
-    private IEnumerator ScrollIfOverflow()
+    // Проигрываем алгоритм
+    public override void PlayAlgorithm()
     {
-        yield return null;
-        
-        Canvas.ForceUpdateCanvases();
-        
-        float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
-        float scrollRectHeight = scrollRectTransform.rect.height;
-        
-        if (textHeight > scrollRectHeight)
-        {
-            scrollRect.verticalNormalizedPosition = 0f;
-        }
-    }
+        base.PlayAlgorithm();
 
-    public void PlayAlgorithm()
-    {
+        // Проверяем, есть ли незавершенное условие в алгоритме
         if (HasUnfinishedCondition())
         {
+            // Показываем окно ошибки
             if (DialogeWindowError != null)
             {
                 DialogeWindowError.SetActive(true);
             }
             return;
-        }
-
-        if (!isPlaying && algorithmSteps.Count > 0)
-        {
-            isPlaying = true;
-            StartCoroutine(ExecuteAlgorithm());
         }
     }
 
@@ -257,7 +185,7 @@ public class IvanMoveLevel5 : MonoBehaviour
         return hasOpenCondition;
     }
 
-    private IEnumerator ExecuteAlgorithm()
+    protected override IEnumerator ExecuteAlgorithm()
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
@@ -378,18 +306,6 @@ public class IvanMoveLevel5 : MonoBehaviour
         player.position = targetPosition;
     }
 
-    private Vector3 GetDirectionFromStep(string step)
-    {
-        switch (step)
-        {
-            case "Вверх": return Vector3.up;
-            case "Вниз": return Vector3.down;
-            case "Влево": return Vector3.left;
-            case "Вправо": return Vector3.right;
-            default: return Vector3.zero;
-        }
-    }
-
     private Transform FindNextCheckPoint(Vector3 direction, Transform currentCheckPoint)
     {
         Transform nearestCheckPoint = null;
@@ -412,21 +328,10 @@ public class IvanMoveLevel5 : MonoBehaviour
         return nearestCheckPoint;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
-        {
-            isPathBlocked = true;
-            Debug.Log("Путь заблокирован: " + collision.gameObject.name);
-            StopAlgorithm();
-            
-            if (DialogeWindowBadEnd != null)
-            {
-                DialogeWindowBadEnd.SetActive(true);
-            }
-        }
-    }
+    // Обработчики столкновений
+    private void OnTriggerEnter2D(Collider2D collision) => HandleObstacleCollision(collision);
 
+    // Обработчик события выхода из триггера
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
@@ -435,17 +340,9 @@ public class IvanMoveLevel5 : MonoBehaviour
         }
     }
 
-    public void RestartLevel()
+    public override void StopAlgorithm()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void StopAlgorithm()
-    {
-        isPlaying = false;
-        StopAllCoroutines();
-
-        algorithmSteps.Clear();
+        base.StopAlgorithm();
 
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
@@ -454,20 +351,14 @@ public class IvanMoveLevel5 : MonoBehaviour
 
         isConditionBeingEdited = false;
 
-        algorithmText.text = "";
-        if (scrollRect != null)
+        if (ivan != null && checkPoints.Count > 43)
         {
-            scrollRect.verticalNormalizedPosition = 1f;
-        }
-
-        if (ivan != null && checkPoints.Count > 7)
-        {
-            currentIvanCheckPoint = checkPoints[7];
+            currentIvanCheckPoint = checkPoints[43]; // Назначаем чекпоинт
             ivan.position = currentIvanCheckPoint.position;
         }
-        if (paulina != null && checkPoints.Count > 15)
+        if (paulina != null && checkPoints.Count > 55)
         {
-            currentPaulinaCheckPoint = checkPoints[15];
+            currentPaulinaCheckPoint = checkPoints[55]; // Назначаем чекпоинт
             paulina.position = currentPaulinaCheckPoint.position;
         }
     }
@@ -477,16 +368,9 @@ public class IvanMoveLevel5 : MonoBehaviour
         if (DialogeWindowGoodEnd != null)
         {
             DialogeWindowGoodEnd.SetActive(true);
-
             SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
         }
     }
-
-    public void AddUpStep() { AddStep("Вверх"); }
-    public void AddDownStep() { AddStep("Вниз"); }
-    public void AddLeftStep() { AddStep("Влево"); }
-    public void AddRightStep() { AddStep("Вправо"); }
-    public void AddSit() { AddStep("Сесть"); }
 
 // Метод для обработки нажатия на кнопку "Условие"
     public void OnConditionButtonClick()
@@ -529,7 +413,6 @@ public class IvanMoveLevel5 : MonoBehaviour
     {
         // Показываем кнопки для движения (они же для описания алгоритма)
         movementButtons.SetActive(true);
-
         isConditionBeingEdited = true;
     }
 

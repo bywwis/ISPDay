@@ -48,7 +48,7 @@ public class BaseMovementController : MonoBehaviour
     }
 
     // Добавление шага в алгоритм
-    public void AddStep(string step)
+    public virtual void AddStep(string step)
     {
         if (!isPlaying) // Только если алгоритм не выполняется
         {
@@ -104,7 +104,7 @@ public class BaseMovementController : MonoBehaviour
     }
 
     // Запуск выполнения алгоритма
-    public void PlayAlgorithm()
+    public virtual void PlayAlgorithm()
     {
         if (!isPlaying && algorithmSteps.Count > 0)
         {
@@ -262,4 +262,5 @@ public class BaseMovementController : MonoBehaviour
     public void AddLeftStep() { AddStep("Влево"); }
     public void AddRightStep() { AddStep("Вправо"); }
     public void AddGet() { AddStep("Взять"); }
+    public void AddSit() { AddStep("Сесть"); }
 }

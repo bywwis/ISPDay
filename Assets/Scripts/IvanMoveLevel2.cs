@@ -4,31 +4,12 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-public class IvanMoveLevel2 : MonoBehaviour
+public class IvanMoveLevel2 : BaseMovementController
 {
-    [SerializeField]
-    private GameObject ifButton; // Кнопка условия
-
-    [SerializeField]
-    private GameObject movementButtons; // Кнопки для движения
-
-    [SerializeField]
-    private GameObject nameButtons; // Кнопки для выбора имени
-
-    [SerializeField]
-    private GameObject endButton; // Кнопка Закончить Условие
-
-    [SerializeField]
-    private InputField algorithmText; // Текстовое поле для отображения алгоритма
-
-    [SerializeField]
-    private float moveSpeed = 100f; // Скорость движения персонажа
-
-    [SerializeField]
-    private LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
-
-    private List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
-    private bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
+    [SerializeField] private GameObject ifButton; // Кнопка условия
+    [SerializeField] private GameObject movementButtons; // Кнопки для движения
+    [SerializeField] private GameObject nameButtons; // Кнопки для выбора имени
+    [SerializeField] private GameObject endButton; // Кнопка Закончить Условие
 
     private Transform ivan; // Ссылка на Ивана
     private Transform paulina; // Ссылка на Паулину
@@ -37,30 +18,14 @@ public class IvanMoveLevel2 : MonoBehaviour
 
     private bool isInsideCondition = false; // Флаг для проверки, находится ли текущий шаг внутри условия
     private string conditionCharacter = ""; // Персонаж, для которого выполняется условие
-
-    [SerializeField]
-    private List<Transform> checkPoints; // Список всех чекпоинтов
-
-    private ScrollRect scrollRect;
-    private RectTransform scrollRectTransform;
-    private RectTransform textRectTransform;
-
-    [SerializeField]
-    private GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
-
-    [SerializeField]
-    private GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
-
-    private bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
-
-    [SerializeField]
-    private GameObject DialogeWindowError; // Диалоговое окно для ошибки незаполненного условия
-
-    private bool isConditionComplete = false;
     private bool isConditionBeingEdited = false;
 
-    void Start()
+    [SerializeField] private List<Transform> checkPoints; // Список всех чекпоинтов
+
+    protected override void Start()
     {
+        base.Start();
+
         // Находим всех персонажей с тегом "Player"
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -69,64 +34,34 @@ public class IvanMoveLevel2 : MonoBehaviour
             if (p.name == "Ivan") // Если это Иван
             {
                 ivan = p.transform;
-                currentIvanCheckPoint = checkPoints[32]; // Чекпоинт для Ивана
+                currentIvanCheckPoint = checkPoints[55]; // Чекпоинт для Ивана
+                ivan.position = currentIvanCheckPoint.position;
             }
             else if (p.name == "Paulina") // Если это Паулина
             {
                 paulina = p.transform;
-                currentPaulinaCheckPoint = checkPoints[44]; // Чекпоинт для Паулины
+                currentPaulinaCheckPoint = checkPoints[43]; // Чекпоинт для Паулины
+                paulina.position = currentPaulinaCheckPoint.position;
             }
         }
 
-        // Перемещаем персонажей в их начальные чекпоинты
-        if (ivan != null && currentIvanCheckPoint != null)
-        {
-            ivan.position = currentIvanCheckPoint.position;
-        }
-        if (paulina != null && currentPaulinaCheckPoint != null)
-        {
-            paulina.position = currentPaulinaCheckPoint.position;
-        }
-
-        scrollRect = algorithmText.GetComponentInParent<ScrollRect>();
-        if (scrollRect == null)
-        {
-            Debug.LogError("ScrollRect не найден на InputField или его родитель!");
-        }
-
-        scrollRectTransform = scrollRect.GetComponent<RectTransform>();
-
-        textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
-
         endButton.SetActive(false);
         nameButtons.SetActive(false);
-
-        UpdateAlgorithmText();
-    }
-
-    void Update()
-    {
-        if (isPlaying && algorithmSteps.Count > 0)
-        {
-            PlayAlgorithm();
-        }
-    }
-
-    public void BackToMenu()
-    {
-        SceneManager.LoadScene("Menu");
     }
 
     // Добавляем шаг в алгоритм
-    public void AddStep(string step)
+    public override void AddStep(string step)
     {
+        // Вызываем базовую реализацию (добавляет шаг и обновляет текст)
+        base.AddStep(step);
+
+        // Дополнительная логика для управления кнопками
         if (!isPlaying)
         {
-            algorithmSteps.Add(step);
-            UpdateAlgorithmText();
-
-            // Если добавляем шаг внутри условия, показываем кнопку "Закончить"
-            if (isConditionBeingEdited && !step.StartsWith("Если") && !step.StartsWith("Иван") && !step.StartsWith("Паулина"))
+            if (isConditionBeingEdited
+                && !step.StartsWith("Если")
+                && !step.StartsWith("Иван")
+                && !step.StartsWith("Паулина"))
             {
                 endButton.SetActive(true);
             }
@@ -138,11 +73,12 @@ public class IvanMoveLevel2 : MonoBehaviour
     }
 
     // Обновляем текстовое поле с алгоритмом
-    void UpdateAlgorithmText()
+    protected override void UpdateAlgorithmText()
     {
         algorithmText.text = ""; // Очищаем текстовое поле
         int stepNumber = 1; // Нумерация шагов начинается с 1
         bool hasCondition = false; // Флаг для проверки, находится ли текущий шаг внутри условия
+        
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
             // Если шаг начинается с "Если", добавляем его с новой строки
@@ -230,38 +166,11 @@ public class IvanMoveLevel2 : MonoBehaviour
         StartCoroutine(ScrollIfOverflow());
     }
 
-    private void ShowErrorDialog(string message)
-    {
-        if (DialogeWindowError != null)
-        {
-            DialogeWindowError.SetActive(true);
-            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
-            if (errorText != null)
-            {
-                errorText.text = message;
-            }
-        }
-    }
-
-    private IEnumerator ScrollIfOverflow()
-    {
-        yield return null;
-
-        Canvas.ForceUpdateCanvases();
-
-        float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
-
-        float scrollRectHeight = scrollRectTransform.rect.height;
-
-        if (textHeight > scrollRectHeight)
-        {
-            scrollRect.verticalNormalizedPosition = 0f;
-        }
-    }
-
     // Проигрываем алгоритм
-    public void PlayAlgorithm()
+    public override void PlayAlgorithm()
     {
+        base.PlayAlgorithm();
+
         // Проверяем, есть ли незавершенное условие в алгоритме
         if (HasUnfinishedCondition())
         {
@@ -271,12 +180,6 @@ public class IvanMoveLevel2 : MonoBehaviour
                 DialogeWindowError.SetActive(true);
             }
             return;
-        }
-
-        if (!isPlaying && algorithmSteps.Count > 0)
-        {
-            isPlaying = true;
-            StartCoroutine(ExecuteAlgorithm());
         }
     }
 
@@ -300,7 +203,7 @@ public class IvanMoveLevel2 : MonoBehaviour
         return hasOpenCondition;
     }
 
-    private IEnumerator ExecuteAlgorithm()
+    protected override IEnumerator ExecuteAlgorithm()
     {
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
@@ -410,7 +313,7 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
 
         // Проверка чекпоинтов после завершения всего алгоритма
-        if (currentIvanCheckPoint == checkPoints[110] && currentPaulinaCheckPoint == checkPoints[57])
+        if (currentIvanCheckPoint == checkPoints[86] && currentPaulinaCheckPoint == checkPoints[35])
         {
             // Показываем диалоговое окно для успешного прохождения уровня
             if (DialogeWindowGoodEnd != null)
@@ -447,24 +350,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         player.position = targetPosition;
     }
 
-    // Получаем направление из шага алгоритма
-    private Vector3 GetDirectionFromStep(string step)
-    {
-        switch (step)
-        {
-            case "Вверх":
-                return Vector3.up;
-            case "Вниз":
-                return Vector3.down;
-            case "Влево":
-                return Vector3.left;
-            case "Вправо":
-                return Vector3.right;
-            default:
-                return Vector3.zero;
-        }
-    }
-
     // Находим следующий чекпоинт в заданном направлении
     private Transform FindNextCheckPoint(Vector3 direction, Transform currentCheckPoint)
     {
@@ -488,24 +373,8 @@ public class IvanMoveLevel2 : MonoBehaviour
         return nearestCheckPoint;
     }
 
-    // Обработчик события входа в триггер
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
-        {
-            isPathBlocked = true;
-            Debug.Log("Путь заблокирован: " + collision.gameObject.name);
-
-            // Останавливаем выполнение алгоритма
-            StopAlgorithm();
-
-            // Показываем диалоговое окно
-            if (DialogeWindowBadEnd != null)
-            {
-                DialogeWindowBadEnd.SetActive(true);
-            }
-        }
-    }
+    // Обработчики столкновений
+    private void OnTriggerEnter2D(Collider2D collision) => HandleObstacleCollision(collision);
 
     // Обработчик события выхода из триггера
     private void OnTriggerExit2D(Collider2D collision)
@@ -516,18 +385,9 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
     }
 
-    // Перезапускаем уровень
-    public void RestartLevel()
+    public override void StopAlgorithm()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void StopAlgorithm()
-    {
-        isPlaying = false;
-        StopAllCoroutines();
-
-        algorithmSteps.Clear();
+        base.StopAlgorithm();
 
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
@@ -535,22 +395,15 @@ public class IvanMoveLevel2 : MonoBehaviour
         ifButton.SetActive(true);
 
         isConditionBeingEdited = false;
-        isConditionComplete = false;
 
-        algorithmText.text = "";
-        if (scrollRect != null)
+        if (ivan != null && checkPoints.Count > 43)
         {
-            scrollRect.verticalNormalizedPosition = 1f;
-        }
-
-        if (ivan != null && checkPoints.Count > 32)
-        {
-            currentIvanCheckPoint = checkPoints[32]; // Назначаем чекпоинт
+            currentIvanCheckPoint = checkPoints[43]; // Назначаем чекпоинт
             ivan.position = currentIvanCheckPoint.position;
         }
-        if (paulina != null && checkPoints.Count > 44)
+        if (paulina != null && checkPoints.Count > 55)
         {
-            currentPaulinaCheckPoint = checkPoints[44]; // Назначаем чекпоинт
+            currentPaulinaCheckPoint = checkPoints[55]; // Назначаем чекпоинт
             paulina.position = currentPaulinaCheckPoint.position;
         }
     }
@@ -565,27 +418,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         }
     }
 
-    // Переход на 3 уровень 
-    public void LoadNextScene()
-    {
-        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextLevelIndex);
-        }
-        else
-        {
-            Debug.Log("Все уровни пройдены!");
-        }
-    }
-
-    // Методы для кнопок
-    public void AddUpStep() { AddStep("Вверх"); }
-    public void AddDownStep() { AddStep("Вниз"); }
-    public void AddLeftStep() { AddStep("Влево"); }
-    public void AddRightStep() { AddStep("Вправо"); }
-    public void AddSit() { AddStep("Сесть"); }
-
     // Метод для обработки нажатия на кнопку "Условие"
     public void OnConditionButtonClick()
     {
@@ -596,7 +428,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         ifButton.SetActive(false);
 
         isConditionBeingEdited = true;
-        isConditionComplete = false;
 
         // Добавляем текст "Если " в поле алгоритма
         AddStep("Если ");
@@ -628,7 +459,6 @@ public class IvanMoveLevel2 : MonoBehaviour
     {
         // Показываем кнопки для движения (они же для описания алгоритма)
         movementButtons.SetActive(true);
-
         isConditionBeingEdited = true;
     }
 
@@ -641,7 +471,6 @@ public class IvanMoveLevel2 : MonoBehaviour
         endButton.SetActive(false);
         ifButton.SetActive(true);
 
-        isConditionComplete = true;
         isConditionBeingEdited = false;
 
         // Добавляем закрывающую скобку и знак ";" в поле алгоритма
