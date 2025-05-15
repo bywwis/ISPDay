@@ -18,11 +18,13 @@ public class MazeLevel : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     private Vector2Int gridSize = new Vector2Int(10, 10);
     [SerializeField] private float cellSize = 1f;
-    [SerializeField] [Range(10, 50)] private int obstacleDensity = 30;
+    [SerializeField] [Range(30, 95)] private int obstacleDensity = 80;
     [SerializeField] private GameObject playerPrefab;
+    private float checkpointX;
+    private float checkpointY;
 
     [Header("Anchor Settings")]
-    [SerializeField] private Transform locationObject; // Перетащите сюда LocationObject со сцены
+    [SerializeField] private Transform locationObject; 
 
     [Header("UI Windows")]
     [SerializeField] private GameObject DialogeWindowGoodEnd;
@@ -147,11 +149,15 @@ public class MazeLevel : MonoBehaviour
 
         if (randomIndex == 0)
         {
-            gridSize = new Vector2Int(6, 7);
+            gridSize = new Vector2Int(6, 8);
+            checkpointX = 0.9f;
+            checkpointY = 0.75f;
         }
         else
         {
-            gridSize = new Vector2Int(5, 5);
+            gridSize = new Vector2Int(5, 6);
+            checkpointX = 1.2f;
+            checkpointY = cellSize;
         }
         
         // Генерация остальных элементов
@@ -164,6 +170,13 @@ public class MazeLevel : MonoBehaviour
         currentLocation.transform.SetAsFirstSibling(); 
     }
 
+    private Transform GetCheckpointAt(int x, int y)
+    {
+        // Находим чекпоинт по имени, которое мы задавали в GenerateCheckpoints()
+        string checkpointName = $"CheckPoint({x})({y})";
+        return checkPoints.FirstOrDefault(cp => cp.name == checkpointName);
+    }
+
     private void GenerateCheckpoints()
     {
         checkPoints.Clear();
@@ -174,7 +187,7 @@ public class MazeLevel : MonoBehaviour
             for (int x = 0; x < gridSize.x; x++)
             {
                 Vector3 position = locationObject.position + 
-                                 new Vector3(x * cellSize, y * cellSize, 0);
+                                 new Vector3(x * checkpointX, y * checkpointY, 0);
                 
                 var checkpoint = Instantiate(
                     checkpointPrefab, 
@@ -182,7 +195,7 @@ public class MazeLevel : MonoBehaviour
                     Quaternion.identity, 
                     locationObject); // Делаем дочерним
                 
-                checkpoint.name($"CheckPoint({x})({y})");
+                checkpoint.name = $"CheckPoint({x})({y})";
                 checkPoints.Add(checkpoint.transform);
             }
         }
@@ -192,8 +205,15 @@ public class MazeLevel : MonoBehaviour
     {
         // Очистка старых препятствий
         var oldObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
-        foreach (var obs in oldObstacles) Destroy(obs);
-        
+        foreach (var obs in oldObstacles) 
+        {
+            // Удаляем только внутренние препятствия, не трогая границы
+            if (!IsBorderWall(obs.transform.position))
+            {
+                Destroy(obs);
+            }
+        }
+
         if (obstaclePrefab == null)
         {
             Debug.LogError("Obstacle prefab is not assigned!");
@@ -203,150 +223,90 @@ public class MazeLevel : MonoBehaviour
         // Установка конечной точки (противоположный угол от старта)
         endPoint = new Vector2Int(gridSize.x - 2, gridSize.y - 2);
 
-        // 1. Создаем границы лабиринта
-        CreateBorderWalls();
+        // 1. Генерируем препятствия на сетке
+        GenerateGridObstacles();
 
-        // 2. Генерируем случайные комнаты
-        GenerateRandomRooms();
-
-        // 3. Создаем основной путь от старта до финиша
-        GenerateMainPath();
-
-        // 4. Добавляем случайные ответвления
+        // 2. Добавляем случайные ответвления
         GenerateRandomBranches();
 
-        // 5. Убедимся, что путь существует
+        // 3. Создаем гарантированный проход от старта до финиша
         EnsurePathExists();
     }
 
-    private void CreateBorderWalls()
+    private bool IsBorderWall(Vector3 position)
     {
-        // Создаем стены по периметру
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            CreateObstacle(x, 0); // Нижняя стена
-            CreateObstacle(x, gridSize.y - 1); // Верхняя стена
-        }
+        // Преобразуем мировые координаты в координаты сетки
+        Vector2Int gridPos = WorldToGridPosition(position);
         
-        for (int y = 1; y < gridSize.y - 1; y++)
-        {
-            CreateObstacle(0, y); // Левая стена
-            CreateObstacle(gridSize.x - 1, y); // Правая стена
-        }
+        // Проверяем, является ли позиция граничной
+        return gridPos.x == 0 || gridPos.x == gridSize.x - 1 || 
+            gridPos.y == 0 || gridPos.y == gridSize.y - 1;
     }
 
-    private void GenerateRandomRooms()
+    private Vector2Int WorldToGridPosition(Vector3 worldPosition)
     {
-        int roomCount = Random.Range(3, 6); // Количество комнат
-        
-        for (int i = 0; i < roomCount; i++)
+        Vector3 localPos = worldPosition - locationObject.position;
+        int x = Mathf.RoundToInt(localPos.x / cellSize);
+        int y = Mathf.RoundToInt(localPos.y / cellSize);
+        return new Vector2Int(x, y);
+    }
+
+    private void GenerateGridObstacles()
+    {
+        // Список позиций, где не должно быть препятствий
+        HashSet<Vector2Int> forbiddenPositions = new HashSet<Vector2Int>
         {
-            int roomWidth = Random.Range(3, 6);
-            int roomHeight = Random.Range(3, 6);
-            
-            int startX = Random.Range(1, gridSize.x - roomWidth - 1);
-            int startY = Random.Range(1, gridSize.y - roomHeight - 1);
-            
-            // Создаем комнату (очищаем область)
-            for (int x = startX; x < startX + roomWidth; x++)
+            startPoint, // Стартовая позиция игрока
+            endPoint    // Конечная точка
+        };
+
+        // Добавляем область вокруг стартовой позиции (3x3 клетки)
+        for (int x = startPoint.x - 1; x <= startPoint.x; x++)
+        {
+            for (int y = startPoint.y - 1; y <= startPoint.y; y++)
             {
-                for (int y = startY; y < startY + roomHeight; y++)
+                if (x >= 0 && x < gridSize.x && y >= 0 && y < gridSize.y)
                 {
-                    RemoveObstacleAt(x, y);
+                    forbiddenPositions.Add(new Vector2Int(x, y));
                 }
             }
+        }
+
+        // Добавляем путь от старта до финиша в запрещенные позиции
+        Vector2Int current = startPoint;
+        while (current != endPoint)
+        {
+            forbiddenPositions.Add(current);
             
-            // Добавляем стены вокруг комнаты с некоторой вероятностью
-            if (Random.value > 0.5f)
+            if (current.x < endPoint.x) current.x++;
+            else if (current.x > endPoint.x) current.x--;
+            
+            if (current.y < endPoint.y) current.y++;
+            else if (current.y > endPoint.y) current.y--;
+            
+            // Добавляем соседние клетки к пути с 50% вероятностью
+            if (Random.Range(0, 100) < 50)
             {
-                for (int x = startX - 1; x <= startX + roomWidth; x++)
-                {
-                    if (Random.value > 0.3f) CreateObstacle(x, startY - 1);
-                    if (Random.value > 0.3f) CreateObstacle(x, startY + roomHeight);
-                }
+                forbiddenPositions.Add(new Vector2Int(current.x, current.y + 1));
+                forbiddenPositions.Add(new Vector2Int(current.x, current.y - 1));
+            }
+        }
+        forbiddenPositions.Add(endPoint);
+
+        // Генерируем препятствия на сетке, пропуская границы и запрещенные позиции
+        for (int x = 0; x < gridSize.x - 1; x++)
+        {
+            for (int y = 0; y < gridSize.y - 1; y++)
+            {
+                Vector2Int pos = new Vector2Int(x, y);
                 
-                for (int y = startY; y < startY + roomHeight; y++)
-                {
-                    if (Random.value > 0.3f) CreateObstacle(startX - 1, y);
-                    if (Random.value > 0.3f) CreateObstacle(startX + roomWidth, y);
-                }
-            }
-        }
-    }
-
-    private void GenerateMainPath()
-    {
-        // Алгоритм "пьяницы" для создания извилистого пути
-        Vector2Int currentPos = startPoint;
-        int steps = 0;
-        int maxSteps = gridSize.x * gridSize.y * 2;
-        
-        while (currentPos != endPoint && steps < maxSteps)
-        {
-            // Очищаем текущую позицию
-            RemoveObstacleAt(currentPos.x, currentPos.y);
-            
-            // Определяем направление к цели
-            Vector2Int direction;
-            if (Random.value > 0.6f)
-            {
-                // Случайное направление
-                direction = RandomDirection();
-            }
-            else
-            {
-                // Направление к цели
-                direction = new Vector2Int(
-                    endPoint.x > currentPos.x ? 1 : endPoint.x < currentPos.x ? -1 : 0,
-                    endPoint.y > currentPos.y ? 1 : endPoint.y < currentPos.y ? -1 : 0);
+                // Пропускаем запрещенные позиции и границы
+                if (forbiddenPositions.Contains(pos)) continue;
                 
-                if (direction.x != 0 && direction.y != 0 && Random.value > 0.5f)
+                // Случайное создание препятствия с учетом density
+                if (Random.Range(0, 100) < obstacleDensity)
                 {
-                    direction = Random.value > 0.5f ? new Vector2Int(direction.x, 0) : new Vector2Int(0, direction.y);
-                }
-            }
-            
-            // Проверяем новую позицию
-            Vector2Int newPos = currentPos + direction;
-            
-            if (IsInBounds(newPos))
-            {
-                currentPos = newPos;
-                
-                // С некоторой вероятностью создаем "комнату" на пути
-                if (Random.value > 0.8f)
-                {
-                    CreatePathRoom(currentPos);
-                }
-            }
-            
-            steps++;
-        }
-    }
-
-    private Vector2Int RandomDirection()
-    {
-        int val = Random.Range(0, 4);
-        switch (val)
-        {
-            case 0: return Vector2Int.up;
-            case 1: return Vector2Int.right;
-            case 2: return Vector2Int.down;
-            default: return Vector2Int.left;
-        }
-    }
-
-    private void CreatePathRoom(Vector2Int center)
-    {
-        int size = Random.Range(1, 3);
-        
-        for (int x = center.x - size; x <= center.x + size; x++)
-        {
-            for (int y = center.y - size; y <= center.y + size; y++)
-            {
-                if (IsInBounds(new Vector2Int(x, y)))
-                {
-                    RemoveObstacleAt(x, y);
+                    CreateObstacle(x, y);
                 }
             }
         }
@@ -359,7 +319,7 @@ public class MazeLevel : MonoBehaviour
         
         for (int i = 0; i < branchCount; i++)
         {
-            // Выбираем случайную точку на сетке
+            // Выбираем случайную точку на сетке (не на границе)
             Vector2Int start = new Vector2Int(
                 Random.Range(1, gridSize.x - 1),
                 Random.Range(1, gridSize.y - 1));
@@ -372,7 +332,7 @@ public class MazeLevel : MonoBehaviour
                 for (int j = 0; j < length; j++)
                 {
                     Vector2Int pos = start + dir * j;
-                    if (IsInBounds(pos))
+                    if (IsInBounds(pos) && !IsBorderPosition(pos))
                     {
                         RemoveObstacleAt(pos.x, pos.y);
                         
@@ -387,60 +347,27 @@ public class MazeLevel : MonoBehaviour
         }
     }
 
-    private void EnsurePathExists()
+    private bool IsBorderPosition(Vector2Int pos)
     {
-        // Используем поиск в ширину для проверки достижимости
-        if (!IsPathPossible(startPoint, endPoint))
-        {
-            // Если путь невозможен, очищаем дополнительные клетки
-            Debug.Log("Путь не существует, очищаем дополнительные клетки...");
-            
-            // Создаем прямой путь по диагонали
-            Vector2Int current = startPoint;
-            while (current != endPoint)
-            {
-                RemoveObstacleAt(current.x, current.y);
-                
-                if (current.x < endPoint.x) current.x++;
-                else if (current.x > endPoint.x) current.x--;
-                
-                if (current.y < endPoint.y) current.y++;
-                else if (current.y > endPoint.y) current.y--;
-            }
-            RemoveObstacleAt(endPoint.x, endPoint.y);
-        }
+        return pos.x == 0 || pos.x == gridSize.x - 1 || 
+            pos.y == 0 || pos.y == gridSize.y - 1;
     }
 
-    private bool IsPathPossible(Vector2Int start, Vector2Int end)
+    private void EnsurePathExists()
     {
-        Queue<Vector2Int> queue = new Queue<Vector2Int>();
-        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
-        
-        queue.Enqueue(start);
-        visited.Add(start);
-        
-        while (queue.Count > 0)
+        // Очищаем путь от старта до финиша, не трогая границы
+        Vector2Int current = startPoint;
+        while (current != endPoint)
         {
-            Vector2Int current = queue.Dequeue();
+            RemoveObstacleAt(current.x, current.y);
             
-            if (current == end)
-            {
-                return true;
-            }
+            if (current.x < endPoint.x) current.x++;
+            else if (current.x > endPoint.x) current.x--;
             
-            foreach (Vector2Int dir in new Vector2Int[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left })
-            {
-                Vector2Int neighbor = current + dir;
-                
-                if (IsInBounds(neighbor) && !visited.Contains(neighbor) && IsEmpty(neighbor.x, neighbor.y))
-                {
-                    visited.Add(neighbor);
-                    queue.Enqueue(neighbor);
-                }
-            }
+            if (current.y < endPoint.y) current.y++;
+            else if (current.y > endPoint.y) current.y--;
         }
-        
-        return false;
+        RemoveObstacleAt(endPoint.x, endPoint.y);
     }
 
     private bool IsInBounds(Vector2Int pos)
@@ -448,30 +375,55 @@ public class MazeLevel : MonoBehaviour
         return pos.x >= 0 && pos.x < gridSize.x && pos.y >= 0 && pos.y < gridSize.y;
     }
 
+    private Vector2Int RandomDirection()
+    {
+        int val = Random.Range(0, 4);
+        switch (val)
+        {
+            case 0: return Vector2Int.up;
+            case 1: return Vector2Int.right;
+            case 2: return Vector2Int.down;
+            default: return Vector2Int.left;
+        }
+    }
+
     private bool IsEmpty(int x, int y)
     {
-        Vector3 position = locationObject.position + new Vector3(x * cellSize, y * cellSize, 0);
-        Collider2D[] colliders = Physics2D.OverlapPointAll(position);
+        Transform checkpoint = GetCheckpointAt(x, y);
+        if (checkpoint == null) return true;
+        
+        Collider2D[] colliders = Physics2D.OverlapPointAll(checkpoint.position);
         return colliders.All(c => !c.CompareTag("Obstacle"));
     }
 
+
     private void CreateObstacle(int x, int y)
     {
-        Vector3 position = locationObject.position + 
-                          new Vector3(x * cellSize, y * cellSize, 0);
+        // Находим соответствующий чекпоинт
+        Transform checkpoint = GetCheckpointAt(x, y);
+        if (checkpoint == null)
+        {
+            Debug.LogWarning($"Не найден чекпоинт для позиции ({x},{y})");
+            return;
+        }
         
+        // Создаем препятствие на позиции чекпоинта
         Instantiate(
             obstaclePrefab, 
-            position, 
+            checkpoint.position, 
             Quaternion.identity, 
-            locationObject) // Делаем дочерним
+            locationObject)
             .tag = "Obstacle";
     }
 
     private void RemoveObstacleAt(int x, int y)
     {
-        Vector3 position = new Vector3(x * cellSize, y * cellSize, 0);
-        Collider2D[] colliders = Physics2D.OverlapPointAll(position);
+        // Находим соответствующий чекпоинт
+        Transform checkpoint = GetCheckpointAt(x, y);
+        if (checkpoint == null) return;
+        
+        // Ищем препятствия на позиции чекпоинта
+        Collider2D[] colliders = Physics2D.OverlapPointAll(checkpoint.position);
         
         foreach (var collider in colliders)
         {
@@ -872,58 +824,6 @@ public class MazeLevel : MonoBehaviour
             currentCheckPoint = checkPoints[0];
         }
     }
-
-    /* private void ResetItems()
-    {
-        collectedItemsCount = 0;
-        hasFish = false;
-        
-        // Восстанавливаем все предметы
-        for (int i = 0; i < itemsToCollect.Count; i++)
-        {
-            if (itemsToCollect[i] != null)
-            {
-                itemsToCollect[i].SetActive(itemActiveStates[i]);
-                itemsToCollect[i].transform.position = itemOriginalPositions[i];
-            }
-        }
-    } */
-
-    // Подбор объекта
-    /* private void ExecuteGetCommand()
-    {
-        // Получаем масштаб канваса
-        float scale = canvas.scaleFactor;
-
-        float pickupDistance = 100f * scale;
-
-        // Позиция игрока
-        Vector2 playerPos = RectTransformUtility.WorldToScreenPoint(Camera.main, player.position);
-
-        for (int i = 0; i < itemsToCollect.Count; i++)
-        {
-            GameObject item = itemsToCollect[i];
-
-            if (item != null && item.activeSelf)
-            {
-                // Получение позиции предмета
-                Vector2 itemPos = RectTransformUtility.WorldToScreenPoint(Camera.main, item.transform.position);
-
-                // Проверка расстояния
-                if (Vector2.Distance(playerPos, itemPos) < pickupDistance)
-                {
-                    if (item.CompareTag("fish"))
-                    {
-                        hasFish = true;
-                    }
-
-                    item.SetActive(false);
-                    collectedItemsCount++;
-                    break;
-                }
-            }
-        }
-    } */
 
     /* private void ShowCompletionDialog()
     {

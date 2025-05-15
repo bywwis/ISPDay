@@ -283,7 +283,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -256, y: -260}
+  m_AnchoredPosition: {x: -256, y: -271.8}
   m_SizeDelta: {x: 39.28, y: 39.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &106958629
@@ -3485,9 +3485,8 @@ MonoBehaviour:
   - {fileID: 2951877080762708596, guid: 30a6e5b3a8089ff4eaf7fdc2a0d13135, type: 3}
   checkpointPrefab: {fileID: 4594249301542687991, guid: 6726c013fe8e5ab4faa178b8c2d2726d, type: 3}
   obstaclePrefab: {fileID: 4441615468774645902, guid: 3ac0729414b30a64bb496c0a7c979bf1, type: 3}
-  gridSize: {x: 6, y: 6}
   cellSize: 1
-  obstacleDensity: 10
+  obstacleDensity: 80
   playerPrefab: {fileID: 3434306532007893167, guid: 71ae1ae44edad714a85bb72649e88292, type: 3}
   locationObject: {fileID: 100580131}
   DialogeWindowGoodEnd: {fileID: 363868289}
