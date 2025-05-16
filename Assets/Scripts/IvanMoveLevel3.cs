@@ -181,87 +181,50 @@ public class IvanMoveLevel3 : MonoBehaviour
     void UpdateAlgorithmText()
     {
         algorithmText.text = ""; // Очищаем текстовое поле
-        int stepNumber = 1; // Нумерация шагов начинается с 1
+        int stepNumber = 1;
+        Stack<int> cycleStartNumbers = new Stack<int>(); // Для хранения номеров начал циклов
 
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
-            // Если шаг начинается с "Для", добавляем его с новой строки
-            if (algorithmSteps[i].StartsWith("Для"))
+            string currentStep = algorithmSteps[i];
+            string prefix = stepNumber < 10 ? $"{stepNumber}   " : $"{stepNumber}  ";
+            string nestedPrefix = stepNumber < 10 ? $"{stepNumber}     " : $"{stepNumber}    ";
+
+            // Начало цикла ("Для...")
+            if (currentStep.StartsWith("Для"))
             {
-                if (stepNumber == 1)
-                {
-                    algorithmText.text += $"{stepNumber}   {algorithmSteps[i]}";
-                }
-                else if (stepNumber >= 10)
-                {
-                    algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]}";
-                }
-                else
-                {
-                    algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]}";
-                }
-                stepNumber++; // Увеличиваем номер шага
-                isCycleActive = true; // Устанавливаем флаг цикла
-                isCycleComplete = false; // Цикл начался, но еще не завершен
-                hasCycle = true;
-            }
-            // Если шаг начинается с "до", добавляем как часть условия
-            else if (algorithmSteps[i].StartsWith("до"))
-            {
-                algorithmText.text += $"{algorithmSteps[i]}";
-            }
-            // Если шаг — закрывающая скобка ")", добавляем её с новой строки
-            else if (algorithmSteps[i] == ")")
-            {
-                if (stepNumber < 10)
-                {
-                    algorithmText.text += $"\n{stepNumber}   );";
-                }
-                else
-                {
-                    algorithmText.text += $"\n{stepNumber}  );";
-                }
+                algorithmText.text += (stepNumber > 1 ? "\n" : "") + prefix + currentStep;
+                cycleStartNumbers.Push(stepNumber); // Запоминаем номер начала цикла
                 stepNumber++;
-                isCycleActive = false; // Сбрасываем флаг условия
-                isCycleComplete = true; // Цикл завершен
             }
-            // Обработка обычных шагов (не условий)
+            // Условие цикла ("до...")
+            else if (currentStep.StartsWith("до"))
+            {
+                algorithmText.text += " " + currentStep;
+            }
+            // Конец цикла (")")
+            else if (currentStep == ")")
+            {
+                int cycleStartNumber = cycleStartNumbers.Pop(); // Получаем номер начала цикла
+                string closingPrefix = cycleStartNumber < 10 ? $"{stepNumber}   " : $"{stepNumber}  ";
+                algorithmText.text += "\n" + closingPrefix + ");";
+                stepNumber++;
+            }
+            // Обычные шаги (внутри или вне цикла)
             else
             {
-                // Если шаг находится внутри условия, добавляем отступ
-                if (isCycleActive)
+                if (cycleStartNumbers.Count > 0) // Если внутри цикла
                 {
-                    // Отступ для вложенных шагов
-                    if (stepNumber < 10)
-                    {
-                        algorithmText.text += $"\n{stepNumber}     {algorithmSteps[i]};";
-                    }
-                    else
-                    {
-                        algorithmText.text += $"\n{stepNumber}    {algorithmSteps[i]};";
-                    }
+                    algorithmText.text += "\n" + nestedPrefix + currentStep + ";";
                 }
-                else
+                else // Если вне цикла
                 {
-                    // Без отступа
-                    if (stepNumber == 1)
-                    {
-                        algorithmText.text += $"{stepNumber}   {algorithmSteps[i]};";
-                    }
-                    else if (stepNumber >= 10)
-                    {
-                        algorithmText.text += $"\n{stepNumber}  {algorithmSteps[i]};";
-                    }
-                    else
-                    {
-                        algorithmText.text += $"\n{stepNumber}   {algorithmSteps[i]};";
-                    }
+                    algorithmText.text += (stepNumber > 1 ? "\n" : "") + prefix + currentStep + ";";
                 }
-                stepNumber++; // Увеличиваем номер шага
+                stepNumber++;
             }
         }
 
-        // Прокрутка текстового поля, если текст не помещается
         StartCoroutine(ScrollIfOverflow());
     }
 
@@ -709,7 +672,7 @@ public class IvanMoveLevel3 : MonoBehaviour
         EndButton.gameObject.SetActive(false);
         CycleButton.gameObject.SetActive(false);
 
-        AddStep("Для Ивана от 1 ");
+        AddStep("Для Ивана от 1");
     }
 
     void OnNextButtonClicked()
