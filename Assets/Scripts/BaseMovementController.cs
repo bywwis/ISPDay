@@ -91,7 +91,7 @@ public class BaseMovementController : MonoBehaviour
     }
 
     // Автоматическая прокрутка при переполнении
-    private IEnumerator ScrollIfOverflow()
+    protected IEnumerator ScrollIfOverflow()
     {
         yield return null; // Ждем один кадр для обновления UI
     
