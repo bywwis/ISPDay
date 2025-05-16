@@ -94,30 +94,26 @@ public class BaseMovementController : MonoBehaviour
     protected IEnumerator ScrollIfOverflow()
     {
         yield return null; // Ждем один кадр для обновления UI
-    
+        
         Canvas.ForceUpdateCanvases();
+        
+        // Получаем текущую позицию прокрутки перед обновлением
+        float currentScrollPos = scrollRect.verticalNormalizedPosition;
         
         float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
         float scrollRectHeight = scrollRectTransform.rect.height;
         
-        if (textHeight > scrollRectHeight)
+        // Если текст не помещается и пользователь не прокручивал вверх вручную
+        if (textHeight > scrollRectHeight && currentScrollPos <= 0.01f)
         {
-            // Плавная прокрутка снизу вверх
-            float duration = 1f; // Длительность прокрутки
-            float elapsed = 0f;
-            float startPos = 1f;
-            float endPos = 0f;
-            
-            while (elapsed < duration)
-            {
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / duration);
-                scrollRect.verticalNormalizedPosition = Mathf.Lerp(startPos, endPos, t);
-                yield return null;
-            }
-            
-            // Дополнительная проверка для точного позиционирования
+            // Мгновенная прокрутка вниз (без анимации)
             scrollRect.verticalNormalizedPosition = 0f;
+        }
+        
+        // Если пользователь прокручивал вверх, сохраняем его позицию
+        else if (currentScrollPos > 0.01f)
+        {
+            scrollRect.verticalNormalizedPosition = currentScrollPos;
         }
     }
 
