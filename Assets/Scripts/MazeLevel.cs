@@ -300,8 +300,8 @@ public class MazeLevel : MonoBehaviour
                 return;
             }
 
-            // 1. Генерируем препятствия на сетке
-            GenerateGridObstacles();
+            // 1. Генерируем базовые стены лабиринта
+            GenerateMazeWalls();
 
             // 2. Добавляем случайные ответвления
             GenerateRandomBranches();
@@ -318,38 +318,7 @@ public class MazeLevel : MonoBehaviour
         } while (!PathExists(startPoint, endPoint)); // Повторяем, пока путь не будет существовать
     }
 
-    private bool IsPassagePosition(Vector2Int pos)
-    {
-        // Определяем середины каждой границы
-        int midX = gridSize.x / 2;
-        int midY = gridSize.y / 2;
-        
-        // Проверяем, является ли позиция одним из проходов
-        return (pos.x == 0 && pos.y == midY) ||          // Левая граница
-            (pos.x == gridSize.x - 1 && pos.y == midY) || // Правая граница
-            (pos.y == 0 && pos.x == midX) ||          // Нижняя граница
-            (pos.y == gridSize.y - 1 && pos.x == midX);   // Верхняя граница
-    }
-
-    private bool IsBorderWall(Vector2Int pos)
-    {
-        // Проверяем, является ли позиция границей с препятствием
-        Transform checkpoint = GetCheckpointAt(pos.x, pos.y);
-        if (checkpoint == null) return true;
-
-        Collider2D[] colliders = Physics2D.OverlapPointAll(checkpoint.position);
-        return colliders.Any(c => c.CompareTag("Obstacle")) && IsBorderPosition(pos);
-    }
-
-    private Vector2Int WorldToGridPosition(Vector3 worldPosition)
-    {
-        Vector3 localPos = worldPosition - locationObject.position;
-        int x = Mathf.RoundToInt(localPos.x / cellSize);
-        int y = Mathf.RoundToInt(localPos.y / cellSize);
-        return new Vector2Int(x, y);
-    }
-
-    private void GenerateGridObstacles()
+    private void GenerateMazeWalls()
     {
         HashSet<Vector2Int> forbiddenPositions = new HashSet<Vector2Int>
         {
@@ -357,72 +326,134 @@ public class MazeLevel : MonoBehaviour
             endPoint
         };
 
+        // Запрещаем области вокруг старта и финиша
         for (int x = startPoint.x - 1; x <= startPoint.x; x++)
         {
             for (int y = startPoint.y - 1; y <= startPoint.y; y++)
             {
-                if (x >= 0 && x < gridSize.x && y >= 0 && y < gridSize.y)
+                if (IsInBounds(new Vector2Int(x, y)))
                 {
                     forbiddenPositions.Add(new Vector2Int(x, y));
                 }
             }
         }
 
-        // Добавляем проходы на границах с вероятностью 50%
+        for (int x = endPoint.x - 1; x <= endPoint.x; x++)
+        {
+            for (int y = endPoint.y - 1; y <= endPoint.y; y++)
+            {
+                if (IsInBounds(new Vector2Int(x, y)))
+                {
+                    forbiddenPositions.Add(new Vector2Int(x, y));
+                }
+            }
+        }
+
+        // Генерация стен лабиринта
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
                 
-                // Пропускаем старт и финиш
+                // Пропускаем запрещенные позиции
                 if (forbiddenPositions.Contains(pos)) continue;
 
-                // Для граничных клеток создаем препятствия с вероятностью 70%
+                // Для граничных клеток создаем стены
                 if (IsBorderPosition(pos))
                 {
-                    if (Random.Range(0, 100) < 70) // 70% chance to create an obstacle
+                    if (Random.Range(0, 100) < 80) // 80% chance для граничных стен
                     {
                         CreateObstacle(x, y);
                     }
                 }
-                else if (Random.Range(0, 100) < obstacleDensity) // Для внутренних клеток
+                else // Для внутренних клеток
                 {
-                    CreateObstacle(x, y);
+                    // Проверяем соседей, чтобы не было толстых стен
+                    int neighborWalls = CountWallNeighbors(x, y);
+                    
+                    // Если вокруг уже много стен, не добавляем новую
+                    if (neighborWalls >= 3) continue;
+                    
+                    // Вероятность создания стены зависит от плотности
+                    if (Random.Range(0, 100) < obstacleDensity)
+                    {
+                        // Проверяем, чтобы не создавать слишком длинные стены
+                        if (!CreatesLongWall(x, y))
+                        {
+                            CreateObstacle(x, y);
+                        }
+                    }
                 }
             }
         }
     }
 
+    private int CountWallNeighbors(int x, int y)
+    {
+        int count = 0;
+        Vector2Int[] directions = {
+            Vector2Int.up, Vector2Int.right, 
+            Vector2Int.down, Vector2Int.left
+        };
+
+        foreach (var dir in directions)
+        {
+            Vector2Int neighbor = new Vector2Int(x, y) + dir;
+            if (IsInBounds(neighbor) && !IsEmpty(neighbor.x, neighbor.y))
+            {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+
+    private bool CreatesLongWall(int x, int y)
+    {
+        // Проверяем, не создаем ли мы стену длиной более 2 клеток в одном направлении
+        Vector2Int[] directions = {
+            Vector2Int.up, Vector2Int.right, 
+            Vector2Int.down, Vector2Int.left
+        };
+
+        foreach (var dir in directions)
+        {
+            int length = 0;
+            for (int i = 1; i <= 2; i++)
+            {
+                Vector2Int checkPos = new Vector2Int(x, y) + dir * i;
+                if (!IsInBounds(checkPos) || IsEmpty(checkPos.x, checkPos.y))
+                    break;
+                    
+                length++;
+            }
+            
+            if (length >= 2) // Уже есть стена длиной 2 клетки в этом направлении
+                return true;
+        }
+        
+        return false;
+    }
+
     private void GenerateRandomBranches()
     {
-        // Добавляем случайные ответвления от основного пути
-        int branchCount = Random.Range(5, 10);
-        
-        for (int i = 0; i < branchCount; i++)
+        // Создаем несколько проходов в случайных местах
+        int passages = Random.Range(3, 6);
+        for (int i = 0; i < passages; i++)
         {
-            // Выбираем случайную точку на сетке (не на границе)
-            Vector2Int start = new Vector2Int(
+            Vector2Int pos = new Vector2Int(
                 Random.Range(1, gridSize.x - 1),
                 Random.Range(1, gridSize.y - 1));
             
-            if (IsEmpty(start.x, start.y))
+            // Создаем проход в случайном направлении
+            Vector2Int dir = RandomDirection();
+            for (int j = 0; j < Random.Range(2, 4); j++)
             {
-                int length = Random.Range(2, 6);
-                Vector2Int dir = RandomDirection();
-                
-                for (int j = 0; j < length; j++)
+                Vector2Int passagePos = pos + dir * j;
+                if (IsInBounds(passagePos))
                 {
-                    Vector2Int pos = start + dir * j;
-                    if (IsInBounds(pos) && !IsBorderPosition(pos)) // Не трогаем границы
-                    {
-                        RemoveObstacleAt(pos.x, pos.y);
-                        
-                        if (Random.value > 0.7f)
-                        {
-                            dir = RandomDirection();
-                        }
-                    }
+                    RemoveObstacleAt(passagePos.x, passagePos.y);
                 }
             }
         }
@@ -491,6 +522,29 @@ public class MazeLevel : MonoBehaviour
             case 2: return Vector2Int.down;
             default: return Vector2Int.left;
         }
+    }
+
+    private bool IsPassagePosition(Vector2Int pos)
+    {
+        // Определяем середины каждой границы
+        int midX = gridSize.x / 2;
+        int midY = gridSize.y / 2;
+        
+        // Проверяем, является ли позиция одним из проходов
+        return (pos.x == 0 && pos.y == midY) ||          // Левая граница
+            (pos.x == gridSize.x - 1 && pos.y == midY) || // Правая граница
+            (pos.y == 0 && pos.x == midX) ||          // Нижняя граница
+            (pos.y == gridSize.y - 1 && pos.x == midX);   // Верхняя граница
+    }
+
+    private bool IsBorderWall(Vector2Int pos)
+    {
+        // Проверяем, является ли позиция границей с препятствием
+        Transform checkpoint = GetCheckpointAt(pos.x, pos.y);
+        if (checkpoint == null) return true;
+
+        Collider2D[] colliders = Physics2D.OverlapPointAll(checkpoint.position);
+        return colliders.Any(c => c.CompareTag("Obstacle")) && IsBorderPosition(pos);
     }
 
     private bool IsEmpty(int x, int y)
