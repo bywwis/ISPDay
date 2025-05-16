@@ -289,16 +289,30 @@ public class IvanMoveLevel4 : MonoBehaviour
 
     private IEnumerator ScrollIfOverflow()
     {
-        yield return null;
-
+        yield return null; // Ждем один кадр для обновления UI
+    
         Canvas.ForceUpdateCanvases();
-
+        
         float textHeight = LayoutUtility.GetPreferredHeight(textRectTransform);
-
         float scrollRectHeight = scrollRectTransform.rect.height;
-
+        
         if (textHeight > scrollRectHeight)
         {
+            // Плавная прокрутка снизу вверх
+            float duration = 1f; // Длительность прокрутки
+            float elapsed = 0f;
+            float startPos = 1f;
+            float endPos = 0f;
+            
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                scrollRect.verticalNormalizedPosition = Mathf.Lerp(startPos, endPos, t);
+                yield return null;
+            }
+            
+            // Дополнительная проверка для точного позиционирования
             scrollRect.verticalNormalizedPosition = 0f;
         }
     }
