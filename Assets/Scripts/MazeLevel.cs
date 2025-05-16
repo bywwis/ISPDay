@@ -198,15 +198,15 @@ public class MazeLevel : MonoBehaviour
 
         if (randomIndex == 0)
         {
-            gridSize = new Vector2Int(6, 8);
-            checkpointX = 0.9f;
+            gridSize = new Vector2Int(9, 8);
+            checkpointX = 0.7f;
             checkpointY = 0.75f;
         }
         else
         {
-            gridSize = new Vector2Int(5, 6);
-            checkpointX = 1.2f;
-            checkpointY = cellSize;
+            gridSize = new Vector2Int(9, 8);
+            checkpointX = 0.7f;
+            checkpointY = 0.75f;
         }
 
         endPoint = new Vector2Int(gridSize.x - 1, gridSize.y - 1);
@@ -331,14 +331,14 @@ public class MazeLevel : MonoBehaviour
             (pos.y == gridSize.y - 1 && pos.x == midX);   // Верхняя граница
     }
 
-    private bool IsBorderWall(Vector3 position)
+    private bool IsBorderWall(Vector2Int pos)
     {
-        // Преобразуем мировые координаты в координаты сетки
-        Vector2Int gridPos = WorldToGridPosition(position);
-        
-        // Проверяем, является ли позиция граничной
-        return gridPos.x == 0 || gridPos.x == gridSize.x - 1 || 
-            gridPos.y == 0 || gridPos.y == gridSize.y - 1;
+        // Проверяем, является ли позиция границей с препятствием
+        Transform checkpoint = GetCheckpointAt(pos.x, pos.y);
+        if (checkpoint == null) return true;
+
+        Collider2D[] colliders = Physics2D.OverlapPointAll(checkpoint.position);
+        return colliders.Any(c => c.CompareTag("Obstacle")) && IsBorderPosition(pos);
     }
 
     private Vector2Int WorldToGridPosition(Vector3 worldPosition)
@@ -351,20 +351,11 @@ public class MazeLevel : MonoBehaviour
 
     private void GenerateGridObstacles()
     {
-        // Список позиций, где не должно быть препятствий
         HashSet<Vector2Int> forbiddenPositions = new HashSet<Vector2Int>
         {
-            startPoint, // Стартовая позиция игрока
-            endPoint    // Конечная точка
+            startPoint,
+            endPoint
         };
-
-        // Добавляем проходы на границах в запрещенные позиции
-        int midX = gridSize.x / 2;
-        int midY = gridSize.y / 2;
-        forbiddenPositions.Add(new Vector2Int(0, midY));      // Левая граница
-        forbiddenPositions.Add(new Vector2Int(gridSize.x - 1, midY)); // Правая граница
-        forbiddenPositions.Add(new Vector2Int(midX, 0));       // Нижняя граница
-        forbiddenPositions.Add(new Vector2Int(midX, gridSize.y - 1)); // Верхняя граница
 
         for (int x = startPoint.x - 1; x <= startPoint.x; x++)
         {
@@ -377,43 +368,25 @@ public class MazeLevel : MonoBehaviour
             }
         }
 
-        // Добавляем путь от старта до финиша в запрещенные позиции
-        Vector2Int current = startPoint;
-        while (current != endPoint)
-        {
-            forbiddenPositions.Add(current);
-            
-            if (current.x < endPoint.x) current.x++;
-            else if (current.x > endPoint.x) current.x--;
-            
-            if (current.y < endPoint.y) current.y++;
-            else if (current.y > endPoint.y) current.y--;
-            
-            // Добавляем соседние клетки к пути с 50% вероятностью
-            if (Random.Range(0, 100) < 50)
-            {
-                forbiddenPositions.Add(new Vector2Int(current.x, current.y + 1));
-                forbiddenPositions.Add(new Vector2Int(current.x, current.y - 1));
-            }
-        }
-        forbiddenPositions.Add(endPoint);
-
-        // Генерируем препятствия на сетке, пропуская границы и запрещенные позиции
+        // Добавляем проходы на границах с вероятностью 50%
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
                 
-                // Пропускаем запрещенные позиции
+                // Пропускаем старт и финиш
                 if (forbiddenPositions.Contains(pos)) continue;
-                
-                // Для граничных клеток создаем препятствия всегда
+
+                // Для граничных клеток создаем препятствия с вероятностью 70%
                 if (IsBorderPosition(pos))
                 {
-                    CreateObstacle(x, y);
+                    if (Random.Range(0, 100) < 70) // 70% chance to create an obstacle
+                    {
+                        CreateObstacle(x, y);
+                    }
                 }
-                else if (Random.Range(0, 100) < obstacleDensity) // Для внутренних клеток - с вероятностью
+                else if (Random.Range(0, 100) < obstacleDensity) // Для внутренних клеток
                 {
                     CreateObstacle(x, y);
                 }
@@ -465,25 +438,42 @@ public class MazeLevel : MonoBehaviour
 
     private void EnsurePathExists()
     {
-        // Очищаем путь от старта до финиша, не трогая границы
-        Vector2Int current = startPoint;
-        while (current != endPoint)
+        // Используем волновой алгоритм для поиска пути от старта до финиша
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+        queue.Enqueue(startPoint);
+        cameFrom[startPoint] = startPoint;
+
+        Vector2Int[] directions = { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
+
+        while (queue.Count > 0)
         {
-            if (!IsBorderPosition(current)) // Не удаляем граничные препятствия
+            Vector2Int current = queue.Dequeue();
+
+            if (current == endPoint)
             {
-                RemoveObstacleAt(current.x, current.y);
+                // Восстанавливаем путь и удаляем препятствия
+                while (current != startPoint)
+                {
+                    RemoveObstacleAt(current.x, current.y);
+                    current = cameFrom[current];
+                }
+                return;
             }
-            
-            if (current.x < endPoint.x) current.x++;
-            else if (current.x > endPoint.x) current.x--;
-            
-            if (current.y < endPoint.y) current.y++;
-            else if (current.y > endPoint.y) current.y--;
+
+            foreach (var dir in directions)
+            {
+                Vector2Int next = current + dir;
+                if (IsInBounds(next) && !cameFrom.ContainsKey(next) && !IsBorderWall(next))
+                {
+                    cameFrom[next] = current;
+                    queue.Enqueue(next);
+                }
+            }
         }
-        if (!IsBorderPosition(endPoint))
-        {
-            RemoveObstacleAt(endPoint.x, endPoint.y);
-        }
+
+        // Если путь не найден, генерируем лабиринт заново
+        GenerateMaze();
     }
 
     private bool IsInBounds(Vector2Int pos)
