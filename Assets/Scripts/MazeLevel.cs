@@ -46,6 +46,7 @@ public class MazeLevel : MonoBehaviour
     private Transform currentCheckPoint;
     private Transform targetCheckPoint;
     private List<Transform> checkPoints = new List<Transform>();
+    private Transform endPointInstance;
     
     private List<int> cycleIterations = new List<int>();
     private bool isCycleActive = false;
@@ -79,14 +80,53 @@ public class MazeLevel : MonoBehaviour
         {
             PlayAlgorithm();
         }
-        if (player != null && currentCheckPoint != null)
+        
+        // Проверяем достижение финиша
+        CheckEndPointProximity();
+    }
+
+    private void CheckEndPointProximity()
+    {
+        if (player == null || endPointInstance == null) return;
+
+        // Получаем текущий чекпоинт игрока
+        Transform nearestCheckpoint = GetNearestCheckpoint(player.position);
+        if (nearestCheckpoint == null) return;
+
+        // Получаем чекпоинт конечной точки
+        Transform endCheckpoint = GetNearestCheckpoint(endPointInstance.position);
+        if (endCheckpoint == null) return;
+
+        // Сравниваем имена чекпоинтов
+        if (nearestCheckpoint.name == endCheckpoint.name)
         {
-            Vector2Int currentGridPos = WorldToGridPosition(currentCheckPoint.position);
-            if (currentGridPos == endPoint)
+            ShowCompletionDialog(true);
+        }
+        
+        // Дополнительная проверка расстояния (если нужно)
+        float distance = Vector3.Distance(player.position, endPointInstance.position);
+        if (distance <= 0.9f * cellSize)
+        {
+            ShowCompletionDialog(true);
+        }
+    }
+
+    private Transform GetNearestCheckpoint(Vector3 position)
+    {
+        Transform nearest = null;
+        float minDistance = Mathf.Infinity;
+        
+        foreach (var checkpoint in checkPoints)
+        {
+            float dist = Vector3.Distance(position, checkpoint.position);
+            if (dist < minDistance)
             {
-                ShowCompletionDialog(true);
+                minDistance = dist;
+                nearest = checkpoint;
             }
         }
+        
+        return nearest;
     }
 
     private Vector2 GetCameraBounds()
@@ -225,12 +265,13 @@ public class MazeLevel : MonoBehaviour
             return;
         }
         
-        Instantiate(
+        // Сохраняем ссылку на созданный экземпляр
+        endPointInstance = Instantiate(
             endPointPrefab, 
             checkpoint.position, 
             Quaternion.identity, 
             locationObject
-        );
+        ).transform;
     }
 
     // Генерация лабиринта
@@ -251,7 +292,7 @@ public class MazeLevel : MonoBehaviour
 
         if (obstaclePrefab == null)
         {
-            Debug.LogError("Obstacle prefab is not assigned!");
+            Debug.LogError("Obstacle prefab не найден!");
             return;
         }
 
@@ -263,6 +304,19 @@ public class MazeLevel : MonoBehaviour
 
         // 3. Создаем гарантированный проход от старта до финиша
         EnsurePathExists();
+    }
+
+    private bool IsPassagePosition(Vector2Int pos)
+    {
+        // Определяем середины каждой границы
+        int midX = gridSize.x / 2;
+        int midY = gridSize.y / 2;
+        
+        // Проверяем, является ли позиция одним из проходов
+        return (pos.x == 0 && pos.y == midY) ||          // Левая граница
+            (pos.x == gridSize.x - 1 && pos.y == midY) || // Правая граница
+            (pos.y == 0 && pos.x == midX) ||          // Нижняя граница
+            (pos.y == gridSize.y - 1 && pos.x == midX);   // Верхняя граница
     }
 
     private bool IsBorderWall(Vector3 position)
@@ -292,7 +346,14 @@ public class MazeLevel : MonoBehaviour
             endPoint    // Конечная точка
         };
 
-        // Добавляем область вокруг стартовой позиции (3x3 клетки)
+        // Добавляем проходы на границах в запрещенные позиции
+        int midX = gridSize.x / 2;
+        int midY = gridSize.y / 2;
+        forbiddenPositions.Add(new Vector2Int(0, midY));      // Левая граница
+        forbiddenPositions.Add(new Vector2Int(gridSize.x - 1, midY)); // Правая граница
+        forbiddenPositions.Add(new Vector2Int(midX, 0));       // Нижняя граница
+        forbiddenPositions.Add(new Vector2Int(midX, gridSize.y - 1)); // Верхняя граница
+
         for (int x = startPoint.x - 1; x <= startPoint.x; x++)
         {
             for (int y = startPoint.y - 1; y <= startPoint.y; y++)
@@ -326,17 +387,21 @@ public class MazeLevel : MonoBehaviour
         forbiddenPositions.Add(endPoint);
 
         // Генерируем препятствия на сетке, пропуская границы и запрещенные позиции
-        for (int x = 0; x < gridSize.x - 1; x++)
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int y = 0; y < gridSize.y - 1; y++)
+            for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
                 
-                // Пропускаем запрещенные позиции и границы
+                // Пропускаем запрещенные позиции
                 if (forbiddenPositions.Contains(pos)) continue;
                 
-                // Случайное создание препятствия с учетом density
-                if (Random.Range(0, 100) < obstacleDensity)
+                // Для граничных клеток создаем препятствия всегда
+                if (IsBorderPosition(pos))
+                {
+                    CreateObstacle(x, y);
+                }
+                else if (Random.Range(0, 100) < obstacleDensity) // Для внутренних клеток - с вероятностью
                 {
                     CreateObstacle(x, y);
                 }
@@ -364,11 +429,10 @@ public class MazeLevel : MonoBehaviour
                 for (int j = 0; j < length; j++)
                 {
                     Vector2Int pos = start + dir * j;
-                    if (IsInBounds(pos) && !IsBorderPosition(pos))
+                    if (IsInBounds(pos) && !IsBorderPosition(pos)) // Не трогаем границы
                     {
                         RemoveObstacleAt(pos.x, pos.y);
                         
-                        // С некоторой вероятностью меняем направление
                         if (Random.value > 0.7f)
                         {
                             dir = RandomDirection();
@@ -381,8 +445,10 @@ public class MazeLevel : MonoBehaviour
 
     private bool IsBorderPosition(Vector2Int pos)
     {
-        return pos.x == 0 || pos.x == gridSize.x - 1 || 
-            pos.y == 0 || pos.y == gridSize.y - 1;
+        // Позиция на границе, но не является проходом
+        return (pos.x == 0 || pos.x == gridSize.x - 1 || 
+                pos.y == 0 || pos.y == gridSize.y - 1) &&
+            !IsPassagePosition(pos);
     }
 
     private void EnsurePathExists()
@@ -391,7 +457,10 @@ public class MazeLevel : MonoBehaviour
         Vector2Int current = startPoint;
         while (current != endPoint)
         {
-            RemoveObstacleAt(current.x, current.y);
+            if (!IsBorderPosition(current)) // Не удаляем граничные препятствия
+            {
+                RemoveObstacleAt(current.x, current.y);
+            }
             
             if (current.x < endPoint.x) current.x++;
             else if (current.x > endPoint.x) current.x--;
@@ -399,7 +468,10 @@ public class MazeLevel : MonoBehaviour
             if (current.y < endPoint.y) current.y++;
             else if (current.y > endPoint.y) current.y--;
         }
-        RemoveObstacleAt(endPoint.x, endPoint.y);
+        if (!IsBorderPosition(endPoint))
+        {
+            RemoveObstacleAt(endPoint.x, endPoint.y);
+        }
     }
 
     private bool IsInBounds(Vector2Int pos)
