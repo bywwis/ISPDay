@@ -477,5 +477,69 @@ public class ConditionalMovementController : BaseMovementController
         // Добавляем закрывающую скобку и знак ";" в поле алгоритма
         AddStep(")");
     }
+
+    public override void RemoveLastStep()
+    {
+        if (!isPlaying && algorithmSteps.Count > 0)
+        {
+            string lastStep = algorithmSteps[^1];
+            bool wasConditionClosed = lastStep == ")";
+
+            // Удаляем последний шаг
+            algorithmSteps.RemoveAt(algorithmSteps.Count - 1);
+
+            // Если удалили закрывающую скобку - разрешаем редактирование
+            if (wasConditionClosed)
+            {
+                // Ищем начало условия
+                for (int i = algorithmSteps.Count - 1; i >= 0; i--)
+                {
+                    if (algorithmSteps[i].StartsWith("Если"))
+                    {
+                        // Активируем режим редактирования условия
+                        isInsideCondition = true;
+                        conditionCharacter = GetConditionCharacter(algorithmSteps[i]);
+                        SetupConditionUI();
+                        break;
+                    }
+                }
+            }
+            // Обработка удаления выбора персонажа
+            else if (lastStep.StartsWith("Иван, то (") || lastStep.StartsWith("Паулина, то ("))
+            {
+                movementButtons.SetActive(false);
+                nameButtons.SetActive(true);
+                endButton.SetActive(false);
+                ifButton.SetActive(false);
+            }
+            else if (lastStep.StartsWith("Если"))
+            {
+                movementButtons.SetActive(true);
+                nameButtons.SetActive(false);
+                endButton.SetActive(false);
+                ifButton.SetActive(true);
+            }
+
+                UpdateAlgorithmText();
+            StartCoroutine(ScrollIfOverflow());
+        }
+    }
+
+    private string GetConditionCharacter(string conditionStep)
+    {
+        if (conditionStep.Contains("Иван")) return "Иван";
+        if (conditionStep.Contains("Паулина")) return "Паулина";
+        return "";
+    }
+
+    private void SetupConditionUI()
+    {
+        movementButtons.SetActive(true);
+        nameButtons.SetActive(false);
+        endButton.SetActive(true);
+        ifButton.SetActive(false);
+        isConditionBeingEdited = true;
+    }
+
 }
 

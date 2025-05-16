@@ -246,7 +246,7 @@ public class BaseMovementController : MonoBehaviour
     }
 
     // Удаление последнего шага
-    public void RemoveLastStep()
+    public virtual void RemoveLastStep()
     {
         if (!isPlaying && algorithmSteps.Count > 0)
         {
