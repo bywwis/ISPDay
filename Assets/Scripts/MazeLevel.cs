@@ -411,10 +411,10 @@ public class MazeLevel : MonoBehaviour
 
     private bool CreatesLongWall(int x, int y)
     {
-        // Проверяем, не создаем ли мы стену длиной более 2 клеток в одном направлении
+        // Проверяем, не создаем ли мы стену длиной более 2 клеток вправо или влево
         Vector2Int[] directions = {
-            Vector2Int.up, Vector2Int.right, 
-            Vector2Int.down, Vector2Int.left
+            Vector2Int.right, 
+            Vector2Int.left
         };
 
         foreach (var dir in directions)
