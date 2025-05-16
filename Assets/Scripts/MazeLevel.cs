@@ -277,33 +277,45 @@ public class MazeLevel : MonoBehaviour
     // Генерация лабиринта
     private void GenerateMaze()
     {
-        // Очистка старых препятствий и конечных точек
-        var oldObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
-        foreach (var obs in oldObstacles) 
-        {
-            Destroy(obs);
-        }
+        int attempts = 0;
+        const int maxAttempts = 100;
         
-        var oldEndPoints = GameObject.FindGameObjectsWithTag("EndPoint");
-        foreach (var ep in oldEndPoints)
-        {
-            Destroy(ep);
-        }
+        do {
+            // Очистка старых препятствий и конечных точек
+            var oldObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+            foreach (var obs in oldObstacles) 
+            {
+                Destroy(obs);
+            }
+            
+            var oldEndPoints = GameObject.FindGameObjectsWithTag("EndPoint");
+            foreach (var ep in oldEndPoints)
+            {
+                Destroy(ep);
+            }
 
-        if (obstaclePrefab == null)
-        {
-            Debug.LogError("Obstacle prefab не найден!");
-            return;
-        }
+            if (obstaclePrefab == null)
+            {
+                Debug.LogError("Obstacle prefab не найден!");
+                return;
+            }
 
-        // 1. Генерируем препятствия на сетке
-        GenerateGridObstacles();
+            // 1. Генерируем препятствия на сетке
+            GenerateGridObstacles();
 
-        // 2. Добавляем случайные ответвления
-        GenerateRandomBranches();
+            // 2. Добавляем случайные ответвления
+            GenerateRandomBranches();
 
-        // 3. Создаем гарантированный проход от старта до финиша
-        EnsurePathExists();
+            // 3. Создаем гарантированный проход от старта до финиша
+            EnsurePathExists();
+            
+            attempts++;
+            if (attempts >= maxAttempts)
+            {
+                Debug.LogError("Не удалось сгенерировать лабиринт с проходом после " + maxAttempts + " попыток");
+                break;
+            }
+        } while (!PathExists(startPoint, endPoint)); // Повторяем, пока путь не будет существовать
     }
 
     private bool IsPassagePosition(Vector2Int pos)
@@ -500,6 +512,54 @@ public class MazeLevel : MonoBehaviour
         return colliders.All(c => !c.CompareTag("Obstacle"));
     }
 
+    private bool PathExists(Vector2Int start, Vector2Int end)
+    {
+        // Массив для отслеживания посещенных клеток
+        bool[,] visited = new bool[gridSize.x, gridSize.y];
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        
+        // Начинаем со стартовой позиции
+        queue.Enqueue(start);
+        visited[start.x, start.y] = true;
+        
+        // Возможные направления движения (вверх, вправо, вниз, влево)
+        Vector2Int[] directions = new Vector2Int[]
+        {
+            Vector2Int.up,
+            Vector2Int.right,
+            Vector2Int.down,
+            Vector2Int.left
+        };
+        
+        while (queue.Count > 0)
+        {
+            Vector2Int current = queue.Dequeue();
+            
+            // Если достигли конечной точки, возвращаем true
+            if (current == end)
+                return true;
+                
+            // Проверяем все возможные направления
+            foreach (var dir in directions)
+            {
+                Vector2Int next = current + dir;
+                
+                // Проверяем, что следующая клетка в пределах сетки
+                if (next.x >= 0 && next.x < gridSize.x && next.y >= 0 && next.y < gridSize.y)
+                {
+                    // Проверяем, что клетка не посещена и не содержит препятствие
+                    if (!visited[next.x, next.y] && IsEmpty(next.x, next.y))
+                    {
+                        visited[next.x, next.y] = true;
+                        queue.Enqueue(next);
+                    }
+                }
+            }
+        }
+        
+        // Если очередь опустела и конечная точка не достигнута
+        return false;
+    }
 
     private void CreateObstacle(int x, int y)
     {

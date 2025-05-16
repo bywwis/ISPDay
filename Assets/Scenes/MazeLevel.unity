@@ -3336,7 +3336,7 @@ MonoBehaviour:
   checkpointPrefab: {fileID: 4594249301542687991, guid: 6726c013fe8e5ab4faa178b8c2d2726d, type: 3}
   obstaclePrefab: {fileID: 4441615468774645902, guid: 3ac0729414b30a64bb496c0a7c979bf1, type: 3}
   cellSize: 1
-  obstacleDensity: 70
+  obstacleDensity: 80
   playerPrefab: {fileID: 3434306532007893167, guid: 71ae1ae44edad714a85bb72649e88292, type: 3}
   endPointPrefab: {fileID: 3746489235799936883, guid: e177671249d750d42a351bd4e95225a8, type: 3}
   locationObject: {fileID: 100580131}
