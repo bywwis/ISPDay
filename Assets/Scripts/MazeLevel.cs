@@ -55,7 +55,7 @@ public class MazeLevel : MonoBehaviour
     private bool isCycleComplete = false;
     
     private const int MaxStepsWithoutCycle = 10;
-    private const int MaxStepsWithCycle = 17;
+    private const int MaxStepsWithCycle = 100;
     private bool hasCycle = false;
     
     private GameObject currentLocation;
@@ -65,6 +65,15 @@ public class MazeLevel : MonoBehaviour
     private ScrollRect scrollRect;
     private RectTransform scrollRectTransform;
     private RectTransform textRectTransform;
+
+    private bool[,] visited;
+    private Vector2Int[] directions = new Vector2Int[]
+    {
+        Vector2Int.up,
+        Vector2Int.right,
+        Vector2Int.down,
+        Vector2Int.left
+    };
 
     void Start()
     {
@@ -139,6 +148,11 @@ public class MazeLevel : MonoBehaviour
 
     private void SetPlayerStartPosition()
     {
+        if (player != null)
+        {
+            Destroy(player.gameObject);
+        }
+
         GameObject newPlayer = Instantiate(
             playerPrefab, 
             checkPoints[0].position, 
@@ -155,6 +169,16 @@ public class MazeLevel : MonoBehaviour
         if (currentLocation != null) 
         {
             Destroy(currentLocation);
+        }
+
+        if (player != null)
+        {
+            Destroy(player.gameObject);
+        }
+
+        if (endPointInstance != null)
+        {
+            Destroy(endPointInstance.gameObject);
         }
         
         // Проверка наличия префабов
@@ -258,6 +282,11 @@ public class MazeLevel : MonoBehaviour
 
     private void CreateEndPoint()
     {
+        if (endPointInstance != null)
+        {
+            Destroy(endPointInstance.gameObject);
+        }
+
         Transform checkpoint = GetCheckpointAt(gridSize.x - 1, gridSize.y - 1);
         if (checkpoint == null)
         {
@@ -277,45 +306,54 @@ public class MazeLevel : MonoBehaviour
     // Генерация лабиринта
     private void GenerateMaze()
     {
-        int attempts = 0;
-        const int maxAttempts = 100;
-        
-        do {
-            // Очистка старых препятствий и конечных точек
-            var oldObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
-            foreach (var obs in oldObstacles) 
-            {
-                Destroy(obs);
-            }
-            
-            var oldEndPoints = GameObject.FindGameObjectsWithTag("EndPoint");
-            foreach (var ep in oldEndPoints)
-            {
-                Destroy(ep);
-            }
+        // Любой размер сетки: 10x10, 8x6 и т.д.
+        visited = new bool[gridSize.x, gridSize.y];
+        ClearObstacles();
+        GenerateCheckpoints();
+        GenerateMazeWalls();
 
-            if (obstaclePrefab == null)
+        // Округляем стартовую позицию до чётной — чтобы RecursiveBacktrack сработал
+        Vector2Int adjustedStart = new Vector2Int(
+            Mathf.Clamp(startPoint.x | 1, 0, gridSize.x - 1),
+            Mathf.Clamp(startPoint.y | 1, 0, gridSize.y - 1)
+        );
+
+        RecursiveBacktrack(adjustedStart);
+        CreateEndPoint();
+        SetPlayerStartPosition();
+    }
+
+
+    private void RecursiveBacktrack(Vector2Int pos)
+    {
+        if (!IsInBounds(pos)) return;
+        visited[pos.x, pos.y] = true;
+
+        var shuffledDirs = directions.OrderBy(_ => Random.value).ToList();
+
+        foreach (var dir in shuffledDirs)
+        {
+            Vector2Int next = pos + dir * 2;
+
+            if (IsInBounds(next) && !visited[next.x, next.y])
             {
-                Debug.LogError("Obstacle prefab не найден!");
-                return;
+                Vector2Int between = pos + dir;
+
+                RemoveObstacleAt(between.x, between.y);
+                RemoveObstacleAt(next.x, next.y);
+
+                RecursiveBacktrack(next);
             }
+        }
+    }
 
-            // 1. Генерируем базовые стены лабиринта
-            GenerateMazeWalls();
 
-            // 2. Добавляем случайные ответвления
-            GenerateRandomBranches();
-
-            // 3. Создаем гарантированный проход от старта до финиша
-            EnsurePathExists();
-            
-            attempts++;
-            if (attempts >= maxAttempts)
-            {
-                Debug.LogError("Не удалось сгенерировать лабиринт с проходом после " + maxAttempts + " попыток");
-                break;
-            }
-        } while (!PathExists(startPoint, endPoint)); // Повторяем, пока путь не будет существовать
+    private void ClearObstacles()
+    {
+        foreach (var obj in GameObject.FindGameObjectsWithTag("Obstacle"))
+        {
+            Destroy(obj);
+        }
     }
 
     private void GenerateMazeWalls()
@@ -349,41 +387,15 @@ public class MazeLevel : MonoBehaviour
             }
         }
 
-        // Генерация стен лабиринта
+        // Ставим стены везде, кроме защищённых клеток
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
-                
-                // Пропускаем запрещенные позиции
-                if (forbiddenPositions.Contains(pos)) continue;
-
-                // Для граничных клеток создаем стены
-                if (IsBorderPosition(pos))
+                if (!forbiddenPositions.Contains(pos))
                 {
-                    if (Random.Range(0, 100) < 80) // 80% chance для граничных стен
-                    {
-                        CreateObstacle(x, y);
-                    }
-                }
-                else // Для внутренних клеток
-                {
-                    // Проверяем соседей, чтобы не было толстых стен
-                    int neighborWalls = CountWallNeighbors(x, y);
-                    
-                    // Если вокруг уже много стен, не добавляем новую
-                    if (neighborWalls >= 3) continue;
-                    
-                    // Вероятность создания стены зависит от плотности
-                    if (Random.Range(0, 100) < obstacleDensity)
-                    {
-                        // Проверяем, чтобы не создавать слишком длинные стены
-                        if (!CreatesLongWall(x, y))
-                        {
-                            CreateObstacle(x, y);
-                        }
-                    }
+                    CreateObstacle(x, y);
                 }
             }
         }
@@ -728,6 +740,8 @@ public class MazeLevel : MonoBehaviour
                 cycleStartNumbers.Push(stepNumber); // Запоминаем номер начала цикла
                 stepNumber++;
                 hasCycle = true;
+                isCycleActive = true;
+                isCycleComplete = false;
             }
             // Условие цикла ("до...")
             else if (currentStep.StartsWith("до"))
@@ -741,6 +755,8 @@ public class MazeLevel : MonoBehaviour
                 string closingPrefix = cycleStartNumber < 10 ? $"{stepNumber}   " : $"{stepNumber}  ";
                 algorithmText.text += "\n" + closingPrefix + ");";
                 stepNumber++;
+                isCycleActive = false;
+                isCycleComplete = true;
             }
             // Обычные шаги (внутри или вне цикла)
             else
@@ -1001,7 +1017,7 @@ public class MazeLevel : MonoBehaviour
             scrollRect.verticalNormalizedPosition = 1f;
         }
 
-        if (checkPoints.Count > 0)
+        if (player != null && checkPoints.Count > 0)
         {
             player.position = checkPoints[0].position;
             currentCheckPoint = checkPoints[0];
