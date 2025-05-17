@@ -197,8 +197,6 @@ public class IvanMoveLevel3 : MonoBehaviour
                 cycleStartNumbers.Push(stepNumber); // Запоминаем номер начала цикла
                 stepNumber++;
                 hasCycle = true;
-                isCycleActive = true;
-                isCycleComplete = false;
             }
             // Условие цикла ("до...")
             else if (currentStep.StartsWith("до"))
@@ -212,8 +210,6 @@ public class IvanMoveLevel3 : MonoBehaviour
                 string closingPrefix = cycleStartNumber < 10 ? $"{stepNumber}   " : $"{stepNumber}  ";
                 algorithmText.text += "\n" + closingPrefix + ");";
                 stepNumber++;
-                isCycleActive = false;
-                isCycleComplete = true;
             }
             // Обычные шаги (внутри или вне цикла)
             else
