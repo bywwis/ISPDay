@@ -7,11 +7,11 @@ using System.Linq;
 
 public class CycleMovementController : BaseMovementController
 {
-    [SerializeField] private Button CycleButton; // Кнопка для начала цикла
-    [SerializeField] private GameObject NumberButtons; // Группа кнопок для выбора количества итераций
-    [SerializeField] private GameObject ButtonsAlgoritm; // Группа кнопок для описания алгоритма
-    [SerializeField] private Button EndButton; // Кнопка для завершения цикла
-    [SerializeField] private List<Transform> checkPoints; // Список всех чекпоинтов
+    [SerializeField] protected GameObject cycleButton; // Кнопка для начала цикла
+    [SerializeField] protected GameObject numberButtons; // Группа кнопок для выбора количества итераций
+    [SerializeField] protected GameObject buttonsAlgoritm; // Группа кнопок для описания алгоритма
+    [SerializeField] protected GameObject endButton; // Кнопка для завершения цикла
+    [SerializeField] protected List<Transform> checkPoints; // Список всех чекпоинтов
 
     public Canvas canvas;
 
@@ -72,12 +72,9 @@ public class CycleMovementController : BaseMovementController
 
     private void SetupCycleButtons()
     {
-        CycleButton.onClick.AddListener(OnCycleButtonClicked);
-        EndButton.onClick.AddListener(OnEndButtonClicked);
-
-        NumberButtons.SetActive(false);
-        ButtonsAlgoritm.SetActive(true);
-        EndButton.gameObject.SetActive(false);
+        numberButtons.SetActive(false);
+        buttonsAlgoritm.SetActive(true);
+        endButton.gameObject.SetActive(false);
     }
 
     // Добавляем шаг в алгоритм
@@ -112,6 +109,10 @@ public class CycleMovementController : BaseMovementController
                 ShowErrorDialog($"Превышено максимальное количество строк ({maxSteps}). Используйте цикл для компактности.");
                 return;
             }
+
+            if (cycleButton.gameObject.activeSelf) endButton.gameObject.SetActive(false);
+            else if (numberButtons.gameObject.activeSelf) endButton.gameObject.SetActive(false);
+            else endButton.gameObject.SetActive(true);
 
         }
     }
@@ -371,10 +372,10 @@ public class CycleMovementController : BaseMovementController
             cycleIterations.Clear(); // Очищаем список итераций
         }
 
-        NumberButtons.SetActive(false);
-        ButtonsAlgoritm.SetActive(true);
-        EndButton.gameObject.SetActive(false);
-        CycleButton.gameObject.SetActive(true);
+        numberButtons.SetActive(false);
+        buttonsAlgoritm.SetActive(true);
+        endButton.gameObject.SetActive(false);
+        cycleButton.gameObject.SetActive(true);
 
         InitializeCheckPoints();
         ResetItems();
@@ -411,20 +412,20 @@ public class CycleMovementController : BaseMovementController
     public void OnCycleButtonClicked()
     {
         // Показываем кнопки для выбора количества итераций
-        NumberButtons.SetActive(true);
-        ButtonsAlgoritm.SetActive(false);
-        EndButton.gameObject.SetActive(false);
-        CycleButton.gameObject.SetActive(false);
+        numberButtons.SetActive(true);
+        buttonsAlgoritm.SetActive(false);
+        cycleButton.gameObject.SetActive(false);
+        //EndButton.gameObject.SetActive(false);
 
         AddStep("Для Ивана от 1");
     }
 
     public void OnEndButtonClicked()
     {
-        NumberButtons.SetActive(false);
-        ButtonsAlgoritm.SetActive(true);
-        EndButton.gameObject.SetActive(false);
-        CycleButton.gameObject.SetActive(true);
+        numberButtons.SetActive(false);
+        buttonsAlgoritm.SetActive(true);
+        endButton.gameObject.SetActive(false);
+        cycleButton.gameObject.SetActive(true);
 
         AddStep(")");
         isCycleComplete = true; // Цикл завершен
@@ -434,9 +435,9 @@ public class CycleMovementController : BaseMovementController
     {
         cycleIterations.Add(iterations); // Добавляем количество итераций в список
         AddStep($"до {iterations} повторять (");
-        NumberButtons.SetActive(false);
-        ButtonsAlgoritm.SetActive(true);
-        EndButton.gameObject.SetActive(false);
+        numberButtons.SetActive(false);
+        buttonsAlgoritm.SetActive(true);
+        endButton.gameObject.SetActive(false);
     }
 
     public void SetIterations1() { SetIterations(1); }
@@ -448,5 +449,58 @@ public class CycleMovementController : BaseMovementController
     public void SetIterations7() { SetIterations(7); }
     public void SetIterations8() { SetIterations(8); }
     public void SetIterations9() { SetIterations(9); }
+
+    public override void RemoveLastStep()
+    {
+        if (!isPlaying && algorithmSteps.Count > 0)
+        {
+            string lastStep = algorithmSteps[^1];
+            bool wasCycleClosed = lastStep == ")";
+
+            // Удаляем последний шаг
+            algorithmSteps.RemoveAt(algorithmSteps.Count - 1);
+
+            if (wasCycleClosed)
+            {
+                // Если удалили закрывающую скобку цикла
+                isCycleComplete = false;
+                isCycleActive = true;
+                cycleButton.gameObject.SetActive(false);
+                buttonsAlgoritm.SetActive(true);
+                endButton.gameObject.SetActive(true);
+
+                // Удаляем соответствующую итерацию
+                if (cycleIterations.Count > 0)
+                {
+                    cycleIterations.RemoveAt(cycleIterations.Count - 1);
+                }
+            }
+            else if (lastStep.StartsWith("Для"))
+            {
+                // Если удалили начало цикла
+                isCycleActive = false;
+                cycleButton.gameObject.SetActive(true);
+                buttonsAlgoritm.SetActive(true);
+                numberButtons.SetActive(false);
+                endButton.gameObject.SetActive(false);
+            }
+            else if (lastStep.StartsWith("до"))
+            {
+                // Если удалили условие итерации
+                numberButtons.SetActive(true);
+                buttonsAlgoritm.SetActive(false);
+                endButton.gameObject.SetActive(false);
+                cycleButton.gameObject.SetActive(false);
+            }
+            else if (isCycleActive)
+            {
+                // Если удалили шаг внутри цикла
+                endButton.gameObject.SetActive(false);
+            }
+
+            UpdateAlgorithmText();
+            StartCoroutine(ScrollIfOverflow());
+        }
+    }
 
 }

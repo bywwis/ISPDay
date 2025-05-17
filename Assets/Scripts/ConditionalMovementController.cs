@@ -19,7 +19,7 @@ public class ConditionalMovementController : BaseMovementController
 
     private bool isInsideCondition = false; // Флаг для проверки, находится ли текущий шаг внутри условия
     private string conditionCharacter = ""; // Персонаж, для которого выполняется условие
-    private bool isConditionBeingEdited = false;
+    private bool isConditionActive = false;
 
     [SerializeField] private List<Transform> checkPoints; // Список всех чекпоинтов
 
@@ -64,7 +64,7 @@ public class ConditionalMovementController : BaseMovementController
         // Дополнительная логика для управления кнопками
         if (!isPlaying)
         {
-            if (isConditionBeingEdited
+            if (isConditionActive
                 && !step.StartsWith("Если")
                 && !step.StartsWith("Иван")
                 && !step.StartsWith("Паулина"))
@@ -401,7 +401,7 @@ public class ConditionalMovementController : BaseMovementController
         endButton.SetActive(false);
         ifButton.SetActive(true);
 
-        isConditionBeingEdited = false;
+        isConditionActive = false;
 
         currentIvanCheckPoint = checkPoints[GetIvanInitialCheckpointIndex()]; // Чекпоинт для Ивана
         ivan.position = currentIvanCheckPoint.position;
@@ -428,7 +428,7 @@ public class ConditionalMovementController : BaseMovementController
         endButton.SetActive(false);
         ifButton.SetActive(false);
 
-        isConditionBeingEdited = true;
+        isConditionActive = true;
 
         // Добавляем текст "Если " в поле алгоритма
         AddStep("Если ");
@@ -442,7 +442,7 @@ public class ConditionalMovementController : BaseMovementController
 
         // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
-        OnNextButtonClick();
+        OnNextClick();
     }
 
     // Метод для обработки нажатия на кнопку "Паулина"
@@ -453,14 +453,14 @@ public class ConditionalMovementController : BaseMovementController
 
         // Скрываем кнопки для выбора имени
         nameButtons.SetActive(false);
-        OnNextButtonClick();
+        OnNextClick();
     }
 
-    public void OnNextButtonClick()
+    public void OnNextClick()
     {
         // Показываем кнопки для движения (они же для описания алгоритма)
         movementButtons.SetActive(true);
-        isConditionBeingEdited = true;
+        isConditionActive = true;
     }
 
     // Метод для обработки нажатия на кнопку "Закончить"
@@ -472,7 +472,7 @@ public class ConditionalMovementController : BaseMovementController
         endButton.SetActive(false);
         ifButton.SetActive(true);
 
-        isConditionBeingEdited = false;
+        isConditionActive = false;
 
         // Добавляем закрывающую скобку и знак ";" в поле алгоритма
         AddStep(")");
@@ -519,8 +519,13 @@ public class ConditionalMovementController : BaseMovementController
                 endButton.SetActive(false);
                 ifButton.SetActive(true);
             }
+            else if (isConditionActive)
+            {
+                // Если удалили шаг внутри условия
+                endButton.gameObject.SetActive(false);
+            }
 
-                UpdateAlgorithmText();
+            UpdateAlgorithmText();
             StartCoroutine(ScrollIfOverflow());
         }
     }
@@ -538,7 +543,7 @@ public class ConditionalMovementController : BaseMovementController
         nameButtons.SetActive(false);
         endButton.SetActive(true);
         ifButton.SetActive(false);
-        isConditionBeingEdited = true;
+        isConditionActive = true;
     }
 
 }
