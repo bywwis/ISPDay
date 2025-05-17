@@ -25,27 +25,18 @@ public class IvanMoveLevel3 : MonoBehaviour
 
     [SerializeField] private List<Transform> checkPoints; // Список всех чекпоинтов
 
-    [SerializeField]
-    private List<GameObject> itemsToCollect; // Список предметов для сбора
+    [SerializeField] private List<GameObject> itemsToCollect; // Список предметов для сбора
     private int collectedItemsCount = 0; // Счетчик собранных предметов
     private List<Vector3> itemOriginalPositions = new List<Vector3>();
     private List<bool> itemActiveStates = new List<bool>();
 
     public Canvas canvas;
-
     private Transform targetCheckPoint; // Чекпоинт (2, 7)
 
-    [SerializeField]
-    private Button CycleButton; // Кнопка для начала цикла
-
-    [SerializeField]
-    private GameObject NumberButtons; // Группа кнопок для выбора количества итераций
-
-    [SerializeField]
-    private GameObject ButtonsAlgoritm; // Группа кнопок для описания алгоритма
-
-    [SerializeField]
-    private Button EndButton; // Кнопка для завершения цикла
+    [SerializeField] private Button CycleButton; // Кнопка для начала цикла
+    [SerializeField] private GameObject NumberButtons; // Группа кнопок для выбора количества итераций
+    [SerializeField] private GameObject ButtonsAlgoritm; // Группа кнопок для описания алгоритма
+    [SerializeField] private Button EndButton; // Кнопка для завершения цикла
 
     private List<int> cycleIterations = new List<int>(); // Список для хранения количества итераций для каждого цикла
     private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
@@ -92,9 +83,9 @@ public class IvanMoveLevel3 : MonoBehaviour
             Debug.LogWarning("Не найдены объекты с тегами 'Item' или 'fish'.");
         }
 
-        if (checkPoints.Count > 25)
+        if (checkPoints.Count > 31)
         {
-            targetCheckPoint = checkPoints[25];
+            targetCheckPoint = checkPoints[31];
         }
         else
         {

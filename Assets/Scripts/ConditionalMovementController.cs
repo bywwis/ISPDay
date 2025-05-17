@@ -14,8 +14,8 @@ public class ConditionalMovementController : BaseMovementController
 
     private Transform ivan; // Ссылка на Ивана
     private Transform paulina; // Ссылка на Паулину
-    private Transform currentIvanCheckPoint; // Текущий чекпоинт Ивана
-    private Transform currentPaulinaCheckPoint; // Текущий чекпоинт Паулины
+    protected Transform currentIvanCheckPoint; // Текущий чекпоинт Ивана
+    protected Transform currentPaulinaCheckPoint; // Текущий чекпоинт Паулины
 
     private bool isInsideCondition = false; // Флаг для проверки, находится ли текущий шаг внутри условия
     private string conditionCharacter = ""; // Персонаж, для которого выполняется условие
