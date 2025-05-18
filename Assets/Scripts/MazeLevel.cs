@@ -1159,4 +1159,57 @@ public class MazeLevel : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void RemoveLastStep()
+    {
+        if (!isPlaying && algorithmSteps.Count > 0)
+        {
+            string lastStep = algorithmSteps[^1];
+            bool wasCycleClosed = lastStep == ")";
+
+            // Удаляем последний шаг
+            algorithmSteps.RemoveAt(algorithmSteps.Count - 1);
+
+            if (wasCycleClosed)
+            {
+                // Если удалили закрывающую скобку цикла
+                isCycleComplete = false;
+                isCycleActive = true;
+                CycleButton.gameObject.SetActive(false);
+                ButtonsAlgoritm.SetActive(true);
+                EndButton.gameObject.SetActive(true);
+            }
+            else if (lastStep.StartsWith("Для"))
+            {
+                // Если удалили начало цикла
+                isCycleActive = false;
+                CycleButton.gameObject.SetActive(true);
+                ButtonsAlgoritm.SetActive(true);
+                NumberButtons.SetActive(false);
+                EndButton.gameObject.SetActive(false);
+            }
+            else if (lastStep.StartsWith("до"))
+            {
+                // Если удалили условие итерации
+                NumberButtons.SetActive(true);
+                ButtonsAlgoritm.SetActive(false);
+                EndButton.gameObject.SetActive(false);
+                CycleButton.gameObject.SetActive(false);
+
+                // Удаляем соответствующую итерацию
+                if (cycleIterations.Count > 0)
+                {
+                    cycleIterations.RemoveAt(cycleIterations.Count - 1);
+                }
+            }
+            else if (isCycleActive)
+            {
+                // Если удалили шаг внутри цикла
+                EndButton.gameObject.SetActive(false);
+            }
+
+            UpdateAlgorithmText();
+            StartCoroutine(ScrollIfOverflow());
+        }
+    }
 }
