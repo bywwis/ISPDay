@@ -245,7 +245,7 @@ TextureImporter:
         width: 323
         height: 105
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -267,7 +267,7 @@ TextureImporter:
         width: 483
         height: 103
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -276,6 +276,28 @@ TextureImporter:
       bones: []
       spriteID: c6283d1b0d20bec4eb9dcb6e7af65e6b
       internalID: 2103010493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level4_Desktops_3
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 254
+        width: 313
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bed25052f604a94b9d86f9f3177bc59
+      internalID: -1642933998
       vertices: []
       indices: 
       edges: []
@@ -300,6 +322,7 @@ TextureImporter:
       Level4_Desktop: 6414623661423569359
       Level4_Desktops_1: 1919445387
       Level4_Desktops_2: 2103010493
+      Level4_Desktops_3: -1642933998
       Level4_NPC1: 7661124611111894958
       Level4_NPC2: -3174873166972825410
       Level4_NPC3: 6063110403849181915

@@ -17,23 +17,20 @@ public class CycleMovementController : BaseMovementController
 
     protected Transform targetCheckPoint; // Чекпоинт
     protected bool hasWrongItem = false;
-    protected int requiredItemsCount = 3;
 
     private List<int> cycleIterations = new List<int>(); // Список для хранения количества итераций для каждого цикла
     private bool isCycleActive = false; // Флаг для проверки, активен ли цикл
     private int cycleStartIndex = -1; // Индекс начала цикла
     private int cycleEndIndex = -1;   // Индекс конца цикла
     private bool isCycleComplete = false; // Флаг для проверки завершения цикла
-
-    private const int MaxStepsWithoutCycle = 10; // Максимальное количество строк без цикла
-    private const int MaxStepsWithCycle = 17;   // Максимальное количество строк с циклом
     private bool hasCycle = false;
 
     protected virtual int GetInitialCheckpointIndex() => 0;
     protected virtual int GetTargetCheckpointIndex() => 1;
+    protected virtual int GetRequiredItemsCount() => 3;
     protected virtual string GetWrongItemTag() => "WrongItem";
-    protected virtual int GetMaxStepsWithoutCycle() => MaxStepsWithoutCycle;
-    protected virtual int GetMaxStepsWithCycle() => MaxStepsWithCycle;
+    protected virtual int GetMaxStepsWithoutCycle() => 10;
+    protected virtual int GetMaxStepsWithCycle() => 17;
 
     protected override void Start()
     {
@@ -97,8 +94,8 @@ public class CycleMovementController : BaseMovementController
 
             // Определяем текущее ограничение в зависимости от наличия цикла
             int maxSteps;
-            if (hasCycle) maxSteps = MaxStepsWithCycle + 1;
-            else maxSteps = MaxStepsWithoutCycle;
+            if (hasCycle) maxSteps = GetMaxStepsWithCycle() + 1;
+            else maxSteps = GetMaxStepsWithoutCycle();
 
 
             // Проверяем, что количество строк не превышено
@@ -336,7 +333,7 @@ public class CycleMovementController : BaseMovementController
         bool isAtTarget = targetCheckPoint != null &&
                          Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.1f;
 
-        if (isAtTarget && !hasWrongItem && collectedItemsCount >= requiredItemsCount)
+        if (isAtTarget && !hasWrongItem && collectedItemsCount >= GetRequiredItemsCount())
         {
             ShowCompletionDialog();
         }
@@ -411,6 +408,8 @@ public class CycleMovementController : BaseMovementController
 
     public void OnCycleButtonClicked()
     {
+        isCycleActive = true;
+
         // Показываем кнопки для выбора количества итераций
         numberButtons.SetActive(true);
         buttonsAlgoritm.SetActive(false);
@@ -422,6 +421,8 @@ public class CycleMovementController : BaseMovementController
 
     public void OnEndButtonClicked()
     {
+        isCycleActive = false;
+
         numberButtons.SetActive(false);
         buttonsAlgoritm.SetActive(true);
         endButton.gameObject.SetActive(false);
@@ -468,12 +469,6 @@ public class CycleMovementController : BaseMovementController
                 cycleButton.gameObject.SetActive(false);
                 buttonsAlgoritm.SetActive(true);
                 endButton.gameObject.SetActive(true);
-
-                // Удаляем соответствующую итерацию
-                if (cycleIterations.Count > 0)
-                {
-                    cycleIterations.RemoveAt(cycleIterations.Count - 1);
-                }
             }
             else if (lastStep.StartsWith("Для"))
             {
@@ -491,6 +486,12 @@ public class CycleMovementController : BaseMovementController
                 buttonsAlgoritm.SetActive(false);
                 endButton.gameObject.SetActive(false);
                 cycleButton.gameObject.SetActive(false);
+
+                // Удаляем соответствующую итерацию
+                if (cycleIterations.Count > 0)
+                {
+                    cycleIterations.RemoveAt(cycleIterations.Count - 1);
+                }
             }
             else if (isCycleActive)
             {
