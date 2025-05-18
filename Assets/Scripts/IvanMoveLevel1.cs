@@ -32,41 +32,6 @@ public class IvanMoveLevel1 : BaseMovementController
 
     }
 
-    // Обновление текста алгоритма
-    protected override void UpdateAlgorithmText()
-    {
-        base.UpdateAlgorithmText(); 
-
-        // Проверка конкретно для первого уровня
-        int lineCount = algorithmText.text.Split('\n').Length - 1; // -1 для пустой строки в конце
-        if (lineCount > 19)
-        {
-            ShowErrorDialog($"Превышено максимальное количество строк (19).");
-            algorithmText.text = algorithmText.text.Substring(0, algorithmText.text.Length - 1);
-        }
-    }
-
-    // Форматирование строк с разным отступом для номеров
-    protected override string FormatStepLine(int index)
-    {
-        string numberPadding; // отступ
-
-        if (index < 9)
-        {
-            // Если индекс меньше 9 (шаги 1-9)
-            numberPadding = "   "; // 3 пробела
-        }
-        else
-        {
-            // Если индекс 9 и больше (шаги 10+)
-            numberPadding = "  ";  // 2 пробела
-        }
-        return $"{index + 1}{numberPadding}{algorithmSteps[index]};";
-    }
-
-    // Отключение базовой проверки количества строк
-    protected override void ValidateLineCount() { }
-
     // Основная логика выполнения алгоритма
     protected override IEnumerator ExecuteAlgorithm()
     {
@@ -177,12 +142,7 @@ public class IvanMoveLevel1 : BaseMovementController
     public override void StopAlgorithm()
     {
         base.StopAlgorithm();
-        if (checkPoints.Count > 0)
-        {
-            currentCheckPoint = checkPoints[4]; // Стартовая точка
-            playerTransform.position = currentCheckPoint.position; // Установка позиции игрока
-        }
-
+        InitializeCheckpoints();
         // Восстанавливаем предметы при сбросе алгоритма
         ResetItems();
     }

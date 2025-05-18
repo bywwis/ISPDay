@@ -65,28 +65,27 @@ public class BaseMovementController : MonoBehaviour
         // Построчное заполнение с нумерацией
         for (int i = 0; i < algorithmSteps.Count; i++)
         {
+            string numberPadding; // отступ
+            if (i < 9) numberPadding = "   ";
+            else numberPadding = "  ";
+
             // Виртуальный метод для форматирования строки
-            algorithmText.text += FormatStepLine(i) + "\n";
+            algorithmText.text += $"{i + 1}{numberPadding}{algorithmSteps[i]};" + "\n";
         }
 
         StartCoroutine(ScrollIfOverflow()); // Проверка прокрутки
         ValidateLineCount(); // Проверка количества строк
     }
 
-    // Форматирование строки с номером шага
-    protected virtual string FormatStepLine(int index)
-    {
-        return $"{index + 1}   {algorithmSteps[index]};";
-    }
-
     // Проверка максимального количества шагов
     protected virtual void ValidateLineCount()
     {
         // Базовая проверка (можно переопределить в наследниках)
-        int lineCount = algorithmSteps.Count;
-        if (lineCount > 20)
+        int lineCount = algorithmText.text.Split('\n').Length - 1;
+        if (lineCount > 19)
         {
-            ShowErrorDialog($"Превышено максимальное количество шагов (20).");
+            ShowErrorDialog($"Превышено максимальное количество шагов (19).");
+            algorithmText.text = algorithmText.text.Substring(0, algorithmText.text.Length - 1);
         }
     }
 
