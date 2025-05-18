@@ -974,7 +974,7 @@ TextureImporter:
         width: 200
         height: 111
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -983,6 +983,28 @@ TextureImporter:
       bones: []
       spriteID: 03827357d4130484eb0e53128b947efe
       internalID: -1373522749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buttons_Remove
+      rect:
+        serializedVersion: 2
+        x: 1213
+        y: 462
+        width: 132
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ea5b5e74b647794180cea39293b600a
+      internalID: 705715903
       vertices: []
       indices: 
       edges: []
@@ -1039,6 +1061,7 @@ TextureImporter:
       Button_Up: 7664807735657788756
       "Button_\u0421ondition": -5316896731886317114
       Buttons_GuideCycle: 2062108719
+      Buttons_Remove: 705715903
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
