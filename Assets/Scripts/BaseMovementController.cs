@@ -16,6 +16,7 @@ public class BaseMovementController : MonoBehaviour
     [SerializeField] protected GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
     [SerializeField] protected GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
     [SerializeField] protected GameObject DialogeWindowError; // Диалоговое окно ошибки
+    [SerializeField] private GameObject uiCanvasObject;
 
     protected List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     protected bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
@@ -34,6 +35,8 @@ public class BaseMovementController : MonoBehaviour
     protected ScrollRect scrollRect;
     protected RectTransform scrollRectTransform;
     protected RectTransform textRectTransform;
+
+    private GameObject currentActiveWindow;
 
     protected virtual void Start()
     {
@@ -217,6 +220,24 @@ public class BaseMovementController : MonoBehaviour
     // Показ окна ошибки
     protected virtual void ShowErrorDialog(string message)
     {
+        //if (currentActiveWindow != null)
+        //{
+        //    Destroy(currentActiveWindow);
+        //}
+
+        //// Создаем окно ошибки
+        //currentActiveWindow = Instantiate(DialogeWindowError, uiCanvasObject.transform);
+
+        //// Устанавливаем текст ошибки
+        //if (!string.IsNullOrEmpty(message))
+        //{
+        //    InputField textField = currentActiveWindow.GetComponentInChildren<InputField>();
+        //    if (textField != null)
+        //    {
+        //        textField.text = message;
+        //    }
+        //}
+
         if (DialogeWindowError != null)
         {
             DialogeWindowError.SetActive(true);

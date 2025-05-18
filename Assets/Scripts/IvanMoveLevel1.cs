@@ -128,7 +128,7 @@ public class IvanMoveLevel1 : BaseMovementController
     }
 
     // Обработчики столкновений
-    private void OnTriggerEnter2D(Collider2D collision) => HandleObstacleCollision(collision);
+    private void OnTriggerEnter2D(Collider2D collision) { HandleObstacleCollision(collision); }
 
     private void OnTriggerExit2D(Collider2D collision)
     {

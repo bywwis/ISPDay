@@ -395,7 +395,7 @@ public class CycleMovementController : BaseMovementController
     }
 
     // Обработчики столкновений
-    private void OnTriggerEnter2D(Collider2D collision) => HandleObstacleCollision(collision);
+    private void OnTriggerEnter2D(Collider2D collision) { HandleObstacleCollision(collision); }
 
     // Обработчик события выхода из триггера
     private void OnTriggerExit2D(Collider2D collision)
