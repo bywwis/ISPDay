@@ -63,7 +63,7 @@ public class IvanMoveLevel1 : BaseMovementController
         }
         else
         {
-            DialogeWindowBadEnd.SetActive(true);
+            ShowBadEndDialog();
         }
 
         isPlaying = false;
@@ -145,17 +145,6 @@ public class IvanMoveLevel1 : BaseMovementController
         InitializeCheckpoints();
         // Восстанавливаем предметы при сбросе алгоритма
         ResetItems();
-    }
-
-    // Завершение уровня
-    private void ShowCompletionDialog()
-    {
-        if (DialogeWindowGoodEnd != null)
-        {
-            DialogeWindowGoodEnd.SetActive(true);
-        }
-
-        SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
     }
   
 }

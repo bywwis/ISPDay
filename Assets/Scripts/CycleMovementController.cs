@@ -339,21 +339,8 @@ public class CycleMovementController : BaseMovementController
         }
         else
         {
-            if (DialogeWindowBadEnd != null)
-            {
-                DialogeWindowBadEnd.SetActive(true);
-            }
+            ShowBadEndDialog();
         }
-    }
-
-    protected virtual void ShowCompletionDialog()
-    {
-        if (DialogeWindowGoodEnd != null)
-        {
-            DialogeWindowGoodEnd.SetActive(true);
-            SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
-        }
-
     }
 
     public override void StopAlgorithm()

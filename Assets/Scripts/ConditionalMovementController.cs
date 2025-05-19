@@ -277,7 +277,7 @@ public class ConditionalMovementController : BaseMovementController
                             {
                                 player = paulina;
                             }
-                            yield return StartCoroutine(MovePlayer(player, nextCheckPoint.position));
+                            yield return StartCoroutine(MovePlayer(nextCheckPoint.position, player));
 
                             // Обновляем текущий чекпоинт для выбранного персонажа
                             if (conditionCharacter == "Иван")
@@ -303,8 +303,8 @@ public class ConditionalMovementController : BaseMovementController
                     if (nextIvanCheckPoint != null && nextPaulinaCheckPoint != null)
                     {
                         // Запускаем корутины для перемещения обоих персонажей одновременно
-                        Coroutine ivanCoroutine = StartCoroutine(MovePlayer(ivan, nextIvanCheckPoint.position));
-                        Coroutine paulinaCoroutine = StartCoroutine(MovePlayer(paulina, nextPaulinaCheckPoint.position));
+                        Coroutine ivanCoroutine = StartCoroutine(MovePlayer(nextIvanCheckPoint.position, ivan));
+                        Coroutine paulinaCoroutine = StartCoroutine(MovePlayer(nextPaulinaCheckPoint.position, paulina));
 
                         // Ждем завершения обеих корутин
                         yield return ivanCoroutine;
@@ -330,31 +330,10 @@ public class ConditionalMovementController : BaseMovementController
         }
         else
         {
-            // Показываем диалоговое окно для проигрыша
-            if (DialogeWindowBadEnd != null)
-            {
-                DialogeWindowBadEnd.SetActive(true);
-            }
+            ShowBadEndDialog();
         }
 
         isPlaying = false;
-    }
-
-    // Двигаем персонажа к целевой позиции
-    private IEnumerator MovePlayer(Transform player, Vector3 targetPosition)
-    {
-        while (Vector3.Distance(player.position, targetPosition) > 0.01f)
-        {
-            if (!isPlaying || isPathBlocked || (DialogeWindowBadEnd != null && DialogeWindowBadEnd.activeSelf) || (DialogeWindowGoodEnd != null && DialogeWindowGoodEnd.activeSelf))
-            {
-                yield break;
-            }
-
-            player.position = Vector3.MoveTowards(player.position, targetPosition, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-
-        player.position = targetPosition;
     }
 
     // Находим следующий чекпоинт в заданном направлении
@@ -407,16 +386,6 @@ public class ConditionalMovementController : BaseMovementController
         ivan.position = currentIvanCheckPoint.position;
         currentPaulinaCheckPoint = checkPoints[GetPaulinaInitialCheckpointIndex()]; // Чекпоинт для Паулины
         paulina.position = currentPaulinaCheckPoint.position;
-    }
-
-    // Метод для показа диалогового окна о завершении уровня
-    private void ShowCompletionDialog()
-    {
-        if (DialogeWindowGoodEnd != null)
-        {
-            DialogeWindowGoodEnd.SetActive(true);
-            SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
-        }
     }
 
     // Метод для обработки нажатия на кнопку "Условие"

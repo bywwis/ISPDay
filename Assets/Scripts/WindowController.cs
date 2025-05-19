@@ -24,4 +24,10 @@ public class WindowController : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
+
+    //Закрытие окна
+    public void CloseWindow()
+    {
+        Destroy(gameObject); 
+    }
 }

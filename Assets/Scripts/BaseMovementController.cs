@@ -136,21 +136,26 @@ public class BaseMovementController : MonoBehaviour
     }
 
     //Перемещение игрока к цели
-    protected IEnumerator MovePlayer(Vector3 targetPosition)
+    protected IEnumerator MovePlayer(Vector3 targetPosition, Transform player = null)
     {
-        while (Vector3.Distance(playerTransform.position, targetPosition) > 0.01f)
+        if (player == null)
         {
-            if (!isPlaying || isPathBlocked)
+            player = playerTransform;
+        }
+
+        while (Vector3.Distance(player.position, targetPosition) > 0.01f)
+        {
+            if (!isPlaying || isPathBlocked || (DialogeWindowBadEnd.activeSelf) || (DialogeWindowGoodEnd.activeSelf))
                 yield break;
 
-            playerTransform.position = Vector3.MoveTowards(
-                playerTransform.position,
+            player.position = Vector3.MoveTowards(
+                player.position,
                 targetPosition,
                 moveSpeed * Time.deltaTime
             );
             yield return null;
         }
-        playerTransform.position = targetPosition;
+        player.position = targetPosition;
     }
 
     // Конвертация текстовой команды в вектор
@@ -217,35 +222,6 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
-    // Показ окна ошибки
-    protected virtual void ShowErrorDialog(string message)
-    {
-        //if (currentActiveWindow != null)
-        //{
-        //    Destroy(currentActiveWindow);
-        //}
-
-        //// Создаем окно ошибки
-        //currentActiveWindow = Instantiate(DialogeWindowError, uiCanvasObject.transform);
-
-        //// Устанавливаем текст ошибки
-        //if (!string.IsNullOrEmpty(message))
-        //{
-        //    InputField textField = currentActiveWindow.GetComponentInChildren<InputField>();
-        //    if (textField != null)
-        //    {
-        //        textField.text = message;
-        //    }
-        //}
-
-        if (DialogeWindowError != null)
-        {
-            DialogeWindowError.SetActive(true);
-            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
-            if (errorText != null) errorText.text = message;
-        }
-    }
-
     // Обработка столкновений с препятствиями
     protected virtual void HandleObstacleCollision(Collider2D collision)
     {
@@ -253,7 +229,59 @@ public class BaseMovementController : MonoBehaviour
         {
             isPathBlocked = true;
             StopAlgorithm();
-            if (DialogeWindowBadEnd != null) DialogeWindowBadEnd.SetActive(true);
+            ShowBadEndDialog();
+        }
+    }
+
+    //Создание окна
+    protected void CreateWindow(GameObject window, string message = "")
+    {
+        if (currentActiveWindow != null)
+        {
+            Destroy(currentActiveWindow);
+        }
+
+        // Создаем окно ошибки
+        currentActiveWindow = Instantiate(window, uiCanvasObject.transform);
+
+        // Устанавливаем текст ошибки
+        if (!string.IsNullOrEmpty(message))
+        {
+            InputField textField = currentActiveWindow.GetComponentInChildren<InputField>();
+            if (textField != null)
+            {
+                textField.text = message;
+            }
+        }
+    }
+
+    //Показ окна проигрыша
+    protected void ShowBadEndDialog()
+    {
+        if(DialogeWindowBadEnd != null)
+        {
+            DialogeWindowBadEnd.SetActive(true);
+        }
+    }
+
+    //Показ окна победы
+    protected void ShowCompletionDialog()
+    {
+        if (DialogeWindowGoodEnd != null)
+        {
+            DialogeWindowGoodEnd.SetActive(true);
+            SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
+        }
+    }
+
+    // Показ окна ошибки
+    protected void ShowErrorDialog(string message)
+    {
+        if (DialogeWindowError != null)
+        {
+            DialogeWindowError.SetActive(true);
+            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
+            if (errorText != null) errorText.text = message;
         }
     }
 
@@ -297,4 +325,6 @@ public class BaseMovementController : MonoBehaviour
     public void AddRightStep() { AddStep("Вправо"); }
     public void AddGet() { AddStep("Взять"); }
     public void AddSit() { AddStep("Сесть"); }
+
+
 }
