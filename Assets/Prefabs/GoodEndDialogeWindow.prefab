@@ -198,8 +198,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8779857170535754298}
-        m_TargetAssemblyTypeName: BaseMovementController, Assembly-CSharp
+      - m_Target: {fileID: 3490946218148047374}
+        m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
         m_MethodName: BackToMenu
         m_Mode: 1
         m_Arguments:
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 2110808878470810929}
   - component: {fileID: 6157063972129171048}
   - component: {fileID: 7194503874461322664}
-  - component: {fileID: 8779857170535754298}
+  - component: {fileID: 3490946218148047374}
   m_Layer: 5
   m_Name: GoodEndDialogeWindow
   m_TagString: Untagged
@@ -432,7 +432,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8779857170535754298
+--- !u!114 &3490946218148047374
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -441,17 +441,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4610909421762506104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b0e77add0f6c4f4c9524fa7174d5cee, type: 3}
+  m_Script: {fileID: 11500000, guid: d8876269ebc4ceb4d8076fb88b7c2758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithmText: {fileID: 0}
-  moveSpeed: 100
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  DialogeWindowGoodEnd: {fileID: 0}
-  DialogeWindowBadEnd: {fileID: 0}
-  DialogeWindowError: {fileID: 0}
 --- !u!1 &5454787182115605278
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,4 +708,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7405254372240072661}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3490946218148047374}
+        m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
+        m_MethodName: LoadNextScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

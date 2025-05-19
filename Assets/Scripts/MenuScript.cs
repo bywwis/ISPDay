@@ -22,7 +22,7 @@ public class MenuScript : MonoBehaviour
             string lastCompletedLevel = progress.completedLevels[progress.completedLevels.Count - 1];
             int nextLevelIndex = SceneUtility.GetBuildIndexByScenePath(lastCompletedLevel) + 1;
 
-            if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+            if (nextLevelIndex < SceneManager.sceneCountInBuildSettings - 1)
             {
                 SceneManager.LoadScene(nextLevelIndex);
             }

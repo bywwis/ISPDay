@@ -13,6 +13,7 @@ public class BaseMovementController : MonoBehaviour
     [SerializeField] protected LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
 
     [Header("Windows")]
+    //[SerializeField] protected GameObject DialogeWindowStory;
     [SerializeField] protected GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
     [SerializeField] protected GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
     [SerializeField] protected GameObject DialogeWindowError; // Диалоговое окно ошибки
@@ -145,7 +146,7 @@ public class BaseMovementController : MonoBehaviour
 
         while (Vector3.Distance(player.position, targetPosition) > 0.01f)
         {
-            if (!isPlaying || isPathBlocked || (DialogeWindowBadEnd.activeSelf) || (DialogeWindowGoodEnd.activeSelf))
+            if (!isPlaying || isPathBlocked || (currentActiveWindow != null))
                 yield break;
 
             player.position = Vector3.MoveTowards(
@@ -241,19 +242,33 @@ public class BaseMovementController : MonoBehaviour
             Destroy(currentActiveWindow);
         }
 
-        // Создаем окно ошибки
+        // Создаем окно 
         currentActiveWindow = Instantiate(window, uiCanvasObject.transform);
 
-        // Устанавливаем текст ошибки
+        // Устанавливаем текст 
         if (!string.IsNullOrEmpty(message))
         {
             InputField textField = currentActiveWindow.GetComponentInChildren<InputField>();
             if (textField != null)
             {
                 textField.text = message;
+                textField.lineType = InputField.LineType.MultiLineNewline;
+                textField.textComponent.alignment = TextAnchor.MiddleCenter;
+                textField.textComponent.horizontalOverflow = HorizontalWrapMode.Wrap;
+
+                // Автоматический ресайз текста
+                textField.textComponent.resizeTextForBestFit = true;
+                textField.textComponent.resizeTextMinSize = 42;  // Минимальный размер шрифта
+                textField.textComponent.resizeTextMaxSize = 50; // Максимальный размер шрифта
             }
         }
     }
+
+    //Показ окна c историей и заданием в начале
+    //protected void ShowStoryDialog()
+    //{
+    //    CreateWindow(DialogeWindowStory);
+    //}
 
     //Показ окна проигрыша
     protected void ShowBadEndDialog()
@@ -265,13 +280,10 @@ public class BaseMovementController : MonoBehaviour
     }
 
     //Показ окна победы
-    protected void ShowCompletionDialog()
+    protected void ShowCompletionDialog(string message = "")
     {
-        if (DialogeWindowGoodEnd != null)
-        {
-            DialogeWindowGoodEnd.SetActive(true);
-            SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
-        }
+        CreateWindow(DialogeWindowGoodEnd, message);
+        SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
     }
 
     // Показ окна ошибки

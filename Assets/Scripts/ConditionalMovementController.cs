@@ -21,7 +21,7 @@ public class ConditionalMovementController : BaseMovementController
     private string conditionCharacter = ""; // Персонаж, для которого выполняется условие
     private bool isConditionActive = false;
 
-    [SerializeField] private List<Transform> checkPoints; // Список всех чекпоинтов
+    [SerializeField] protected List<Transform> checkPoints; // Список всех чекпоинтов
 
     protected virtual int GetIvanInitialCheckpointIndex() => 55;
     protected virtual int GetPaulinaInitialCheckpointIndex() => 43;

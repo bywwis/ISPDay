@@ -60,19 +60,6 @@ public class IvanMoveLevel1 : BaseMovementController
         isPlaying = false;
     }
 
-    private void CheckLevelCompletion()
-    {
-        if (allItemsCollected && targetCheckPoint != null
-            && Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.01f)
-        {
-            ShowCompletionDialog();
-        }
-        else
-        {
-            ShowBadEndDialog();
-        }
-    }
-
     // Поиск следующей точки в направлении движения
     private Transform FindNextCheckPoint(Vector3 direction)
     {
@@ -150,5 +137,17 @@ public class IvanMoveLevel1 : BaseMovementController
         // Восстанавливаем предметы при сбросе алгоритма
         ResetItems();
     }
-  
+
+    private void CheckLevelCompletion()
+    {
+        if (allItemsCollected && targetCheckPoint != null
+            && Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.01f)
+        {
+            ShowCompletionDialog($"Благодаря тебе Иван успел собраться! Скорее спешим в лекционную аудиторию!");
+        }
+        else
+        {
+            ShowBadEndDialog();
+        }
+    }
 }

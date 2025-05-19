@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class WindowController : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class WindowController : MonoBehaviour
     public void LoadNextScene()
     {
         int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings - 1)
         {
             SceneManager.LoadScene(nextLevelIndex);
         }
