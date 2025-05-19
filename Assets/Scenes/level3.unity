@@ -3920,6 +3920,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 544295746}
   m_CullTransparentMesh: 1
+--- !u!1 &557403723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 557403724}
+  m_Layer: 0
+  m_Name: UICanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &557403724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557403723}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.2320147, y: -2.3464186, z: 299.06006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &589507118
 GameObject:
   m_ObjectHideFlags: 0
@@ -13923,7 +13954,8 @@ MonoBehaviour:
     m_Bits: 8
   DialogeWindowGoodEnd: {fileID: 363868289}
   DialogeWindowBadEnd: {fileID: 397093824}
-  DialogeWindowError: {fileID: 758271038}
+  DialogeWindowError: {fileID: 6855022790341825528, guid: ea4646e6b997bfa45b087f4c50c01d95, type: 3}
+  uiCanvasObject: {fileID: 557403723}
   cycleButton: {fileID: 2065847365}
   numberButtons: {fileID: 1298658401}
   buttonsAlgoritm: {fileID: 1179418714}
@@ -14597,6 +14629,7 @@ SceneRoots:
   - {fileID: 631435752}
   - {fileID: 268902524}
   - {fileID: 970658696}
+  - {fileID: 557403724}
   - {fileID: 397093825}
   - {fileID: 363868295}
   - {fileID: 233690994}

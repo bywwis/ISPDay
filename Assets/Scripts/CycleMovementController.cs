@@ -177,19 +177,7 @@ public class CycleMovementController : BaseMovementController
             return;
         }
 
-        // Проверяем, что для всех циклов задано количество итераций
-        int cycleCount = algorithmSteps.Count(step => step.StartsWith("Для"));
-        if (cycleCount > 0 && cycleIterations.Count != cycleCount)
-        {
-            ShowErrorDialog("Для всех циклов должно быть задано количество итераций.");
-            return;
-        }
-
-        if (!isPlaying && algorithmSteps.Count > 0)
-        {
-            isPlaying = true;
-            StartCoroutine(ExecuteAlgorithm());
-        }
+        base.PlayAlgorithm();
     }
 
     // Пошагово выполняем алгоритм
@@ -395,20 +383,25 @@ public class CycleMovementController : BaseMovementController
 
     public void OnCycleButtonClicked()
     {
-        isCycleActive = true;
+        if (!isPlaying)
+        {
+            isCycleActive = true;
+            isCycleComplete = false;
 
-        // Показываем кнопки для выбора количества итераций
-        numberButtons.SetActive(true);
-        buttonsAlgoritm.SetActive(false);
-        cycleButton.gameObject.SetActive(false);
-        //EndButton.gameObject.SetActive(false);
+            // Показываем кнопки для выбора количества итераций
+            numberButtons.SetActive(true);
+            buttonsAlgoritm.SetActive(false);
+            cycleButton.gameObject.SetActive(false);
+            //EndButton.gameObject.SetActive(false);
 
-        AddStep("Для Ивана от 1");
+            AddStep("Для Ивана от 1");
+        }
     }
 
     public void OnEndButtonClicked()
     {
         isCycleActive = false;
+        isCycleComplete = true; // Цикл завершен
 
         numberButtons.SetActive(false);
         buttonsAlgoritm.SetActive(true);
@@ -416,7 +409,6 @@ public class CycleMovementController : BaseMovementController
         cycleButton.gameObject.SetActive(true);
 
         AddStep(")");
-        isCycleComplete = true; // Цикл завершен
     }
 
     public void SetIterations(int iterations)

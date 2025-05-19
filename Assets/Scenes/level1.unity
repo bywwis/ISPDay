@@ -11538,7 +11538,7 @@ MonoBehaviour:
     m_Bits: 8
   DialogeWindowGoodEnd: {fileID: 363868289}
   DialogeWindowBadEnd: {fileID: 397093824}
-  DialogeWindowError: {fileID: 1378417090}
+  DialogeWindowError: {fileID: 6855022790341825528, guid: ea4646e6b997bfa45b087f4c50c01d95, type: 3}
   uiCanvasObject: {fileID: 2112497320}
   checkPoints:
   - {fileID: 1214379645}

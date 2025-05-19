@@ -277,12 +277,7 @@ public class BaseMovementController : MonoBehaviour
     // Показ окна ошибки
     protected void ShowErrorDialog(string message)
     {
-        if (DialogeWindowError != null)
-        {
-            DialogeWindowError.SetActive(true);
-            InputField errorText = DialogeWindowError.GetComponentInChildren<InputField>();
-            if (errorText != null) errorText.text = message;
-        }
+        CreateWindow(DialogeWindowError, message);
     }
 
     // Перезагрузка уровня

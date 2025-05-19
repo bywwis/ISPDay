@@ -56,7 +56,13 @@ public class IvanMoveLevel1 : BaseMovementController
         }
 
         // Проверка условий завершения уровня
-        if (allItemsCollected && targetCheckPoint != null 
+        CheckLevelCompletion();
+        isPlaying = false;
+    }
+
+    private void CheckLevelCompletion()
+    {
+        if (allItemsCollected && targetCheckPoint != null
             && Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.01f)
         {
             ShowCompletionDialog();
@@ -65,8 +71,6 @@ public class IvanMoveLevel1 : BaseMovementController
         {
             ShowBadEndDialog();
         }
-
-        isPlaying = false;
     }
 
     // Поиск следующей точки в направлении движения

@@ -175,18 +175,14 @@ public class ConditionalMovementController : BaseMovementController
     // Проигрываем алгоритм
     public override void PlayAlgorithm()
     {
-        base.PlayAlgorithm();
-
         // Проверяем, есть ли незавершенное условие в алгоритме
         if (HasUnfinishedCondition())
         {
-            // Показываем окно ошибки
-            if (DialogeWindowError != null)
-            {
-                DialogeWindowError.SetActive(true);
-            }
+            ShowErrorDialog($"Нельзя запустить алгоритм с незаконченным условием. Попробуй ещё раз!");
             return;
         }
+
+        base.PlayAlgorithm();
     }
 
     // Проверяет, есть ли незавершенное условие в алгоритме
@@ -318,8 +314,13 @@ public class ConditionalMovementController : BaseMovementController
             }
         }
 
-        // Проверка чекпоинтов после завершения всего алгоритма
-        if (currentIvanCheckPoint == checkPoints[GetIvanTargetCheckpointIndex()] &&
+        CheckLevelCompletion();
+        isPlaying = false;
+    }
+
+    protected virtual void CheckLevelCompletion()
+    {
+        if(currentIvanCheckPoint == checkPoints[GetIvanTargetCheckpointIndex()] &&
             currentPaulinaCheckPoint == checkPoints[GetPaulinaTargetCheckpointIndex()])
         {
             // Показываем диалоговое окно для успешного прохождения уровня
@@ -332,8 +333,6 @@ public class ConditionalMovementController : BaseMovementController
         {
             ShowBadEndDialog();
         }
-
-        isPlaying = false;
     }
 
     // Находим следующий чекпоинт в заданном направлении
@@ -391,16 +390,19 @@ public class ConditionalMovementController : BaseMovementController
     // Метод для обработки нажатия на кнопку "Условие"
     public void OnConditionButtonClick()
     {
-        // Показываем кнопки для выбора имени и кнопку "Далее"
-        movementButtons.SetActive(false);
-        nameButtons.SetActive(true);
-        endButton.SetActive(false);
-        ifButton.SetActive(false);
+        if (!isPlaying)
+        {
+            // Показываем кнопки для выбора имени и кнопку "Далее"
+            movementButtons.SetActive(false);
+            nameButtons.SetActive(true);
+            endButton.SetActive(false);
+            ifButton.SetActive(false);
 
-        isConditionActive = true;
+            isConditionActive = true;
 
-        // Добавляем текст "Если " в поле алгоритма
-        AddStep("Если ");
+            // Добавляем текст "Если " в поле алгоритма
+            AddStep("Если ");
+        }
     }
 
     // Метод для обработки нажатия на кнопку "Иван"

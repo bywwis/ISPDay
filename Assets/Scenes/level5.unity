@@ -4572,7 +4572,8 @@ MonoBehaviour:
     m_Bits: 0
   DialogeWindowGoodEnd: {fileID: 363868289}
   DialogeWindowBadEnd: {fileID: 397093824}
-  DialogeWindowError: {fileID: 488399885}
+  DialogeWindowError: {fileID: 6855022790341825528, guid: ea4646e6b997bfa45b087f4c50c01d95, type: 3}
+  uiCanvasObject: {fileID: 1633181949}
   ifButton: {fileID: 222377391}
   movementButtons: {fileID: 136200568}
   nameButtons: {fileID: 1298658401}
@@ -9298,6 +9299,7 @@ MonoBehaviour:
   DialogeWindowGoodEnd: {fileID: 363868289}
   DialogeWindowBadEnd: {fileID: 397093824}
   DialogeWindowError: {fileID: 488399885}
+  uiCanvasObject: {fileID: 0}
   ifButton: {fileID: 222377391}
   movementButtons: {fileID: 136200568}
   nameButtons: {fileID: 1298658401}
@@ -14650,6 +14652,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619381452}
   m_CullTransparentMesh: 1
+--- !u!1 &1633181949
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1633181950}
+  m_Layer: 0
+  m_Name: UICanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1633181950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633181949}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.2320147, y: -2.3464186, z: 299.06006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1633182708
 GameObject:
   m_ObjectHideFlags: 0
@@ -19095,6 +19128,7 @@ SceneRoots:
   - {fileID: 631435752}
   - {fileID: 268902524}
   - {fileID: 970658696}
+  - {fileID: 1633181950}
   - {fileID: 397093825}
   - {fileID: 1645461554}
   - {fileID: 1805301924}
