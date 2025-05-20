@@ -14,9 +14,11 @@ public class IvanMoveLevel1 : BaseMovementController
     protected override void Start()
     {
         storyMessages = new string[] {
-            "Добро пожаловать в мир Ивана, обычного студента, который учится на специальности «Информационные системы и программирование». Его жизнь полна ежедневных вызовов, от утренней спешки до работы над сложными проектами.",
+            "Добро пожаловать в мир Ивана, обычного студента, который учится на специальности «Информационные системы и программирование»." +
+            " Его жизнь полна ежедневных вызовов, от утренней спешки до работы над сложными проектами.",
             "В течение дня тебя ждет множество ситуаций, в которых твое участие будет бесценным. Приготовься к насыщенному «Дню из жизни студента»!",
-            "Сегодняшний день начинается, как и многие другие, – с пропущенного будильника. Комната превратилась в хаотичный лабиринт из разбросанных вещей. Нужно быстро найти необходимые вещи и скорее спешить на лекцию!",
+            "Сегодняшний день начинается, как и многие другие, – с пропущенного будильника. Комната превратилась в хаотичный лабиринт из разбросанных " +
+            "вещей. Нужно быстро собрать вещи и скорее спешить на лекцию!",
             "Для управления Иваном необходимо использовать команды и перемещаться по комнате с помощью составленного алгоритма из набора команд."
         };
 
@@ -149,26 +151,22 @@ public class IvanMoveLevel1 : BaseMovementController
 
     private void CheckLevelCompletion()
     {
-        if (allItemsCollected && targetCheckPoint != null
-            && Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.01f)
+        if (allItemsCollected && currentCheckPoint == targetCheckPoint)
         {
             ShowCompletionDialog($"Благодаря тебе Иван успел собраться! Скорее спешим в лекционную аудиторию!");
         }
-        else if (collectedItemsCount < 4 && targetCheckPoint != null
-            && Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.01f)
+        else if (collectedItemsCount < 4 && currentCheckPoint == targetCheckPoint)
         {
-            ShowBadEndDialog($"О нет, Иван не собрал всё, что надо. Имей в виду, что ему нужны студенческий билет, конспекты, ноутбук и ключ от комнаты.");
+            ShowBadEndDialog($"О нет, Иван не собрал всё, что надо.");
         }
-        else if (allItemsCollected && targetCheckPoint != null
-            && Vector3.Distance(playerTransform.position, targetCheckPoint.position) > 0.01f)
+        else if (allItemsCollected && currentCheckPoint != targetCheckPoint)
         {
-            ShowBadEndDialog($"О нет, вы забыли вывести Ивана из комнаты.");
+            ShowBadEndDialog($"О нет, ты забыл вывести Ивана из комнаты.");
         }
         else
         {
             ShowBadEndDialog($"О нет, тебе не удалось помочь Ивану быстро собраться. Теперь ему придётся пропустить лекцию, а ведь у " +
-                $"него была такая тяга к новым знаниям. Попробуй ещё раз!  Имей в виду, что ему нужны студенческий билет, конспекты, " +
-                $"ноутбук и ключ от комнаты, и выйти из комнаты.");
+                $"него была такая тяга к новым знаниям. Попробуй ещё раз!");
         }
     }
 }

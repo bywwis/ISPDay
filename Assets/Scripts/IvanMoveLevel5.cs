@@ -16,7 +16,8 @@ public class IvanMoveLevel5 : ConditionalMovementController
     protected override void Start()
     {
         storyMessages = new string[] {
-            "Иван и Паулина встретились после пар, чтобы обсудить план работы над их командным проектом. Паулина начала рассказывать Ивану, что самые гениальные решения ей приходили рядом с суккулентами.",
+            "Иван и Паулина встретились после пар, чтобы обсудить план работы над их командным проектом. Паулина начала рассказывать Ивану, " +
+            "что самые гениальные решения ей приходили рядом с суккулентами.",
             "Помоги им дойти до свободных мест в коворкинге."
         };
 
@@ -38,11 +39,22 @@ public class IvanMoveLevel5 : ConditionalMovementController
         {
             ShowCompletionDialog();
         }
+        else if (currentIvanCheckPoint == checkPoints[GetIvanTargetCheckpointIndex()] &&
+            currentPaulinaCheckPoint != checkPoints[GetPaulinaTargetCheckpointIndex()])
+        {
+            ShowBadEndDialog($"Ты выбрал правильное место для Ивана, но Паулине не нравится место, на котором она сидит. Попробуй ещё раз!");
+        }
+        else if (currentIvanCheckPoint != checkPoints[GetIvanTargetCheckpointIndex()] &&
+          currentPaulinaCheckPoint == checkPoints[GetPaulinaTargetCheckpointIndex()])
+        {
+            ShowBadEndDialog($"Ты выбрал правильное место для Паулины, но Ивану не нравится место, на котором он сидит. Попробуй ещё раз!");
+        }
         else
         {
-            ShowBadEndDialog($"Иван и Паулина там сидеть не могут! Попробуй ещё раз!");
+            ShowBadEndDialog($"Иван и Паулина недовольны своими местами. Попробуй ещё раз!");
         }
     }
 
-    protected override void ShowFinalDialog() { CreateWindow(DialogeWindowFinal,$"Не останавливайся на достигнутом и продолжай развиваться! Впереди еще много интересных дней, и Иван будет рад снова видеть тебя в своей истории!"); }
+    protected override void ShowFinalDialog() { CreateWindow(DialogeWindowFinal,$"Не останавливайся на достигнутом и продолжай развиваться! " +
+        $"Впереди еще много интересных дней, и Иван будет рад снова видеть тебя в своей истории!"); }
 }

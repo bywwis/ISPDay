@@ -27,12 +27,25 @@ public class IvanMoveLevel4 : CycleMovementController
 
     protected override void CheckLevelCompletion()
     {
-        bool isAtTarget = targetCheckPoint != null &&
-                         Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.1f;
-
-        if (isAtTarget && !hasWrongItem && collectedItemsCount >= GetRequiredItemsCount())
+        if (currentCheckPoint == targetCheckPoint && !hasWrongItem && collectedItemsCount >= GetRequiredItemsCount())
         {
             ShowCompletionDialog($"Спустя 1,5 часа работы Иван сделал и защитил лабораторную работу! После успешной сдачи лабы Иван решил работать над проектом. Это можно сделать в коворкинге.");
+        }
+        else if (currentCheckPoint == targetCheckPoint && collectedItemsCount == 0)
+        {
+            ShowBadEndDialog($"Ой, а как же стул?");
+        }
+        else if (currentCheckPoint != targetCheckPoint && !hasWrongItem && collectedItemsCount == GetRequiredItemsCount())
+        {
+            ShowBadEndDialog($"Иван не может сидеть посередине кабинета. Очень хотелось, но нельзя. Попробуй ещё раз!");
+        }
+        else if (currentCheckPoint == targetCheckPoint && hasWrongItem && collectedItemsCount == GetRequiredItemsCount())
+        {
+            ShowBadEndDialog($"О нет, оказалось этот стул нельзя было брать!");
+        }
+        else if (collectedItemsCount > GetRequiredItemsCount())
+        {
+            ShowBadEndDialog($"Для чего так много стульев?");
         }
         else
         {

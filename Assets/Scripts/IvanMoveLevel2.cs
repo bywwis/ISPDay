@@ -14,7 +14,8 @@ public class IvanMoveLevel2 : ConditionalMovementController
     protected override void Start()
     {
         storyMessages = new string[] {
-            "По пути в аудиторию Иван встретил свою подругу Паулину. Они разговорились, и Иван узнал, что Паулина любит ничего не делать и смотреть в оĸно на леĸции, а Иван, наоборот, любит слушать преподавателя и писать ĸонспеĸт.",
+            "По пути в аудиторию Иван встретил свою подругу Паулину. Они разговорились, и Иван узнал, что Паулина любит ничего не делать и " +
+            "смотреть в оĸно на леĸции, а Иван, наоборот, любит слушать преподавателя и писать ĸонспеĸт.",
             "Нужно помочь Ивану и Паулине сесть на верные места."
         };
 
@@ -30,9 +31,19 @@ public class IvanMoveLevel2 : ConditionalMovementController
         {
             ShowCompletionDialog($"Паулина и Иван верно сидят на своих местах. Теперь нужно 1,5 часа слушать лекцию.");
         }
+        else if (currentIvanCheckPoint == checkPoints[GetIvanTargetCheckpointIndex()] &&
+           currentPaulinaCheckPoint != checkPoints[GetPaulinaTargetCheckpointIndex()])
+        {
+            ShowBadEndDialog($"Ты выбрал правильное место для Ивана, но Паулине не нравится место, на котором она сидит. Попробуй ещё раз!");
+        }
+        else if (currentIvanCheckPoint != checkPoints[GetIvanTargetCheckpointIndex()] &&
+          currentPaulinaCheckPoint == checkPoints[GetPaulinaTargetCheckpointIndex()])
+        {
+            ShowBadEndDialog($"Ты выбрал правильное место для Паулины, но Ивану не нравится место, на котором он сидит. Попробуй ещё раз!");
+        }
         else
         {
-            ShowBadEndDialog($"Иван и Паулина недовольны своими местами. Попробуй ещё раз! Имей в виду, что Иван хочет сидеть ближе к преподавателю, а Паулина любит смотреть в окно.");
+            ShowBadEndDialog($"Иван и Паулина недовольны своими местами. Попробуй ещё раз!");
         }
     }
 }
