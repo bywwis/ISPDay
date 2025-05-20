@@ -117,7 +117,7 @@ public class IvanMoveLevel1 : BaseMovementController
                     item.SetActive(false);
                     collectedItemsCount++;
 
-                    if (collectedItemsCount >= 4)
+                    if (collectedItemsCount == 4)
                     {
                         allItemsCollected = true;
                     }
@@ -154,9 +154,21 @@ public class IvanMoveLevel1 : BaseMovementController
         {
             ShowCompletionDialog($"Благодаря тебе Иван успел собраться! Скорее спешим в лекционную аудиторию!");
         }
+        else if (collectedItemsCount < 4 && targetCheckPoint != null
+            && Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.01f)
+        {
+            ShowBadEndDialog($"О нет, Иван не собрал всё, что надо. Имей в виду, что ему нужны студенческий билет, конспекты, ноутбук и ключ от комнаты.");
+        }
+        else if (allItemsCollected && targetCheckPoint != null
+            && Vector3.Distance(playerTransform.position, targetCheckPoint.position) > 0.01f)
+        {
+            ShowBadEndDialog($"О нет, вы забыли вывести Ивана из комнаты.");
+        }
         else
         {
-            ShowBadEndDialog($"О нет, тебе не удалось помочь Ивану быстро собраться. Теперь ему придётся пропустить лекцию, а ведь у него была такая тяга к новым знаниям. Попробуй ещё раз!  Имей в виду, что ему нужны студенческий билет, конспекты и ноутбук.");
+            ShowBadEndDialog($"О нет, тебе не удалось помочь Ивану быстро собраться. Теперь ему придётся пропустить лекцию, а ведь у " +
+                $"него была такая тяга к новым знаниям. Попробуй ещё раз!  Имей в виду, что ему нужны студенческий билет, конспекты, " +
+                $"ноутбук и ключ от комнаты, и выйти из комнаты.");
         }
     }
 }
