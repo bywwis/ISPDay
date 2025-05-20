@@ -120,8 +120,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 342866328848550261}
-        m_TargetAssemblyTypeName: BaseMovementController, Assembly-CSharp
+      - m_Target: {fileID: 1492144785462683903}
+        m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 7567964228653335118}
   - component: {fileID: 6304053799192501130}
   - component: {fileID: 7994257475684158963}
-  - component: {fileID: 342866328848550261}
+  - component: {fileID: 1492144785462683903}
   m_Layer: 5
   m_Name: BadEndDialogeWindow
   m_TagString: Untagged
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &7567964228653335118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +275,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &342866328848550261
+--- !u!114 &1492144785462683903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -284,17 +284,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2622008256377940153}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b0e77add0f6c4f4c9524fa7174d5cee, type: 3}
+  m_Script: {fileID: 11500000, guid: d8876269ebc4ceb4d8076fb88b7c2758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithmText: {fileID: 0}
-  moveSpeed: 100
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  DialogeWindowGoodEnd: {fileID: 0}
-  DialogeWindowBadEnd: {fileID: 0}
-  DialogeWindowError: {fileID: 0}
 --- !u!1 &2755576675620081757
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,8 +407,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 342866328848550261}
-        m_TargetAssemblyTypeName: BaseMovementController, Assembly-CSharp
+      - m_Target: {fileID: 1492144785462683903}
+        m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
         m_MethodName: BackToMenu
         m_Mode: 1
         m_Arguments:

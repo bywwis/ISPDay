@@ -1423,7 +1423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &233690994
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10240,8 +10240,9 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
+  DialogeWindowStory: {fileID: 3062934691289743621, guid: ebffe541486f8eb44a86dbee470ae6ee, type: 3}
   DialogeWindowGoodEnd: {fileID: 4610909421762506104, guid: 987d460759769b8438b2858cc2cdd58e, type: 3}
-  DialogeWindowBadEnd: {fileID: 397093824}
+  DialogeWindowBadEnd: {fileID: 2622008256377940153, guid: 64fb80a4587e1b24b9b20ad7b0400e46, type: 3}
   DialogeWindowError: {fileID: 6855022790341825528, guid: ea4646e6b997bfa45b087f4c50c01d95, type: 3}
   uiCanvasObject: {fileID: 2112497320}
   checkPoints:

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3613779863933410759}
   - component: {fileID: 940917613797202398}
   - component: {fileID: 2460662446351531283}
+  - component: {fileID: 2770695043099489719}
   m_Layer: 5
   m_Name: StoryDialogeWindow
   m_TagString: Untagged
@@ -142,6 +143,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2770695043099489719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3062934691289743621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8876269ebc4ceb4d8076fb88b7c2758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4489750333835039665
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,7 +497,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5105164788736893157}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2770695043099489719}
+        m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
+        m_MethodName: OnNextButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7178796446278427397
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,10 +709,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3062934691289743621}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2770695043099489719}
+        m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
+        m_MethodName: CloseWindow
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

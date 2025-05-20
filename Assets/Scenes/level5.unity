@@ -3567,7 +3567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &290329650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4221,6 +4221,7 @@ GameObject:
   - component: {fileID: 391091897}
   - component: {fileID: 391091896}
   - component: {fileID: 391091895}
+  - component: {fileID: 391091901}
   m_Layer: 5
   m_Name: Ivan
   m_TagString: Player
@@ -4332,7 +4333,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -4421,9 +4422,10 @@ MonoBehaviour:
   moveSpeed: 0.8
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
+  DialogeWindowStory: {fileID: 3062934691289743621, guid: ebffe541486f8eb44a86dbee470ae6ee, type: 3}
   DialogeWindowGoodEnd: {fileID: 4610909421762506104, guid: 987d460759769b8438b2858cc2cdd58e, type: 3}
-  DialogeWindowBadEnd: {fileID: 397093824}
+  DialogeWindowBadEnd: {fileID: 2622008256377940153, guid: 64fb80a4587e1b24b9b20ad7b0400e46, type: 3}
   DialogeWindowError: {fileID: 6855022790341825528, guid: ea4646e6b997bfa45b087f4c50c01d95, type: 3}
   uiCanvasObject: {fileID: 1633181949}
   ifButton: {fileID: 222377391}
@@ -4537,6 +4539,7 @@ MonoBehaviour:
   - {fileID: 563301056}
   - {fileID: 377064777}
   - {fileID: 269737948}
+  DialogeWindowFinal: {fileID: 1129959251065037490, guid: 3ae1d6e9d59078642b1e9fce58bb5792, type: 3}
 --- !u!222 &391091900
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4545,6 +4548,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 391091893}
   m_CullTransparentMesh: 1
+--- !u!114 &391091901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391091893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f12d42f6ce1e448a60b002a2912cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainController: {fileID: 391091899}
 --- !u!1 &392877825
 GameObject:
   m_ObjectHideFlags: 0
@@ -8718,11 +8734,11 @@ GameObject:
   m_Component:
   - component: {fileID: 904466216}
   - component: {fileID: 904466222}
-  - component: {fileID: 904466221}
   - component: {fileID: 904466220}
   - component: {fileID: 904466219}
   - component: {fileID: 904466218}
   - component: {fileID: 904466217}
+  - component: {fileID: 904466223}
   m_Layer: 5
   m_Name: Paulina
   m_TagString: Player
@@ -8834,7 +8850,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -8907,138 +8923,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &904466221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904466215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edf5fda7521eb2e419d7ebf101c5f4c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  algorithmText: {fileID: 1787148077}
-  moveSpeed: 0.8
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  DialogeWindowGoodEnd: {fileID: 363868289}
-  DialogeWindowBadEnd: {fileID: 397093824}
-  DialogeWindowError: {fileID: 0}
-  uiCanvasObject: {fileID: 0}
-  ifButton: {fileID: 222377391}
-  movementButtons: {fileID: 136200568}
-  nameButtons: {fileID: 1298658401}
-  endButton: {fileID: 697716762}
-  checkPoints:
-  - {fileID: 797877880}
-  - {fileID: 1015475980}
-  - {fileID: 1679997167}
-  - {fileID: 1857925202}
-  - {fileID: 587314548}
-  - {fileID: 1464063809}
-  - {fileID: 371997749}
-  - {fileID: 531099253}
-  - {fileID: 1487048910}
-  - {fileID: 46477743}
-  - {fileID: 1313853479}
-  - {fileID: 85254446}
-  - {fileID: 2078313092}
-  - {fileID: 929353314}
-  - {fileID: 587478360}
-  - {fileID: 1334806062}
-  - {fileID: 612256418}
-  - {fileID: 214273866}
-  - {fileID: 1203412832}
-  - {fileID: 1697793059}
-  - {fileID: 1901536334}
-  - {fileID: 460825606}
-  - {fileID: 1084367308}
-  - {fileID: 1816135013}
-  - {fileID: 1985209839}
-  - {fileID: 1467931098}
-  - {fileID: 1046434194}
-  - {fileID: 820522068}
-  - {fileID: 224334541}
-  - {fileID: 286894985}
-  - {fileID: 853382120}
-  - {fileID: 1326618641}
-  - {fileID: 1513184289}
-  - {fileID: 134097664}
-  - {fileID: 1300641343}
-  - {fileID: 1559063731}
-  - {fileID: 1328074752}
-  - {fileID: 502965530}
-  - {fileID: 537798529}
-  - {fileID: 1651110385}
-  - {fileID: 1880118650}
-  - {fileID: 1658873600}
-  - {fileID: 40039748}
-  - {fileID: 9604195}
-  - {fileID: 647644451}
-  - {fileID: 1140019506}
-  - {fileID: 804422169}
-  - {fileID: 685147010}
-  - {fileID: 1044654182}
-  - {fileID: 807067988}
-  - {fileID: 1649126797}
-  - {fileID: 744899438}
-  - {fileID: 1353546391}
-  - {fileID: 1328716213}
-  - {fileID: 1747428528}
-  - {fileID: 1481114664}
-  - {fileID: 335664973}
-  - {fileID: 972074036}
-  - {fileID: 1970797340}
-  - {fileID: 596306620}
-  - {fileID: 785227930}
-  - {fileID: 1146231924}
-  - {fileID: 628617171}
-  - {fileID: 1669401247}
-  - {fileID: 2135459013}
-  - {fileID: 2125375185}
-  - {fileID: 126800139}
-  - {fileID: 546416081}
-  - {fileID: 789601681}
-  - {fileID: 296502769}
-  - {fileID: 1257312204}
-  - {fileID: 322424079}
-  - {fileID: 106682910}
-  - {fileID: 159505731}
-  - {fileID: 1144387664}
-  - {fileID: 619150538}
-  - {fileID: 158153468}
-  - {fileID: 1447848617}
-  - {fileID: 74667250}
-  - {fileID: 450432792}
-  - {fileID: 996488578}
-  - {fileID: 277600375}
-  - {fileID: 685725785}
-  - {fileID: 1085402052}
-  - {fileID: 865054615}
-  - {fileID: 68413042}
-  - {fileID: 695359324}
-  - {fileID: 1770981140}
-  - {fileID: 1930894822}
-  - {fileID: 715601030}
-  - {fileID: 425374223}
-  - {fileID: 1874916256}
-  - {fileID: 962174677}
-  - {fileID: 1109250139}
-  - {fileID: 8580934}
-  - {fileID: 1391367632}
-  - {fileID: 1485402798}
-  - {fileID: 1003771269}
-  - {fileID: 1654264280}
-  - {fileID: 1059815011}
-  - {fileID: 1052586491}
-  - {fileID: 1432275519}
-  - {fileID: 730348625}
-  - {fileID: 563301056}
-  - {fileID: 377064777}
-  - {fileID: 269737948}
 --- !u!222 &904466222
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9047,6 +8931,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 904466215}
   m_CullTransparentMesh: 1
+--- !u!114 &904466223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904466215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f12d42f6ce1e448a60b002a2912cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainController: {fileID: 391091899}
 --- !u!1 &929353313
 GameObject:
   m_ObjectHideFlags: 0
@@ -16762,7 +16659,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

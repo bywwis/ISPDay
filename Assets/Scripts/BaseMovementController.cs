@@ -13,7 +13,7 @@ public class BaseMovementController : MonoBehaviour
     [SerializeField] protected LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
 
     [Header("Windows")]
-    //[SerializeField] protected GameObject DialogeWindowStory;
+    [SerializeField] protected GameObject DialogeWindowStory;
     [SerializeField] protected GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
     [SerializeField] protected GameObject DialogeWindowBadEnd; // Диалоговое окно для проигрыша
     [SerializeField] protected GameObject DialogeWindowError; // Диалоговое окно ошибки
@@ -38,6 +38,12 @@ public class BaseMovementController : MonoBehaviour
     protected RectTransform textRectTransform;
 
     private GameObject currentActiveWindow;
+    protected string currentWindowName;
+    protected string[] storyMessages = new string[0]; // Массив сообщений для окна истории
+    protected string[] goodEndMessages = new string[0]; // Массив сообщений для окна победы на 5 уровне
+    protected int currentMessageIndex = 0; // Текущий индекс сообщения
+
+    public LayerMask ObstacleLayer => obstacleLayer;
 
     protected virtual void Start()
     {
@@ -230,11 +236,11 @@ public class BaseMovementController : MonoBehaviour
         {
             isPathBlocked = true;
             StopAlgorithm();
-            ShowBadEndDialog();
+            ShowBadEndDialog($"Иван столкнулся с препятствием.");
         }
     }
 
-    //Создание окна
+    // Модифицированный метод создания окон
     protected void CreateWindow(GameObject window, string message = "")
     {
         if (currentActiveWindow != null)
@@ -242,10 +248,12 @@ public class BaseMovementController : MonoBehaviour
             Destroy(currentActiveWindow);
         }
 
-        // Создаем окно 
         currentActiveWindow = Instantiate(window, uiCanvasObject.transform);
 
-        // Устанавливаем текст 
+        // Настройка компонентов окна
+        var windowController = currentActiveWindow.GetComponent<WindowController>();
+
+        // Установка сообщения если оно передано
         if (!string.IsNullOrEmpty(message))
         {
             InputField textField = currentActiveWindow.GetComponentInChildren<InputField>();
@@ -255,47 +263,117 @@ public class BaseMovementController : MonoBehaviour
                 textField.lineType = InputField.LineType.MultiLineNewline;
                 textField.textComponent.alignment = TextAnchor.MiddleCenter;
                 textField.textComponent.horizontalOverflow = HorizontalWrapMode.Wrap;
-
-                // Автоматический ресайз текста
                 textField.textComponent.resizeTextForBestFit = true;
-                textField.textComponent.resizeTextMinSize = 42;  // Минимальный размер шрифта
-                textField.textComponent.resizeTextMaxSize = 50; // Максимальный размер шрифта
+                textField.textComponent.resizeTextMinSize = 42;
+                textField.textComponent.resizeTextMaxSize = 50;
             }
         }
     }
 
-    //Показ окна c историей и заданием в начале
-    //protected void ShowStoryDialog()
-    //{
-    //    CreateWindow(DialogeWindowStory);
-    //}
-
-    //Показ окна проигрыша
-    protected void ShowBadEndDialog()
+    // Метод для обработки прогресса в истории
+    public virtual void AdvanceStory()
     {
-        if(DialogeWindowBadEnd != null)
+        if (currentWindowName == "story")
         {
-            DialogeWindowBadEnd.SetActive(true);
+            currentMessageIndex++;
+            if (currentMessageIndex < storyMessages.Length)
+            {
+                // Обновляем текст следующим сообщением
+                InputField textField = currentActiveWindow.GetComponentInChildren<InputField>();
+                if (textField != null)
+                {
+                    textField.text = storyMessages[currentMessageIndex];
+                }
+            }
+            else
+            {
+                // Конец истории - закрываем окно
+                CloseCurrentWindow();
+                currentMessageIndex = 0; // Сброс для следующего раза
+            }
+        }
+        else if (currentWindowName == "complete")
+        {
+            // Особый обработчик для финального уровня
+            if (SceneManager.GetActiveScene().buildIndex == 5) // Последний уровень
+            {
+                currentMessageIndex++;
+                if (currentMessageIndex < goodEndMessages.Length)
+                {
+                    // Обновляем текст следующим сообщением
+                    InputField textField = currentActiveWindow.GetComponentInChildren<InputField>();
+                    if (textField != null)
+                    {
+                        textField.text = goodEndMessages[currentMessageIndex];
+                    }
+                }
+                else
+                {
+                    // После последнего сообщения показываем другое окно
+                    CloseCurrentWindow();
+                    currentMessageIndex = 0;
+                    ShowFinalDialog();
+                }
+            }
+            else
+            {
+                // Для обычных уровней
+                LoadNextScene();
+            }
         }
     }
 
-    //Показ окна победы
-    protected void ShowCompletionDialog(string message = "")
+    protected void CloseCurrentWindow()
     {
-        CreateWindow(DialogeWindowGoodEnd, message);
+        if (currentActiveWindow != null)
+        {
+            Destroy(currentActiveWindow);
+            currentActiveWindow = null;
+        }
+    }
+
+    // Модифицированный метод показа окна истории
+    protected virtual void ShowStoryDialog()
+    {
+        if (storyMessages.Length > 0)
+        {
+            currentWindowName = "story";
+            CreateWindow(DialogeWindowStory, storyMessages[0]);
+            currentMessageIndex = 0;
+        }
+    }
+
+    // Модифицированный метод показа окна победы
+    protected virtual void ShowCompletionDialog(string message = "")
+    {
+        currentWindowName = "complete";
         SaveLoadManager.SaveProgress(SceneManager.GetActiveScene().name);
+        if (goodEndMessages.Length > 0 && SceneManager.GetActiveScene().buildIndex == 5)
+        {
+            // Для последнего уровня последовательность сообщений
+            CreateWindow(DialogeWindowGoodEnd, goodEndMessages[0]);
+            currentMessageIndex = 0;
+        }
+        else
+        {
+            // Для остальных уровней одно сообщение
+            CreateWindow(DialogeWindowGoodEnd, message);
+        }
     }
 
     // Показ окна ошибки
-    protected void ShowErrorDialog(string message)
+    protected virtual void ShowFinalDialog() {}
+
+    //Показ окна проигрыша
+    protected virtual void ShowBadEndDialog(string message = "")
     {
-        CreateWindow(DialogeWindowError, message);
+        CreateWindow(DialogeWindowBadEnd, message);
     }
 
-    // Перезагрузка уровня
-    public void RestartLevel()
+    // Показ окна ошибки
+    protected virtual void ShowErrorDialog(string message = "")
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        CreateWindow(DialogeWindowError, message);
     }
 
     // Загрузка следующего уровня
@@ -306,12 +384,6 @@ public class BaseMovementController : MonoBehaviour
         {
             SceneManager.LoadScene(nextLevelIndex);
         }
-    }
-
-    // Возврат в главное меню
-    public void BackToMenu()
-    {
-        SceneManager.LoadScene("Menu");
     }
 
     // Удаление последнего шага
@@ -332,6 +404,4 @@ public class BaseMovementController : MonoBehaviour
     public void AddRightStep() { AddStep("Вправо"); }
     public void AddGet() { AddStep("Взять"); }
     public void AddSit() { AddStep("Сесть"); }
-
-
 }

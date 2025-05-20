@@ -711,7 +711,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3490946218148047374}
         m_TargetAssemblyTypeName: WindowController, Assembly-CSharp
-        m_MethodName: LoadNextScene
+        m_MethodName: OnNextButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -33,23 +33,13 @@ public class ConditionalMovementController : BaseMovementController
         base.Start();
 
         // Находим всех персонажей с тегом "Player"
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        ivan = GameObject.Find("Ivan").transform;
+        currentIvanCheckPoint = checkPoints[GetIvanInitialCheckpointIndex()]; // Чекпоинт для Ивана
+        ivan.position = currentIvanCheckPoint.position;
 
-        foreach (var p in players)
-        {
-            if (p.name == "Ivan") // Если это Иван
-            {
-                ivan = p.transform;
-                currentIvanCheckPoint = checkPoints[GetIvanInitialCheckpointIndex()]; // Чекпоинт для Ивана
-                ivan.position = currentIvanCheckPoint.position;
-            }
-            else if (p.name == "Paulina") // Если это Паулина
-            {
-                paulina = p.transform;
-                currentPaulinaCheckPoint = checkPoints[GetPaulinaInitialCheckpointIndex()]; // Чекпоинт для Паулины
-                paulina.position = currentPaulinaCheckPoint.position;
-            }
-        }
+        paulina = GameObject.Find("Paulina").transform;
+        currentPaulinaCheckPoint = checkPoints[GetPaulinaInitialCheckpointIndex()]; // Чекпоинт для Паулины
+        paulina.position = currentPaulinaCheckPoint.position;
 
         endButton.SetActive(false);
         nameButtons.SetActive(false);
@@ -320,7 +310,7 @@ public class ConditionalMovementController : BaseMovementController
 
     protected virtual void CheckLevelCompletion()
     {
-        if(currentIvanCheckPoint == checkPoints[GetIvanTargetCheckpointIndex()] &&
+        if (currentIvanCheckPoint == checkPoints[GetIvanTargetCheckpointIndex()] &&
             currentPaulinaCheckPoint == checkPoints[GetPaulinaTargetCheckpointIndex()])
         {
             // Показываем диалоговое окно для успешного прохождения уровня
@@ -356,18 +346,6 @@ public class ConditionalMovementController : BaseMovementController
         }
 
         return nearestCheckPoint;
-    }
-
-    // Обработчики столкновений
-    private void OnTriggerEnter2D(Collider2D collision) { HandleObstacleCollision(collision); }
-
-    // Обработчик события выхода из триггера
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
-        {
-            isPathBlocked = false;
-        }
     }
 
     public override void StopAlgorithm()
@@ -489,6 +467,8 @@ public class ConditionalMovementController : BaseMovementController
                 nameButtons.SetActive(false);
                 endButton.SetActive(false);
                 ifButton.SetActive(true);
+
+                isConditionActive = false;
             }
             else if (isConditionActive)
             {
@@ -517,5 +497,17 @@ public class ConditionalMovementController : BaseMovementController
         isConditionActive = true;
     }
 
+    public virtual void HandleCollision(string characterName)
+    {
+        isPathBlocked = true;
+        StopAlgorithm();
+        if(characterName == "Paulina") ShowBadEndDialog($"Паулина столкнулся с препятствием!");
+        else ShowBadEndDialog($"Иван столкнулся с препятствием!");
+    }
+
+    public virtual void ClearCollision()
+    {
+        isPathBlocked = false;
+    }
 }
 

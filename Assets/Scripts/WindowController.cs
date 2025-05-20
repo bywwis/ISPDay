@@ -4,20 +4,26 @@ using UnityEngine.UI;
 
 public class WindowController : MonoBehaviour
 {
+    private BaseMovementController movementController;
+
+    private void Awake()
+    {
+        movementController = FindObjectOfType<BaseMovementController>();
+    }
+
+    // Для кнопки "Далее" в окнах истории/победы
+    public void OnNextButton()
+    {
+        if (movementController != null)
+        {
+            movementController.AdvanceStory();
+        }
+    }
+
     // Перезагрузка уровня
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    // Загрузка следующего уровня
-    public void LoadNextScene()
-    {
-        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings - 1)
-        {
-            SceneManager.LoadScene(nextLevelIndex);
-        }
     }
 
     // Возврат в главное менюe
