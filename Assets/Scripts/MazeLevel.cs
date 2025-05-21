@@ -1042,21 +1042,6 @@ public class MazeLevel : MonoBehaviour
         }
     }
 
-    // Переход на 4 уровень 
-    public void LoadNextScene()
-    {
-        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextLevelIndex);
-        }
-        else
-        {
-            Debug.Log("Все уровни пройдены!");
-        }
-    }
-
-
     // Методы для кнопок
      public void AddUpStep() 
     { 
