@@ -37,7 +37,7 @@ public class IvanMoveLevel4 : CycleMovementController
         }
         else if (currentCheckPoint != targetCheckPoint && !hasWrongItem && collectedItemsCount == GetRequiredItemsCount())
         {
-            ShowBadEndDialog($"Иван не может сидеть посередине кабинета. Очень хотелось, но нельзя. Попробуй ещё раз!");
+            ShowBadEndDialog($"Иван не может сидеть здесь. Очень хотелось, но нельзя. Попробуй ещё раз!");
         }
         else if (currentCheckPoint == targetCheckPoint && hasWrongItem && collectedItemsCount == GetRequiredItemsCount())
         {

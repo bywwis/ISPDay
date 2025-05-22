@@ -125,35 +125,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Level2_NPC_1
+      name: Level2_NPS1_2
       rect:
         serializedVersion: 2
-        x: 21
-        y: 153
-        width: 58
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1eac274478c0acce0800000000000000
-      internalID: -1384280160354514207
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Level2_NPS_1
-      rect:
-        serializedVersion: 2
-        x: 88
-        y: 154
-        width: 59
-        height: 80
+        x: 70
+        y: 401
+        width: 54
+        height: 85
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,13 +147,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level2_NPS_2
+      name: Level2_NPS1_3
       rect:
         serializedVersion: 2
-        x: 152
-        y: 154
-        width: 57
-        height: 80
+        x: 134
+        y: 401
+        width: 54
+        height: 85
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -191,12 +169,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level2_NPS_3
+      name: Level2_NPS2_1
       rect:
         serializedVersion: 2
-        x: 18
-        y: 44
-        width: 57
+        x: 6
+        y: 302
+        width: 56
         height: 86
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -213,12 +191,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Level2_NPS_5
+      name: Level2_NPS2_3
       rect:
         serializedVersion: 2
-        x: 83
-        y: 44
-        width: 62
+        x: 137
+        y: 303
+        width: 56
         height: 86
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -230,6 +208,248 @@ TextureImporter:
       bones: []
       spriteID: 98203e2345b481bf0800000000000000
       internalID: -353449745745509751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS1_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 401
+        width: 54
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2433f3b5786210f4cb19caea5855db8d
+      internalID: -417608124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS2_2
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 303
+        width: 56
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b5fe01fd6f4b144d967db2b8da23e4a
+      internalID: -403502683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS3_1
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 205
+        width: 58
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f294a0044f642d49a61117729482c60
+      internalID: -1122703532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS3_2
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 205
+        width: 58
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d06ebc6e4160d542a79e3cd68704727
+      internalID: 944978199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS3_3
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 205
+        width: 58
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5c56a1ea7da37840bbcc03efbb323ef
+      internalID: 1544467170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS4_1
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 106
+        width: 57
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3256d014cb699946b64199002bec862
+      internalID: 1811263048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS4_2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 106
+        width: 57
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3be2f1f27f13cc140a2d1c046db2236c
+      internalID: 977988758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS4_3
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 106
+        width: 57
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26451651dd5a1534487ece806627ebfc
+      internalID: 705953301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS5_1
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 4
+        width: 58
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9105fd0f132a4d4ea3234c866ebba5f
+      internalID: 488590704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS5_2
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 4
+        width: 58
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e93d327d143f51c459d39651fb7a3eec
+      internalID: 740396937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Level2_NPS5_3
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 4
+        width: 58
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 440a53a71a42b31439f5b2785f359f12
+      internalID: -1601119441
       vertices: []
       indices: 
       edges: []
@@ -248,11 +468,22 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Level2_NPC_1: -1384280160354514207
-      Level2_NPS_1: 1400101121436679669
-      Level2_NPS_2: -6211795568542840224
-      Level2_NPS_3: -7482072957607040621
-      Level2_NPS_5: -353449745745509751
+      2: -403502683
+      Level2_NPS1_1: -417608124
+      Level2_NPS1_2: 1400101121436679669
+      Level2_NPS1_3: -6211795568542840224
+      Level2_NPS2_1: -7482072957607040621
+      Level2_NPS2_2: -403502683
+      Level2_NPS2_3: -353449745745509751
+      Level2_NPS3_1: -1122703532
+      Level2_NPS3_2: 944978199
+      Level2_NPS3_3: 1544467170
+      Level2_NPS4_1: 1811263048
+      Level2_NPS4_2: 977988758
+      Level2_NPS4_3: 705953301
+      Level2_NPS5_1: 488590704
+      Level2_NPS5_2: 740396937
+      Level2_NPS5_3: -1601119441
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
