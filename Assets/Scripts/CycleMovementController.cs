@@ -236,6 +236,7 @@ public class CycleMovementController : BaseMovementController
             }
         }
 
+        Ivan_animator.SetBool("Move", false);
         CheckLevelCompletion();
         isPlaying = false;
     }
@@ -249,6 +250,7 @@ public class CycleMovementController : BaseMovementController
             Transform nextCheckPoint = FindNextCheckPoint(direction);
             if (nextCheckPoint != null)
             {
+                Ivan_animator.SetBool("Move", true);
                 yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
                 currentCheckPoint = nextCheckPoint;
             }

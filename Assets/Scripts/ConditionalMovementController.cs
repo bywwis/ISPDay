@@ -7,6 +7,9 @@ using System.Collections.Generic;
 
 public class ConditionalMovementController : BaseMovementController
 {
+   
+
+
     [SerializeField] private GameObject ifButton; // Кнопка условия
     [SerializeField] private GameObject movementButtons; // Кнопки для движения
     [SerializeField] private GameObject nameButtons; // Кнопки для выбора имени
@@ -22,6 +25,9 @@ public class ConditionalMovementController : BaseMovementController
     private bool isConditionActive = false;
 
     [SerializeField] protected List<Transform> checkPoints; // Список всех чекпоинтов
+
+    [Header("Paulina Animation Settings")]
+    public Animator Paulina_animator;
 
     protected virtual int GetIvanInitialCheckpointIndex() => 55;
     protected virtual int GetPaulinaInitialCheckpointIndex() => 43;
@@ -257,10 +263,14 @@ public class ConditionalMovementController : BaseMovementController
 
                             if (conditionCharacter == "Иван")
                             {
+                                Ivan_animator.SetBool("Move", true);
+                                Paulina_animator.SetBool("Move", false);
                                 player = ivan;
                             }
                             else
                             {
+                                Ivan_animator.SetBool("Move", false);
+                                Paulina_animator.SetBool("Move", true);
                                 player = paulina;
                             }
                             yield return StartCoroutine(MovePlayer(nextCheckPoint.position, player));
@@ -288,6 +298,8 @@ public class ConditionalMovementController : BaseMovementController
 
                     if (nextIvanCheckPoint != null && nextPaulinaCheckPoint != null)
                     {
+                        Ivan_animator.SetBool("Move", true);
+                        Paulina_animator.SetBool("Move", true);
                         // Запускаем корутины для перемещения обоих персонажей одновременно
                         Coroutine ivanCoroutine = StartCoroutine(MovePlayer(nextIvanCheckPoint.position, ivan));
                         Coroutine paulinaCoroutine = StartCoroutine(MovePlayer(nextPaulinaCheckPoint.position, paulina));
@@ -305,6 +317,8 @@ public class ConditionalMovementController : BaseMovementController
         }
 
         CheckLevelCompletion();
+        Ivan_animator.SetBool("Move", false);
+        Paulina_animator.SetBool("Move", false);
         isPlaying = false;
     }
 

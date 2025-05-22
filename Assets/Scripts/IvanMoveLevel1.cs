@@ -56,6 +56,7 @@ public class IvanMoveLevel1 : BaseMovementController
                 Transform nextCheckPoint = FindNextCheckPoint(direction);
                 if (nextCheckPoint != null)
                 {
+                    Ivan_animator.SetBool("Move", true);
                     yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
                     currentCheckPoint = nextCheckPoint;
                 }
@@ -68,6 +69,7 @@ public class IvanMoveLevel1 : BaseMovementController
 
         // Проверка условий завершения уровня
         CheckLevelCompletion();
+        Ivan_animator.SetBool("Move", false);
         isPlaying = false;
     }
 

@@ -4220,8 +4220,8 @@ GameObject:
   - component: {fileID: 391091898}
   - component: {fileID: 391091897}
   - component: {fileID: 391091896}
-  - component: {fileID: 391091895}
   - component: {fileID: 391091901}
+  - component: {fileID: 391091902}
   m_Layer: 5
   m_Name: Ivan
   m_TagString: Player
@@ -4245,64 +4245,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -233.39996, y: 386.5}
-  m_SizeDelta: {x: 77, y: 107}
+  m_AnchoredPosition: {x: -230, y: 401.13}
+  m_SizeDelta: {x: 68.16, y: 108.9}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!212 &391091895
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 391091893}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 10
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!61 &391091896
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4396,7 +4341,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3b0732ae71908a1458686d78b9c0f707, type: 3}
+  m_Sprite: {fileID: 310043824819609196, guid: 3b0732ae71908a1458686d78b9c0f707, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4423,6 +4368,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
+  Ivan_animator: {fileID: 391091902}
   DialogeWindowStory: {fileID: 3062934691289743621, guid: ebffe541486f8eb44a86dbee470ae6ee, type: 3}
   DialogeWindowGoodEnd: {fileID: 4610909421762506104, guid: 987d460759769b8438b2858cc2cdd58e, type: 3}
   DialogeWindowBadEnd: {fileID: 2622008256377940153, guid: 64fb80a4587e1b24b9b20ad7b0400e46, type: 3}
@@ -4539,6 +4485,7 @@ MonoBehaviour:
   - {fileID: 563301056}
   - {fileID: 377064777}
   - {fileID: 269737948}
+  Paulina_animator: {fileID: 904466224}
   DialogeWindowFinal: {fileID: 1129959251065037490, guid: 3ae1d6e9d59078642b1e9fce58bb5792, type: 3}
 --- !u!222 &391091900
 CanvasRenderer:
@@ -4561,6 +4508,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainController: {fileID: 391091899}
+--- !u!95 &391091902
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391091893}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9c074a2c0576e144087eefc783ed7d13, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &392877825
 GameObject:
   m_ObjectHideFlags: 0
@@ -8737,8 +8706,8 @@ GameObject:
   - component: {fileID: 904466220}
   - component: {fileID: 904466219}
   - component: {fileID: 904466218}
-  - component: {fileID: 904466217}
   - component: {fileID: 904466223}
+  - component: {fileID: 904466224}
   m_Layer: 5
   m_Name: Paulina
   m_TagString: Player
@@ -8762,64 +8731,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -782, y: 736}
-  m_SizeDelta: {x: 71.9, y: 99.92}
+  m_AnchoredPosition: {x: -783, y: 732}
+  m_SizeDelta: {x: 70.19, y: 105.29}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!212 &904466217
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904466215}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 10
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!61 &904466218
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8913,7 +8827,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8fc7a5f089bf00b42b210bbcbb11979c, type: 3}
+  m_Sprite: {fileID: -272999928509670403, guid: 8fc7a5f089bf00b42b210bbcbb11979c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8944,6 +8858,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainController: {fileID: 391091899}
+--- !u!95 &904466224
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904466215}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0499b37bb1b63134badd4fd8bba35e61, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &929353313
 GameObject:
   m_ObjectHideFlags: 0

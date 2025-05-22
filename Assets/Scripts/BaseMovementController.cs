@@ -12,6 +12,9 @@ public class BaseMovementController : MonoBehaviour
     [SerializeField] protected float moveSpeed = 100f; // Скорость движения персонажа
     [SerializeField] protected LayerMask obstacleLayer; // Слой для объектов, которые блокируют движение
 
+    [Header("Animation Settings")]
+    public Animator Ivan_animator;
+
     [Header("Windows")]
     [SerializeField] protected GameObject DialogeWindowStory;
     [SerializeField] protected GameObject DialogeWindowGoodEnd; // Диалоговое окно для прохождения
@@ -189,13 +192,6 @@ public class BaseMovementController : MonoBehaviour
         if (scrollRect != null)
             scrollRect.verticalNormalizedPosition = 1f; // Сброс прокрутки
 
-    }
-
-    // Перемещение к чекпоинту точке
-    protected virtual IEnumerator MoveToCheckPoint(Transform checkPoint)
-    {
-        yield return StartCoroutine(MovePlayer(checkPoint.position));
-        currentCheckPoint = checkPoint;
     }
 
     // Инициализация системы сбора предметов
