@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 public class MenuScript : MonoBehaviour
 {
     public Button continueButton;
+    public AudioSource clickSound;
+    public GameObject guidePage;
 
     void Start()
     {
@@ -14,6 +16,47 @@ public class MenuScript : MonoBehaviour
 
     // Метод для кнопки "Продолжить"
     public void ContinueGame()
+    {
+        clickSound.Play();
+        Invoke(nameof(LoadContinue), clickSound.clip.length);
+    }
+
+    // Метод для кнопки "Начать игру"
+    public void StartGame()
+    {
+        clickSound.Play();
+        Invoke(nameof(LoadNew), clickSound.clip.length);
+    }
+
+    // Метод для кнопки "Выход"
+    public void ExitGame()
+    {
+        clickSound.Play();
+        Invoke(nameof(QuitGame), clickSound.clip.length);
+    }
+
+    // Метод для кнопки "Гайд"
+    public void OpenGuideClick()
+    {
+        clickSound.Play();
+        Invoke(nameof(OpenGuide), clickSound.clip.length);
+    }
+
+    // Метод для кнопки "Отзыв"
+    public void RequestClick() 
+    {
+        clickSound.Play();
+        Invoke(nameof(OpenRequest), clickSound.clip.length);
+    }
+
+    // Метод для кнопки "Уровень-Лабиринт"
+    public void OpenMazeClick()
+    {
+        clickSound.Play();
+        Invoke(nameof(OpenMaze), clickSound.clip.length);
+    }
+
+    private void LoadContinue()
     {
         GameProgress progress = SaveLoadManager.LoadProgress();
         if (progress != null)
@@ -33,24 +76,25 @@ public class MenuScript : MonoBehaviour
         }
     }
 
-    // Метод для кнопки "Начать игру"
-    public void StartGame()
+    private void LoadNew()
     {
-        // Сбрасываем прогресс
-        SaveLoadManager.ResetProgress();
-
-        // Загружаем первый уровень
-        SceneManager.LoadScene("level1");
+        SaveLoadManager.ResetProgress(); // Сбрасываем прогресс
+        SceneManager.LoadScene("level1"); // Загружаем первый уровень
     }
 
-    // Метод для кнопки "Выход"
-    public void ExitGame()
+    private void QuitGame()
     {
         Application.Quit();
         Debug.Log("Игра закрыта");
     }
 
-    public void RequestClick() 
+    private void OpenGuide()
+    {
+        gameObject.SetActive(false);
+        guidePage.gameObject.SetActive(true);
+    }
+
+    private void OpenRequest()
     {
         Application.OpenURL("https://forms.yandex.ru/u/681b1ebaeb6146d7ee95ddfd/");
     }
