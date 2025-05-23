@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class WindowController : MonoBehaviour
 {
     private BaseMovementController movementController;
+    public AudioSource clickSound;
 
     private void Awake()
     {
@@ -14,27 +15,51 @@ public class WindowController : MonoBehaviour
     // Для кнопки "Далее" в окнах истории/победы
     public void OnNextButton()
     {
-        if (movementController != null)
-        {
-            movementController.AdvanceStory();
-        }
+        clickSound.Play();
+        Invoke(nameof(ActionNextButton), clickSound.clip.length);
     }
 
     // Перезагрузка уровня
     public void RestartLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        clickSound.Play();
+        Invoke(nameof(LevelScenLoad), clickSound.clip.length);
     }
 
     // Возврат в главное менюe
     public void BackToMenu()
     {
-        SceneManager.LoadScene("Menu");
+        clickSound.Play();
+        Invoke(nameof(CloseLevel), clickSound.clip.length);
     }
 
     //Закрытие окна
     public void CloseWindow()
     {
-        Destroy(gameObject); 
+        clickSound.Play();
+        Invoke(nameof(DestroyWindow), clickSound.clip.length);
+    }
+
+    private void DestroyWindow()
+    {
+        Destroy(gameObject);
+    }
+
+    private void LevelScenLoad()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void CloseLevel()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    private void ActionNextButton()
+    {
+        if (movementController != null)
+        {
+            movementController.AdvanceStory();
+        }
     }
 }

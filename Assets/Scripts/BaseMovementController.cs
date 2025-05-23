@@ -51,6 +51,8 @@ public class BaseMovementController : MonoBehaviour
 
     public LayerMask ObstacleLayer => obstacleLayer;
     public Canvas canvas;
+    public AudioSource clickSound;
+    public AudioSource GetSound;
 
     protected virtual int GetInitialCheckpointIndex() => 0;
     protected virtual int GetTargetCheckpointIndex() => 1;
@@ -156,6 +158,8 @@ public class BaseMovementController : MonoBehaviour
             isPlaying = true;
             StartCoroutine(ExecuteAlgorithm());
         }
+
+        clickSound.Play();
     }
 
     // Базовый метод выполнения алгоритма
@@ -209,6 +213,7 @@ public class BaseMovementController : MonoBehaviour
                 // Проверка расстояния
                 if (Vector2.Distance(playerPos, itemPos) < pickupDistance)
                 {
+                    GetSound.Play();
                     item.SetActive(false);
                     collectedItemsCount++;
 
@@ -294,6 +299,8 @@ public class BaseMovementController : MonoBehaviour
 
         Ivan_animator.SetBool("Move", false);
         InitializeCheckPoints();
+
+        clickSound.Play();
     }
 
     // Инициализация системы сбора предметов
@@ -508,6 +515,7 @@ public class BaseMovementController : MonoBehaviour
     // Удаление последнего шага
     public virtual void RemoveLastStep()
     {
+        clickSound.Play();
         if (!isPlaying && algorithmSteps.Count > 0)
         {
             algorithmSteps.RemoveAt(algorithmSteps.Count - 1);
@@ -517,10 +525,10 @@ public class BaseMovementController : MonoBehaviour
     }
 
     // Методы для кнопок
-    public void AddUpStep() { AddStep("Вверх"); }
-    public void AddDownStep() { AddStep("Вниз"); }
-    public void AddLeftStep() { AddStep("Влево"); }
-    public void AddRightStep() { AddStep("Вправо"); }
-    public void AddGet() { AddStep("Взять"); }
-    public void AddSit() { AddStep("Сесть"); }
+    public void AddUpStep() { clickSound.Play(); AddStep("Вверх"); }
+    public void AddDownStep() { clickSound.Play(); AddStep("Вниз"); }
+    public void AddLeftStep() { clickSound.Play(); AddStep("Влево"); }
+    public void AddRightStep() { clickSound.Play(); AddStep("Вправо"); }
+    public void AddGet() { clickSound.Play(); AddStep("Взять"); }
+    public void AddSit() { clickSound.Play(); AddStep("Сесть"); }
 }

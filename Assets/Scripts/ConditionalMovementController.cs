@@ -337,6 +337,8 @@ public class ConditionalMovementController : BaseMovementController
     // Метод для обработки нажатия на кнопку "Условие"
     public void OnConditionButtonClick()
     {
+        clickSound.Play();
+
         if (!isPlaying)
         {
             // Показываем кнопки для выбора имени и кнопку "Далее"
@@ -355,6 +357,8 @@ public class ConditionalMovementController : BaseMovementController
     // Метод для обработки нажатия на кнопку "Иван"
     public void OnIvanButtonClick()
     {
+        clickSound.Play();
+
         // Добавляем текст "Иван, то ( " в поле алгоритма
         AddStep("Иван, то ( ");
 
@@ -366,6 +370,8 @@ public class ConditionalMovementController : BaseMovementController
     // Метод для обработки нажатия на кнопку "Паулина"
     public void OnPaulinaButtonClick()
     {
+        clickSound.Play();
+
         // Добавляем текст "Паулина, то ( " в поле алгоритма
         AddStep("Паулина, то ( ");
 
@@ -376,6 +382,8 @@ public class ConditionalMovementController : BaseMovementController
 
     public void OnNextClick()
     {
+        clickSound.Play();
+
         // Показываем кнопки для движения (они же для описания алгоритма)
         movementButtons.SetActive(true);
         isConditionActive = true;
@@ -384,6 +392,8 @@ public class ConditionalMovementController : BaseMovementController
     // Метод для обработки нажатия на кнопку "Закончить"
     public void OnEndButtonClick()
     {
+        clickSound.Play();
+
         // Возвращаем всё в изначальное положение
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
@@ -398,6 +408,8 @@ public class ConditionalMovementController : BaseMovementController
 
     public override void RemoveLastStep()
     {
+        clickSound.Play();
+
         if (!isPlaying && algorithmSteps.Count > 0)
         {
             string lastStep = algorithmSteps[^1];

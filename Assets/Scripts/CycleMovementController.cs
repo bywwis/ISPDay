@@ -272,7 +272,7 @@ public class CycleMovementController : BaseMovementController
                     {
                         hasWrongItem = true;
                     }
-
+                    GetSound.Play();
                     item.SetActive(false);
                     collectedItemsCount++;
                     break;
@@ -310,6 +310,8 @@ public class CycleMovementController : BaseMovementController
 
     public void OnCycleButtonClicked()
     {
+        clickSound.Play();
+
         if (!isPlaying)
         {
             isCycleActive = true;
@@ -327,6 +329,8 @@ public class CycleMovementController : BaseMovementController
 
     public void OnEndButtonClicked()
     {
+        clickSound.Play();
+
         isCycleActive = false;
         isCycleComplete = true; // Цикл завершен
 
@@ -347,18 +351,20 @@ public class CycleMovementController : BaseMovementController
         endButton.gameObject.SetActive(false);
     }
 
-    public void SetIterations1() { SetIterations(1); }
-    public void SetIterations2() { SetIterations(2); }
-    public void SetIterations3() { SetIterations(3); }
-    public void SetIterations4() { SetIterations(4); }
-    public void SetIterations5() { SetIterations(5); }
-    public void SetIterations6() { SetIterations(6); }
-    public void SetIterations7() { SetIterations(7); }
-    public void SetIterations8() { SetIterations(8); }
-    public void SetIterations9() { SetIterations(9); }
+    public void SetIterations1() { clickSound.Play(); SetIterations(1); }
+    public void SetIterations2() { clickSound.Play(); SetIterations(2); }
+    public void SetIterations3() { clickSound.Play(); SetIterations(3); }
+    public void SetIterations4() { clickSound.Play(); SetIterations(4); }
+    public void SetIterations5() { clickSound.Play(); SetIterations(5); }
+    public void SetIterations6() { clickSound.Play(); SetIterations(6); }
+    public void SetIterations7() { clickSound.Play(); SetIterations(7); }
+    public void SetIterations8() { clickSound.Play(); SetIterations(8); }
+    public void SetIterations9() { clickSound.Play(); SetIterations(9); }
 
     public override void RemoveLastStep()
     {
+        clickSound.Play();
+
         if (!isPlaying && algorithmSteps.Count > 0)
         {
             string lastStep = algorithmSteps[^1];

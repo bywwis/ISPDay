@@ -40,6 +40,7 @@ public class MazeLevel : MonoBehaviour
 
     [Header("Animation Settings")]
     public Animator Ivan_animator;
+    public AudioSource clickSound;
 
     private List<string> algorithmSteps = new List<string>();
     private bool isPlaying = false;
@@ -645,10 +646,18 @@ public class MazeLevel : MonoBehaviour
         EndButton.gameObject.SetActive(false);
     }
 
+    // Возврат в главное менюe
     public void BackToMenu()
+    {
+        clickSound.Play();
+        Invoke(nameof(CloseLevel), clickSound.clip.length);
+    }
+
+    private void CloseLevel()
     {
         SceneManager.LoadScene("Menu");
     }
+
 
     // Добавляем шаг в алгоритм
     public void AddStep(string step)
@@ -790,6 +799,7 @@ public class MazeLevel : MonoBehaviour
     // Проигрываем алгоритм
     public void PlayAlgorithm()
     {
+        clickSound.Play();
         // Проверяем, есть ли незавершенные циклы
         if (isCycleActive && !isCycleComplete)
         {
@@ -959,14 +969,21 @@ public class MazeLevel : MonoBehaviour
         }
     }
 
-    // Перезапускаем уровень
+    // Перезагрузка уровня
     public void RestartLevel()
+    {
+        clickSound.Play();
+        Invoke(nameof(LevelScenLoad), clickSound.clip.length);
+    }
+
+    private void LevelScenLoad()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void StopAlgorithm()
     {
+        clickSound.Play();
         isPlaying = false;
         StopAllCoroutines();
 
@@ -1025,7 +1042,8 @@ public class MazeLevel : MonoBehaviour
 
     // Методы для кнопок
      public void AddUpStep() 
-    { 
+    {
+        clickSound.Play();
         AddStep("Вверх");
         if (CycleButton.gameObject.activeSelf)
         {
@@ -1037,7 +1055,8 @@ public class MazeLevel : MonoBehaviour
         }  
     }
     public void AddDownStep() 
-    { 
+    {
+        clickSound.Play();
         AddStep("Вниз");
         if (CycleButton.gameObject.activeSelf)
         {
@@ -1049,7 +1068,8 @@ public class MazeLevel : MonoBehaviour
         }  
     }
     public void AddLeftStep()
-    { 
+    {
+        clickSound.Play();
         AddStep("Влево");
         if (CycleButton.gameObject.activeSelf)
         {
@@ -1061,7 +1081,8 @@ public class MazeLevel : MonoBehaviour
         } 
     }
     public void AddRightStep() 
-    { 
+    {
+        clickSound.Play();
         AddStep("Вправо");
         if (CycleButton.gameObject.activeSelf)
         {
@@ -1072,19 +1093,20 @@ public class MazeLevel : MonoBehaviour
             EndButton.gameObject.SetActive(true);
         }  
     }
-    public void AddGet() { AddStep("Взять"); }
-    public void SetIterations1() { SetIterations(1);}
-    public void SetIterations2() { SetIterations(2);}
-    public void SetIterations3() { SetIterations(3);}
-    public void SetIterations4() { SetIterations(4);}
-    public void SetIterations5() { SetIterations(5);}
-    public void SetIterations6() { SetIterations(6);}
-    public void SetIterations7() { SetIterations(7);}
-    public void SetIterations8() { SetIterations(8);}
-    public void SetIterations9() { SetIterations(9);}
+    public void AddGet() { clickSound.Play(); AddStep("Взять"); }
+    public void SetIterations1() { clickSound.Play(); SetIterations(1);}
+    public void SetIterations2() { clickSound.Play(); SetIterations(2);}
+    public void SetIterations3() { clickSound.Play(); SetIterations(3);}
+    public void SetIterations4() { clickSound.Play(); SetIterations(4);}
+    public void SetIterations5() { clickSound.Play(); SetIterations(5);}
+    public void SetIterations6() { clickSound.Play(); SetIterations(6);}
+    public void SetIterations7() { clickSound.Play(); SetIterations(7);}
+    public void SetIterations8() { clickSound.Play(); SetIterations(8);}
+    public void SetIterations9() { clickSound.Play(); SetIterations(9);}
 
     void OnCycleButtonClicked()
     {
+        clickSound.Play();
         // Показываем кнопки для выбора количества итераций
         NumberButtons.SetActive(true);
         ButtonsAlgoritm.SetActive(false);
@@ -1096,6 +1118,7 @@ public class MazeLevel : MonoBehaviour
 
     void OnNextButtonClicked()
     {
+        clickSound.Play();
         // Показываем кнопки для описания алгоритма
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
@@ -1104,6 +1127,7 @@ public class MazeLevel : MonoBehaviour
 
     void OnEndButtonClicked()
     {
+        clickSound.Play();
         NumberButtons.SetActive(false);
         ButtonsAlgoritm.SetActive(true);
         EndButton.gameObject.SetActive(false);
@@ -1128,6 +1152,8 @@ public class MazeLevel : MonoBehaviour
 
     public void RemoveLastStep()
     {
+        clickSound.Play();
+
         if (!isPlaying && algorithmSteps.Count > 0)
         {
             string lastStep = algorithmSteps[^1];
