@@ -46,5 +46,4 @@ public class IvanMoveLevel3 : CycleMovementController
             ShowBadEndDialog($"Кажется, здесь что-то не так, попробуй ещё раз!");
         }
     }
-
 }

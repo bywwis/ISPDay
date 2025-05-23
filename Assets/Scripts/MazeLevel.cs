@@ -997,6 +997,8 @@ public class MazeLevel : MonoBehaviour
             player.position = checkPoints[0].position;
             currentCheckPoint = checkPoints[0];
         }
+
+        Ivan_animator.SetBool("Move", false);
     }
 
     private void ShowCompletionDialog(bool success)

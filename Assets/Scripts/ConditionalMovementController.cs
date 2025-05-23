@@ -7,9 +7,6 @@ using System.Collections.Generic;
 
 public class ConditionalMovementController : BaseMovementController
 {
-   
-
-
     [SerializeField] private GameObject ifButton; // Кнопка условия
     [SerializeField] private GameObject movementButtons; // Кнопки для движения
     [SerializeField] private GameObject nameButtons; // Кнопки для выбора имени
@@ -24,8 +21,6 @@ public class ConditionalMovementController : BaseMovementController
     private string conditionCharacter = ""; // Персонаж, для которого выполняется условие
     private bool isConditionActive = false;
 
-    [SerializeField] protected List<Transform> checkPoints; // Список всех чекпоинтов
-
     [Header("Paulina Animation Settings")]
     public Animator Paulina_animator;
 
@@ -38,6 +33,13 @@ public class ConditionalMovementController : BaseMovementController
     {
         base.Start();
 
+        endButton.SetActive(false);
+        nameButtons.SetActive(false);
+    }
+
+    // Настройка точек маршрута
+    protected override void InitializeCheckPoints()
+    {
         // Находим всех персонажей с тегом "Player"
         ivan = GameObject.Find("Ivan").transform;
         currentIvanCheckPoint = checkPoints[GetIvanInitialCheckpointIndex()]; // Чекпоинт для Ивана
@@ -46,9 +48,6 @@ public class ConditionalMovementController : BaseMovementController
         paulina = GameObject.Find("Paulina").transform;
         currentPaulinaCheckPoint = checkPoints[GetPaulinaInitialCheckpointIndex()]; // Чекпоинт для Паулины
         paulina.position = currentPaulinaCheckPoint.position;
-
-        endButton.SetActive(false);
-        nameButtons.SetActive(false);
     }
 
     // Добавляем шаг в алгоритм
@@ -322,61 +321,17 @@ public class ConditionalMovementController : BaseMovementController
         isPlaying = false;
     }
 
-    protected virtual void CheckLevelCompletion()
-    {
-        if (currentIvanCheckPoint == checkPoints[GetIvanTargetCheckpointIndex()] &&
-            currentPaulinaCheckPoint == checkPoints[GetPaulinaTargetCheckpointIndex()])
-        {
-            // Показываем диалоговое окно для успешного прохождения уровня
-            if (DialogeWindowGoodEnd != null)
-            {
-                ShowCompletionDialog();
-            }
-        }
-        else
-        {
-            ShowBadEndDialog();
-        }
-    }
-
-    // Находим следующий чекпоинт в заданном направлении
-    private Transform FindNextCheckPoint(Vector3 direction, Transform currentCheckPoint)
-    {
-        Transform nearestCheckPoint = null;
-        float nearestDistance = Mathf.Infinity;
-
-        foreach (var checkPoint in checkPoints)
-        {
-            Vector3 delta = checkPoint.position - currentCheckPoint.position;
-            if (Vector3.Dot(delta.normalized, direction.normalized) > 0.9f)
-            {
-                float distance = Vector3.Distance(currentCheckPoint.position, checkPoint.position);
-                if (distance < nearestDistance)
-                {
-                    nearestDistance = distance;
-                    nearestCheckPoint = checkPoint;
-                }
-            }
-        }
-
-        return nearestCheckPoint;
-    }
-
     public override void StopAlgorithm()
     {
         base.StopAlgorithm();
 
+        Paulina_animator.SetBool("Move", false);
         movementButtons.SetActive(true);
         nameButtons.SetActive(false);
         endButton.SetActive(false);
         ifButton.SetActive(true);
 
         isConditionActive = false;
-
-        currentIvanCheckPoint = checkPoints[GetIvanInitialCheckpointIndex()]; // Чекпоинт для Ивана
-        ivan.position = currentIvanCheckPoint.position;
-        currentPaulinaCheckPoint = checkPoints[GetPaulinaInitialCheckpointIndex()]; // Чекпоинт для Паулины
-        paulina.position = currentPaulinaCheckPoint.position;
     }
 
     // Метод для обработки нажатия на кнопку "Условие"

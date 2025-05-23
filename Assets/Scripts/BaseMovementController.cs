@@ -22,6 +22,9 @@ public class BaseMovementController : MonoBehaviour
     [SerializeField] protected GameObject DialogeWindowError; // Диалоговое окно ошибки
     [SerializeField] private GameObject uiCanvasObject;
 
+    [Header("Check Points")]
+    [SerializeField] protected List<Transform> checkPoints; // Список всех чекпоинтов
+
     protected List<string> algorithmSteps = new List<string>(); // Список шагов алгоритма
     protected bool isPlaying = false; // Флаг для проверки, проигрывается ли алгоритм
     protected bool isPathBlocked = false; // Флаг для проверки, заблокирован ли путь
@@ -47,6 +50,11 @@ public class BaseMovementController : MonoBehaviour
     protected int currentMessageIndex = 0; // Текущий индекс сообщения
 
     public LayerMask ObstacleLayer => obstacleLayer;
+    public Canvas canvas;
+
+    protected virtual int GetInitialCheckpointIndex() => 0;
+    protected virtual int GetTargetCheckpointIndex() => 1;
+    protected Transform targetCheckPoint;  // Финальная точка
 
     protected virtual void Start()
     {
@@ -57,7 +65,18 @@ public class BaseMovementController : MonoBehaviour
         scrollRectTransform = scrollRect.GetComponent<RectTransform>();
         textRectTransform = algorithmText.textComponent.GetComponent<RectTransform>();
 
+        InitializeCheckPoints();
+
         UpdateAlgorithmText();
+    }
+
+
+    // Настройка точек маршрута
+    protected virtual void InitializeCheckPoints()
+    {
+        currentCheckPoint = checkPoints[GetInitialCheckpointIndex()];
+        playerTransform.position = currentCheckPoint.position;
+        targetCheckPoint = checkPoints[GetTargetCheckpointIndex()];
     }
 
     // Добавление шага в алгоритм
@@ -142,7 +161,88 @@ public class BaseMovementController : MonoBehaviour
     // Базовый метод выполнения алгоритма
     protected virtual IEnumerator ExecuteAlgorithm()
     {
-        yield break;
+        for (int i = 0; i < algorithmSteps.Count; i++)
+        {
+            string step = algorithmSteps[i];
+            Vector3 direction = GetDirectionFromStep(step);
+
+            if (direction != Vector3.zero) // Для шагов движения
+            {
+                Transform nextCheckPoint = FindNextCheckPoint(direction, currentCheckPoint);
+                if (nextCheckPoint != null)
+                {
+                    Ivan_animator.SetBool("Move", true);
+                    yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
+                    currentCheckPoint = nextCheckPoint;
+                }
+            }
+            else if (step == "Взять") // Для команды сбора
+            {
+                ExecuteGetCommand();
+            }
+        }
+
+        // Проверка условий завершения уровня
+        CheckLevelCompletion();
+        Ivan_animator.SetBool("Move", false);
+        isPlaying = false;
+    }
+
+    // Функция командды подбора объектов
+    protected virtual void ExecuteGetCommand()
+    {
+        // Получаем масштаб канваса
+        float pickupDistance = 200f * canvas.scaleFactor; ;
+
+        // Позиция игрока
+        Vector2 playerPos = RectTransformUtility.WorldToScreenPoint(Camera.main, playerTransform.position);
+
+        for (int i = 0; i < itemsToCollect.Count; i++)
+        {
+            GameObject item = itemsToCollect[i];
+
+            if (item != null && item.activeSelf)
+            {
+                // Получение позиции предмета
+                Vector2 itemPos = RectTransformUtility.WorldToScreenPoint(Camera.main, item.transform.position);
+
+                // Проверка расстояния
+                if (Vector2.Distance(playerPos, itemPos) < pickupDistance)
+                {
+                    item.SetActive(false);
+                    collectedItemsCount++;
+
+                    if (collectedItemsCount == 4)
+                    {
+                        allItemsCollected = true;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    // Находим следующий чекпоинт в заданном направлении
+    protected Transform FindNextCheckPoint(Vector3 direction, Transform currentCheckPoint)
+    {
+        Transform nearestCheckPoint = null;
+        float nearestDistance = Mathf.Infinity;
+
+        foreach (var checkPoint in checkPoints)
+        {
+            Vector3 delta = checkPoint.position - currentCheckPoint.position;
+            if (Vector3.Dot(delta.normalized, direction.normalized) > 0.9f)
+            {
+                float distance = Vector3.Distance(currentCheckPoint.position, checkPoint.position);
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestCheckPoint = checkPoint;
+                }
+            }
+        }
+
+        return nearestCheckPoint;
     }
 
     //Перемещение игрока к цели
@@ -192,6 +292,8 @@ public class BaseMovementController : MonoBehaviour
         if (scrollRect != null)
             scrollRect.verticalNormalizedPosition = 1f; // Сброс прокрутки
 
+        Ivan_animator.SetBool("Move", false);
+        InitializeCheckPoints();
     }
 
     // Инициализация системы сбора предметов
@@ -215,6 +317,7 @@ public class BaseMovementController : MonoBehaviour
         collectedItemsCount = 0;
         allItemsCollected = false;
 
+        // Восстанавливаем все предметы
         for (int i = 0; i < itemsToCollect.Count; i++)
         {
             if (itemsToCollect[i] != null)
@@ -225,14 +328,21 @@ public class BaseMovementController : MonoBehaviour
         }
     }
 
-    // Обработка столкновений с препятствиями
-    protected virtual void HandleObstacleCollision(Collider2D collision)
-    {
+    // Обработчики столкновений
+    private void OnTriggerEnter2D(Collider2D collision) {
         if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
         {
             isPathBlocked = true;
             StopAlgorithm();
             ShowBadEndDialog($"Иван столкнулся с препятствием.");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
+        {
+            isPathBlocked = false;
         }
     }
 
@@ -370,6 +480,19 @@ public class BaseMovementController : MonoBehaviour
     protected virtual void ShowErrorDialog(string message = "")
     {
         CreateWindow(DialogeWindowError, message);
+    }
+
+    protected virtual void CheckLevelCompletion()
+    {
+
+        if (allItemsCollected && currentCheckPoint == targetCheckPoint)
+        {
+            ShowCompletionDialog();
+        }
+        else
+        {
+            ShowBadEndDialog();
+        }
     }
 
     // Загрузка следующего уровня

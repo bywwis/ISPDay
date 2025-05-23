@@ -11,11 +11,7 @@ public class CycleMovementController : BaseMovementController
     [SerializeField] protected GameObject numberButtons; // Группа кнопок для выбора количества итераций
     [SerializeField] protected GameObject buttonsAlgoritm; // Группа кнопок для описания алгоритма
     [SerializeField] protected GameObject endButton; // Кнопка для завершения цикла
-    [SerializeField] protected List<Transform> checkPoints; // Список всех чекпоинтов
 
-    public Canvas canvas;
-
-    protected Transform targetCheckPoint; // Чекпоинт
     protected bool hasWrongItem = false;
 
     private List<int> cycleIterations = new List<int>(); // Список для хранения количества итераций для каждого цикла
@@ -25,8 +21,6 @@ public class CycleMovementController : BaseMovementController
     private bool isCycleComplete = false; // Флаг для проверки завершения цикла
     private bool hasCycle = false;
 
-    protected virtual int GetInitialCheckpointIndex() => 0;
-    protected virtual int GetTargetCheckpointIndex() => 1;
     protected virtual int GetRequiredItemsCount() => 3;
     protected virtual string GetWrongItemTag() => "WrongItem";
     protected virtual int GetMaxStepsWithoutCycle() => 10;
@@ -35,16 +29,8 @@ public class CycleMovementController : BaseMovementController
     protected override void Start()
     {
         base.Start();
-        InitializeCheckPoints();
         InitializeItems();
         SetupCycleButtons();
-    }
-
-    protected virtual void InitializeCheckPoints()
-    {
-        currentCheckPoint = checkPoints[GetInitialCheckpointIndex()];
-        playerTransform.position = currentCheckPoint.position;
-        targetCheckPoint = checkPoints[GetTargetCheckpointIndex()];
     }
 
     protected override void InitializeItems(string itemTag = "Item")
@@ -247,7 +233,7 @@ public class CycleMovementController : BaseMovementController
 
         if (direction != Vector3.zero)
         {
-            Transform nextCheckPoint = FindNextCheckPoint(direction);
+            Transform nextCheckPoint = FindNextCheckPoint(direction, currentCheckPoint);
             if (nextCheckPoint != null)
             {
                 Ivan_animator.SetBool("Move", true);
@@ -261,31 +247,8 @@ public class CycleMovementController : BaseMovementController
         }
     }
 
-    // Находим следующий чекпоинт в заданном направлении
-    protected Transform FindNextCheckPoint(Vector3 direction)
-    {
-        Transform nearestCheckPoint = null;
-        float nearestDistance = Mathf.Infinity;
-
-        foreach (var checkPoint in checkPoints)
-        {
-            Vector3 delta = checkPoint.position - currentCheckPoint.position;
-            if (Vector3.Dot(delta.normalized, direction.normalized) > 0.9f)
-            {
-                float distance = Vector3.Distance(currentCheckPoint.position, checkPoint.position);
-                if (distance < nearestDistance)
-                {
-                    nearestDistance = distance;
-                    nearestCheckPoint = checkPoint;
-                }
-            }
-        }
-
-        return nearestCheckPoint;
-    }
-
     // Подбор объекта
-    protected void ExecuteGetCommand()
+    protected override void ExecuteGetCommand()
     {
         // Mасштаб канваса
         float pickupDistance = 100f * canvas.scaleFactor;
@@ -318,21 +281,6 @@ public class CycleMovementController : BaseMovementController
         }
     }
 
-    protected virtual void CheckLevelCompletion()
-    {
-        bool isAtTarget = targetCheckPoint != null &&
-                         Vector3.Distance(playerTransform.position, targetCheckPoint.position) < 0.1f;
-
-        if (isAtTarget && !hasWrongItem && collectedItemsCount >= GetRequiredItemsCount())
-        {
-            ShowCompletionDialog();
-        }
-        else
-        {
-            ShowBadEndDialog();
-        }
-    }
-
     public override void StopAlgorithm()
     {
         base.StopAlgorithm();
@@ -351,36 +299,13 @@ public class CycleMovementController : BaseMovementController
         endButton.gameObject.SetActive(false);
         cycleButton.gameObject.SetActive(true);
 
-        InitializeCheckPoints();
         ResetItems();
     }
 
     protected override void ResetItems()
     {
-        collectedItemsCount = 0;
+        base.ResetItems();
         hasWrongItem = false;
-
-        // Восстанавливаем все предметы
-        for (int i = 0; i < itemsToCollect.Count; i++)
-        {
-            if (itemsToCollect[i] != null)
-            {
-                itemsToCollect[i].SetActive(itemActiveStates[i]);
-                itemsToCollect[i].transform.position = itemOriginalPositions[i];
-            }
-        }
-    }
-
-    // Обработчики столкновений
-    private void OnTriggerEnter2D(Collider2D collision) { HandleObstacleCollision(collision); }
-
-    // Обработчик события выхода из триггера
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
-        {
-            isPathBlocked = false;
-        }
     }
 
     public void OnCycleButtonClicked()
