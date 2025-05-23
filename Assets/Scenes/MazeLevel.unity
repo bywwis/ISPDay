@@ -3515,10 +3515,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 290329649}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
+        m_MethodName: CloseWindow
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3763,6 +3763,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 3434306532007893167, guid: 71ae1ae44edad714a85bb72649e88292, type: 3}
   endPointPrefab: {fileID: 3746489235799936883, guid: e177671249d750d42a351bd4e95225a8, type: 3}
   locationObject: {fileID: 100580131}
+  DialogeWindowStory: {fileID: 290329649}
   DialogeWindowGoodEnd: {fileID: 363868289}
   DialogeWindowBadEnd: {fileID: 397093824}
   DialogeWindowError: {fileID: 758271038}
@@ -4547,10 +4548,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 290329649}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 947067141}
+        m_TargetAssemblyTypeName: MazeLevel, Assembly-CSharp
+        m_MethodName: CloseWindow
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

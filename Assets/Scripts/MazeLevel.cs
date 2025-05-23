@@ -28,6 +28,7 @@ public class MazeLevel : MonoBehaviour
     [SerializeField] private Transform locationObject; 
 
     [Header("UI Windows")]
+    [SerializeField] private GameObject DialogeWindowStory;
     [SerializeField] private GameObject DialogeWindowGoodEnd;
     [SerializeField] private GameObject DialogeWindowBadEnd;
     [SerializeField] private GameObject DialogeWindowError;
@@ -1204,4 +1205,17 @@ public class MazeLevel : MonoBehaviour
             StartCoroutine(ScrollIfOverflow());
         }
     }
+
+    //Закрытие окна
+    public void CloseWindow()
+    {
+        clickSound.Play();
+        Invoke(nameof(DestroyWindow), clickSound.clip.length);
+    }
+
+    private void DestroyWindow()
+    {
+        DialogeWindowStory.SetActive(false);
+    }
+
 }
