@@ -38,6 +38,9 @@ public class MazeLevel : MonoBehaviour
     [SerializeField] private GameObject ButtonsAlgoritm;
     [SerializeField] private Button EndButton;
 
+    [Header("Animation Settings")]
+    public Animator Ivan_animator;
+
     private List<string> algorithmSteps = new List<string>();
     private bool isPlaying = false;
     private bool isPathBlocked = false;
@@ -849,7 +852,7 @@ public class MazeLevel : MonoBehaviour
                 yield return StartCoroutine(ExecuteStep(step));
             }
         }
-
+        Ivan_animator.SetBool("Move", false);
         isPlaying = false;
     }
     
@@ -862,6 +865,7 @@ public class MazeLevel : MonoBehaviour
             Transform nextCheckPoint = FindNextCheckPoint(direction);
             if (nextCheckPoint != null)
             {
+                Ivan_animator.SetBool("Move", true);
                 yield return StartCoroutine(MovePlayer(nextCheckPoint.position));
                 currentCheckPoint = nextCheckPoint;
             }
