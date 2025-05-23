@@ -92,9 +92,6 @@ public class MazeLevel : MonoBehaviour
         {
             PlayAlgorithm();
         }
-        
-        // Проверяем достижение финиша
-        CheckEndPointProximity();
     }
 
     private void CheckEndPointProximity()
@@ -114,6 +111,10 @@ public class MazeLevel : MonoBehaviour
         {
             ShowCompletionDialog(true);
         }
+        else
+        {
+            ShowCompletionDialog(false);
+        }
         
         // Дополнительная проверка расстояния (если нужно)
         float distance = Vector3.Distance(player.position, endPointInstance.position);
@@ -121,6 +122,11 @@ public class MazeLevel : MonoBehaviour
         {
             ShowCompletionDialog(true);
         }
+        else
+        {
+            ShowCompletionDialog(false);
+        }
+
     }
 
     private Transform GetNearestCheckpoint(Vector3 position)
@@ -843,7 +849,6 @@ public class MazeLevel : MonoBehaviour
                         yield return StartCoroutine(ExecuteStep(innerStep));
                     }
                 }
-
                 // Пропускаем шаги внутри цикла, чтобы не выполнять их повторно
                 i = cycleStack.Pop(); // Возвращаемся к началу цикла
             }
@@ -854,6 +859,8 @@ public class MazeLevel : MonoBehaviour
         }
         Ivan_animator.SetBool("Move", false);
         isPlaying = false;
+        // Проверяем достижение финиша
+        CheckEndPointProximity();
     }
     
     private IEnumerator ExecuteStep(string step)
@@ -996,6 +1003,10 @@ public class MazeLevel : MonoBehaviour
             {
                 DialogeWindowBadEnd.SetActive(true);
             }
+        }
+        else
+        {
+            DialogeWindowBadEnd.SetActive(true);
         }
     }
 
