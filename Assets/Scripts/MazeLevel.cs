@@ -167,7 +167,17 @@ public class MazeLevel : MonoBehaviour
             checkPoints[0].position, 
             Quaternion.identity, 
             locationObject);
-            
+
+        Animator playerAnimator = newPlayer.GetComponent<Animator>();
+        if (playerAnimator == null)
+        {
+            Debug.LogError("Animator отсутствует.");
+        }
+        else
+        {
+            Ivan_animator = playerAnimator; 
+        }
+
         player = newPlayer.transform;
         currentCheckPoint = checkPoints[0];
     }
@@ -857,6 +867,7 @@ public class MazeLevel : MonoBehaviour
                 yield return StartCoroutine(ExecuteStep(step));
             }
         }
+
         Ivan_animator.SetBool("Move", false);
         isPlaying = false;
         // Проверяем достижение финиша

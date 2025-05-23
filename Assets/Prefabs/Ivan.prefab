@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6705970000090454027}
   - component: {fileID: 5062812480955972804}
   - component: {fileID: 5054578979912970653}
-  - component: {fileID: 2159521779562073230}
+  - component: {fileID: 3293433005673314956}
   m_Layer: 0
   m_Name: Ivan
   m_TagString: Player
@@ -223,7 +223,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
---- !u!95 &2159521779562073230
+--- !u!95 &3293433005673314956
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0

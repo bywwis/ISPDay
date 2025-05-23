@@ -3475,7 +3475,7 @@ MonoBehaviour:
   NumberButtons: {fileID: 1298658401}
   ButtonsAlgoritm: {fileID: 136200568}
   EndButton: {fileID: 697716764}
-  Ivan_animator: {fileID: 2159521779562073230, guid: 71ae1ae44edad714a85bb72649e88292, type: 3}
+  Ivan_animator: {fileID: 3293433005673314956, guid: 71ae1ae44edad714a85bb72649e88292, type: 3}
 --- !u!222 &947067143
 CanvasRenderer:
   m_ObjectHideFlags: 0
