@@ -401,53 +401,6 @@ public class MazeLevel : MonoBehaviour
         }
     }
 
-    private int CountWallNeighbors(int x, int y)
-    {
-        int count = 0;
-        Vector2Int[] directions = {
-            Vector2Int.up, Vector2Int.right, 
-            Vector2Int.down, Vector2Int.left
-        };
-
-        foreach (var dir in directions)
-        {
-            Vector2Int neighbor = new Vector2Int(x, y) + dir;
-            if (IsInBounds(neighbor) && !IsEmpty(neighbor.x, neighbor.y))
-            {
-                count++;
-            }
-        }
-        
-        return count;
-    }
-
-    private bool CreatesLongWall(int x, int y)
-    {
-        // Проверяем, не создаем ли мы стену длиной более 2 клеток вправо или влево
-        Vector2Int[] directions = {
-            Vector2Int.right, 
-            Vector2Int.left
-        };
-
-        foreach (var dir in directions)
-        {
-            int length = 0;
-            for (int i = 1; i <= 2; i++)
-            {
-                Vector2Int checkPos = new Vector2Int(x, y) + dir * i;
-                if (!IsInBounds(checkPos) || IsEmpty(checkPos.x, checkPos.y))
-                    break;
-                    
-                length++;
-            }
-            
-            if (length >= 2) // Уже есть стена длиной 2 клетки в этом направлении
-                return true;
-        }
-        
-        return false;
-    }
-
     private void GenerateRandomBranches()
     {
         // Создаем несколько проходов в случайных местах
