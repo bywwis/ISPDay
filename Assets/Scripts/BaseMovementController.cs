@@ -530,5 +530,4 @@ public class BaseMovementController : MonoBehaviour
     public void AddLeftStep() { clickSound.Play(); AddStep("Влево"); }
     public void AddRightStep() { clickSound.Play(); AddStep("Вправо"); }
     public void AddGet() { clickSound.Play(); AddStep("Взять"); }
-    public void AddSit() { clickSound.Play(); AddStep("Сесть"); }
 }
