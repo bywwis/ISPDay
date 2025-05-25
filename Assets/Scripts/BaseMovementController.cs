@@ -363,9 +363,6 @@ public class BaseMovementController : MonoBehaviour
 
         currentActiveWindow = Instantiate(window, uiCanvasObject.transform);
 
-        // Настройка компонентов окна
-        var windowController = currentActiveWindow.GetComponent<WindowController>();
-
         // Установка сообщения если оно передано
         if (!string.IsNullOrEmpty(message))
         {
