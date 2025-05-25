@@ -39,7 +39,7 @@ public class IvanMoveLevel3 : CycleMovementController
         }
         else if (currentCheckPoint == targetCheckPoint && hasWrongItem && collectedItemsCount == GetRequiredItemsCount())
         {
-            ShowBadEndDialog($"Кажетя одно из блюд было с рыбой. У Ивана случилась аллергия.");
+            ShowBadEndDialog($"Кажетcя одно из блюд было с рыбой. У Ивана случилась аллергия.");
         }
         else
         {
